@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import Test from "../test/Test";
+import { useAuth0 } from "@auth0/auth0-react";
+import Profile from "../common/Profile";
 
+const LoginButton = () => {
+  const {loginWithRedirect} = useAuth0();
 
+  return <button onClick={() => loginWithRedirect()}>Login</button>;
+}
 class Home extends Component {
   static displayName = Home.name;
 
@@ -9,7 +15,9 @@ class Home extends Component {
     return (
       <>
        <h3>Welcome to Servicify</h3>
-       <Test/>
+       <LoginButton/>
+       <Profile/>
+       {/* <Test/> */}
       </>
     );
   }
