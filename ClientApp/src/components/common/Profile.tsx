@@ -11,8 +11,8 @@ const Profile = () => {
   return (
     (
       <div>
-        <img src={user?.picture} alt={user?.name} />
-        <h2>{user?.name}</h2>
+        <img style={{borderRadius:"50%"}} src={user?.picture} alt={user?.name} />
+        <h3>{user?.name}</h3>
         <p>{user?.email}</p>
       </div>
     )
