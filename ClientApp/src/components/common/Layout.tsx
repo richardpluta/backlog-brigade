@@ -9,7 +9,7 @@ class Layout extends Component<LayoutProps> {
   render() {
     return (
       <>
-        <NavMenu />
+        <NavMenu/>
         <Container>{this.props.children}</Container>
       </>
     );
