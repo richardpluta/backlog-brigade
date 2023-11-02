@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ServicifyDB.Services
 {
-    public class ListingRepo
+    public class ListingRepo : IListingRepo
     {
     }
 }
