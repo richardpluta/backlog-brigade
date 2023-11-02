@@ -15,10 +15,7 @@ const Home = () =>  {
     {
       return (
         <>
-        <NavMenu/>
         <p>Welcome {user?.name}!</p>
-          <Profile/>
-          <Test/>
         </>
       );
     }

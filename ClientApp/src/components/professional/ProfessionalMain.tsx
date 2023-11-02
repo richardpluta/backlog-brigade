@@ -2,15 +2,15 @@ import React from "react";
 import { Component } from "react";
 import Profile from "../common/Profile";
 
-class ProfessionalProfileMain extends Component {
+class ProfessionalMain extends Component {
 
     render() {
       return (
        <>
-        <p>Here i am!</p>
+       <p>This is the professionals landing page!</p>
        </>
       );
     }
   }
 
-  export default ProfessionalProfileMain;
+  export default ProfessionalMain;
