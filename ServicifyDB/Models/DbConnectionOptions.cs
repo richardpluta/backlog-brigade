@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace ServicifyDB.Models
 {
-    public enum UserType
+    public class DbConnectionOptions
     {
-      Admin = 0,
-      Client = 1,
-      Professional = 2
+        public const string Key = "DBConfiguration";
+        public string ConnectionString { get; set; } = String.Empty;
     }
 }
