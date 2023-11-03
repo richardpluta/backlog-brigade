@@ -1,18 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ServicifyDB.Models;
+using ServicifyDB.Services;
 
 namespace Servicify.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class TestController : ControllerBase
     {
+        private readonly TestService testService;
+
+        public TestController(TestService testService)
+        {
+            this.testService = testService;
+        }
 
         [HttpGet]
         [Route("testget")]
-        public async Task<IActionResult> TestGetEndpoint()
+        public ActionResult<List<HelpWanted>> TestGetEndpoint()
         {
-            var testObject = new TestObject(1, "TestName", "This is a test object!");
-            return Ok(testObject);
+            return Ok(testService.TestMethod());
         }
 
 

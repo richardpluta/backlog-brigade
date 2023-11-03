@@ -1,5 +1,10 @@
 
 
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using ServicifyDB.DBContents;
+using ServicifyDB.Repository;
+using ServicifyDB.Services;
 using System.Reflection;
 
 namespace Servicify.API
@@ -22,6 +27,15 @@ namespace Servicify.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+
+            NpgsqlConnectionStringBuilder dbBuilder = new(Environment.GetEnvironmentVariable("DATABASE_CONNECTION"));
+            dbBuilder.Password = Environment.GetEnvironmentVariable("DATABASE_PASSWORD");
+            dbBuilder.Username = Environment.GetEnvironmentVariable("DATABASE_USERNAME");
+
+            builder.Services.AddDbContext<ServicifyDbContent>(options => options.UseNpgsql(dbBuilder.ConnectionString));
+
+            builder.Services.AddTransient<TestService>();
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             var app = builder.Build();
 
