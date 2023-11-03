@@ -8,8 +8,8 @@ namespace ServicifyDB.Models
 {
     public class Listing
     {
-        public int listingID { get; set; }
-        public User postUser { get; set; }
+        public int id { get; set; }
+        public User User { get; set; }
         public DateTime postDate { get; set; }
         public string postContent { get; set; }
         public bool flagged { get; set; }

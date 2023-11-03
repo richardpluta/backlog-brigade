@@ -26,7 +26,7 @@ namespace ServicifyDB.Models
         public bool Flagged { get; set; }
 
         [Column("skillset")]
-        public int SkillSet { get; set; }
+        public Skillset SkillSet { get; set; }
 
         [Column("rate")]
         public int expectedRate { get; set; }
