@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServicifyDB.Models;
-using ServicifyDB.Services;
+using Servicify.API.Services;
 
 namespace Servicify.API.Controllers
 {

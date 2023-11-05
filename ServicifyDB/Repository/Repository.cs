@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using ServicifyDB.DBContents;
+using Servicify.Data;
 
 namespace ServicifyDB.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly ServicifyDbContent _context;
+        private readonly ServicifyDataContext _context;
         
-        public Repository(ServicifyDbContent context)
+        public Repository(ServicifyDataContext context)
         {
             _context = context;
         }
