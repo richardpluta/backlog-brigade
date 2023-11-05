@@ -1,16 +1,21 @@
 import React from "react";
 import { Component } from "react";
-import Profile from "../common/Profile";
+import CreateListingModal from "../common/Modals/CreateListingModal";
+import useCreateListingModal from "../common/Hooks/useCreateListingModal";
+import "./ProfessionalMain.css";
+import ListingList from "./ListingList";
 
-class ProfessionalMain extends Component {
+export default function ProfessionalMain() {
 
-    render() {
-      return (
-       <>
-       <p>This is the professionals landing page!</p>
-       </>
-      );
-    }
+	const {isOpen, toggle} = useCreateListingModal();
+    return (
+		<div className="professional-container">
+			<h1>View Listings</h1>
+			<button onClick={toggle} className="create-listing-button">Create a new Listing</button>
+			<CreateListingModal isOpen={isOpen} toggle={toggle}></CreateListingModal>
+			<ListingList />
+			
+		</div>
+    );
+    
   }
-
-  export default ProfessionalMain;
