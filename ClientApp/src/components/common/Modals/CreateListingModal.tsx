@@ -11,7 +11,7 @@ export default function CreateListingModal(props: ModalType){
 	return(
 		<>
 			{props.isOpen && (
-				<div className="overlay" onClick={props.toggle}>
+				<div className="overlay">
 					<div className="box">
 						<form className="create-listing-form">
 							<label>
@@ -27,9 +27,13 @@ export default function CreateListingModal(props: ModalType){
 								<input type="text" name="location" />
 							</label>
 							<label>
-								Price:
-								<input type="text" name="price" />
+								Rate:
+								<input type="text" name="rate" />
 							</label>
+							<div>
+								<button >Create</button>
+								<button onClick={props.toggle}>Cancel</button>
+							</div>
 						</form>
 					</div>
 				</div>

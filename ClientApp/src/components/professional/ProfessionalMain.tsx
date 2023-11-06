@@ -3,7 +3,7 @@ import { Component } from "react";
 import CreateListingModal from "../common/Modals/CreateListingModal";
 import useCreateListingModal from "../common/Hooks/useCreateListingModal";
 import "./ProfessionalMain.css";
-import ListingList from "./ListingList";
+import Listings from "./Listings"
 
 export default function ProfessionalMain() {
 
@@ -13,7 +13,9 @@ export default function ProfessionalMain() {
 			<h1>View Listings</h1>
 			<button onClick={toggle} className="create-listing-button">Create a new Listing</button>
 			<CreateListingModal isOpen={isOpen} toggle={toggle}></CreateListingModal>
-			<ListingList />
+			<div className="listings">
+				<Listings />
+			</div>
 			
 		</div>
     );
