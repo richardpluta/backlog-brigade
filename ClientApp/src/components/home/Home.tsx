@@ -5,17 +5,31 @@ import Profile from "../common/Profile";
 import NavMenu from "../common/NavMenu";
 import logo from "../../../public/assets/servicify_logo_nobackground.png";
 import { Button } from "reactstrap";
+import { LoggedInUser } from "../../models/user/LoggedInUser";
+import { GetCurrentUser } from "../../services/UserService";
 
 
 const Home = () =>  {
-  const  { loginWithRedirect, user, isAuthenticated } = useAuth0();
+  const  { getAccessTokenSilently, loginWithRedirect, user, isAuthenticated } = useAuth0();
+  const [currentUser, setCurrentUser] = useState<LoggedInUser>();
+  const [accessToken, setAccessToken] = useState("");
 
+  useEffect(() => {
+    (async () => {
+      await getAccessTokenSilently().then(async (token) => {
+        setAccessToken(token);
+        await GetCurrentUser(token, user?.email).then(async (currentUser: LoggedInUser) => {
+          setCurrentUser(currentUser);
+        });
+      });
+    })();
+  }, []);
 
     if(isAuthenticated)
     {
       return (
         <>
-        <p>Welcome {user?.name}!</p>
+        <p>Welcome {currentUser?.userName}!</p>
         </>
       );
     }

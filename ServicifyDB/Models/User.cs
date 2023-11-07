@@ -24,11 +24,11 @@ namespace ServicifyDB.Models
 
         [Column("user_type")]
         [Required]
-        public UserType userType { get; set; }  
+        public UserType userType { get; set; }
 
         [Column("user_name")]
         [Required]
-        public string userName { get; set; }
+        public string userName { get; set; } = String.Empty;
 
         [Column("phone")]
         [Required]
@@ -36,7 +36,7 @@ namespace ServicifyDB.Models
 
         [Column("email")]
         [Required]
-        public string email { get; set; }
+        public string email { get; set; } = String.Empty;
 
         [Column("skillset")]
         [Required]
