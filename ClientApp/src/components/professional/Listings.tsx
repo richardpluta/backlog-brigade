@@ -4,13 +4,18 @@ import "./Listings.css"
 
 export default function Listing(){
 
+	interface User{
+
+	}
+
 	interface Listing{
-		UserId: string,
-		PostDate: String,
-		PostContent: string,
+		id: string,
+		postDate: String,
+		postContent: string,
 		flagged: boolean,
-		SkillSet: string,
-		Rate: string
+		skillSet: string,
+		expectedRate: string,
+		user: User
 	}
 	
 	const DUMMY_LISTINGS = [
@@ -49,12 +54,12 @@ export default function Listing(){
 	const loadedListings = result.map(listing => {
 		return(
 			<div className='card'>
-				<p>{listing.UserId}</p>
-				<p>{listing.PostDate}</p>
-				<p>{listing.PostContent}</p>
+				<p>{listing.id}</p>
+				<p>{listing.postDate}</p>
+				<p>{listing.postContent}</p>
 				<p>{listing.flagged}</p>
-				<p>{listing.SkillSet}</p>
-				<p>{listing.Rate}</p>
+				<p>{listing.skillSet}</p>
+				<p>{listing.expectedRate}</p>
 			</div>
 		);
 	})
