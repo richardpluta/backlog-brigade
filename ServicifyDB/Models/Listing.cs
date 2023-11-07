@@ -21,22 +21,22 @@ namespace ServicifyDB.Models
 
         [Column("post_date")]
         [Required]
-        public DateTime postDate { get; set; }
+        public DateTime CreationDate { get; set; }
         
         [Column("post_content")]
         [Required]
-        public string postContent { get; set; }
+        public string Content { get; set; }
 
         [NotMapped]
-        public bool flagged { get; set; }
+        public bool Flagged { get; set; }
 
         [Column("skill_set")]
         [Required]
-        public Skillset skillSet { get; set; }
+        public Skillset SkillSet { get; set; }
         
         [Column("expected_rate")]
         [Required]
-        public int expectedRate { get; set; }
+        public int ExpectedRate { get; set; }
 
         [ForeignKey(nameof(UserId))]
         public User User { get; set; }
