@@ -20,34 +20,30 @@ namespace ServicifyDB.Models
     {
         [Key]
         [Column("id")]
-        public int userID { get; set; }
+        public int Id { get; set; }
 
         [Column("user_type")]
         [Required]
-        public UserType userType { get; set; }
+        public UserType UserType { get; set; }  
 
         [Column("user_name")]
         [Required]
-        public string userName { get; set; } = String.Empty;
+        public string UserName { get; set; }
 
         [Column("phone")]
-        [Required]
-        public long phone { get; set; }
+        public string? PhoneNumber { get; set; }
 
         [Column("email")]
-        [Required]
-        public string email { get; set; } = String.Empty;
+        public string? Email { get; set; }
 
         [Column("skillset")]
         [Required]
-        public Skillset skillset { get; set; }
+        public Skillset SkillSet { get; set; }
 
         [Column("zip")]
-        [Required]
-        public int zip { get; set; }
+        public string? Zip { get; set; }
 
         [Column("user_rate")]
-        [Required]
-        public int userRate { get; set; }
+        public int UserRate { get; set; }
     }
 }
