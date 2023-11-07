@@ -1,7 +1,7 @@
 ﻿using ServicifyDB.Models;
 using ServicifyDB.Repository;
 
-namespace ServicifyDB.Services
+namespace Servicify.API.Services
 {
     public class TestService
     {

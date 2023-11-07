@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServicifyDB.Models;
 
-namespace ServicifyDB.DBContents
+namespace Servicify.Data
 {
-    public class ServicifyDbContent : DbContext
+    public class ServicifyDataContext : DbContext
     {
 
         public DbSet<HelpWanted> helpWanteds { get; set; }
@@ -11,7 +11,7 @@ namespace ServicifyDB.DBContents
         public DbSet<Review> reviews { get; set; }
         public DbSet<User> users { get; set; }
 
-        public ServicifyDbContent(DbContextOptions<ServicifyDbContent> options) : base(options) { }
+        public ServicifyDataContext(DbContextOptions<ServicifyDataContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

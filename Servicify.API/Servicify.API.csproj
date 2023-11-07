@@ -14,6 +14,6 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\ServicifyDB\ServicifyDB.csproj"/>
+		<ProjectReference Include="..\ServicifyDB\Servicify.Data.csproj" />
 	</ItemGroup>
 </Project>
