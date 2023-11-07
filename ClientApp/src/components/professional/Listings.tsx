@@ -1,29 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import Listing from '../../models/listingData'
 
 import "./Listings.css"
 
 export default function Listing(){
 
-	interface User{
-		userID: string,
-		userType: string,
-		userName: string,
-		phone: string,
-		email: string,
-		skillset: string,
-		zip: string,
-		userRate: string,
-	}
-
-	interface Listing{
-		id: string,
-		postDate: String,
-		postContent: string,
-		flagged: boolean,
-		skillSet: string,
-		expectedRate: string,
-		user: User
-	}
 	
 	const DUMMY_LISTINGS = [
 		{

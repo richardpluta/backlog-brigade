@@ -1,5 +1,6 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import "./CreateListingModal.css";
+
 
 interface ModalType {
 	children?: ReactNode;
