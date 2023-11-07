@@ -5,3 +5,22 @@
 	padding: 3%;
 	margin-top: 5%;
 }
+
+.cardHeader{
+	display: flex;
+}
+.cardHeader-element{
+	margin-right: 10%;
+}
+
+.cardContent{
+	background-color: white;
+}
+
+.cardFooter{
+	display: flex;
+}
+
+.cardFooter-element{
+	margin-right: 10%;
+}
