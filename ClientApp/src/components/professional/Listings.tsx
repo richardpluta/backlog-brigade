@@ -5,7 +5,14 @@ import "./Listings.css"
 export default function Listing(){
 
 	interface User{
-
+		userID: string,
+		userType: string,
+		userName: string,
+		phone: string,
+		email: string,
+		skillset: string,
+		zip: string,
+		userRate: string,
 	}
 
 	interface Listing{
@@ -20,20 +27,38 @@ export default function Listing(){
 	
 	const DUMMY_LISTINGS = [
 		{
-			UserId: "user1",
-			PostDate: "11052023",
-			PostContent: "This is the content of post # 1",
+			id: "user1",
+			postDate: "11052023",
+			postContent: "This is the content of post # 1",
 			flagged: false,
-			SkillSet: "Skill1",
-			Rate: "$50.00/hr"
+			skillSet: "Skill1",
+			expectedRate: "$50.00/hr",
+			user: {
+				userID: "123",
+				userType: "type",
+				userName: "mrProgramGuy",
+				phone: "123-456-7890",
+				skillset: "none",
+				zip: "12345",
+				userRate: "0",
+			}
 		},
 		{
-			UserId: "user2",
-			PostDate: "11052023",
-			PostContent: "This is the content of post # 2",
+			id: "user2",
+			postDate: "11072023",
+			postContent: "This is the content of post # 2",
 			flagged: false,
-			SkillSet: "Skill2",
-			Rate: "$75.00/hr"
+			skillSet: "Skill1, skill2",
+			expectedRate: "$75.00/hr",
+			user: {
+				userID: "321",
+				userType: "type3",
+				userName: "XxMyUsernamexX",
+				phone: "098-765-4321",
+				skillset: "none",
+				zip: "12345",
+				userRate: "0",
+			}
 		},
 	];
 
@@ -51,15 +76,22 @@ export default function Listing(){
 
 	//const listings = [<div> Listing 1</div>, <div> Listing 2</div>, <div> Listing 3</div>];
 
-	const loadedListings = result.map(listing => {
+	const loadedListings = DUMMY_LISTINGS.map(listing => {
 		return(
 			<div className='card'>
-				<p>{listing.id}</p>
-				<p>{listing.postDate}</p>
-				<p>{listing.postContent}</p>
-				<p>{listing.flagged}</p>
-				<p>{listing.skillSet}</p>
-				<p>{listing.expectedRate}</p>
+				<div className='cardHeader'>
+					<p className='cardHeader-element'>{listing.id}</p>
+					<p className='cardHeader-element'>{/*listing.user.userID*/}DUMMY NAME</p>
+					<p className='cardHeader-element'>{listing.postDate}</p>
+				</div>
+				<div className='cardContent'>
+					<p>{listing.postContent}</p>
+				</div>
+				<div className='cardFooter'>
+					<p className='cardFooter-element'>{listing.flagged}</p>
+					<p className='cardFooter-element'>{listing.skillSet}</p>
+					<p className='cardFooter-element'>{listing.expectedRate}</p>
+				</div>
 			</div>
 		);
 	})
