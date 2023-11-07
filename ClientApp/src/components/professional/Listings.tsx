@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import "./Listings.css"
 
@@ -6,7 +6,7 @@ export default function Listing(){
 
 	interface Listing{
 		UserId: string,
-		PostDate: Date,
+		PostDate: String,
 		PostContent: string,
 		flagged: boolean,
 		SkillSet: string,
@@ -32,9 +32,21 @@ export default function Listing(){
 		},
 	];
 
+	const [result, setResult] = useState<Listing[]>([]);
+
+	useEffect(() => {
+		const api = async () => {
+			const data = await fetch("api/listing", {method:"GET"});
+			const json = await data.json();
+			console.log(json);
+			setResult(json);
+		}
+		api();
+	}, []);
+
 	//const listings = [<div> Listing 1</div>, <div> Listing 2</div>, <div> Listing 3</div>];
 
-	const loadedListings = DUMMY_LISTINGS.map(listing => {
+	const loadedListings = result.map(listing => {
 		return(
 			<div className='card'>
 				<p>{listing.UserId}</p>
