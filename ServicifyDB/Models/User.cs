@@ -24,11 +24,11 @@ namespace ServicifyDB.Models
 
         [Column("user_type")]
         [Required]
-        public UserType UserType { get; set; }  
+        public UserType UserType { get; set; }
 
         [Column("user_name")]
         [Required]
-        public string UserName { get; set; }
+        public string UserName { get; set; } = string.Empty;
 
         [Column("phone")]
         public string? PhoneNumber { get; set; }
