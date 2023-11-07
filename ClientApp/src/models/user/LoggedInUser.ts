@@ -1,10 +1,12 @@
 export declare class LoggedInUser {
     userId: string;
-    userType: UserType;
-    userName: string;
-    phone: bigint;
+    userType?: UserType;
+    userName?: string;
+    phone?: string;
     email: string;
-    skillset: Skillset
+    skillset?: Skillset;
+    zip?: string;
+    userRate?: number;
 }
 
 export enum UserType{
@@ -15,7 +17,6 @@ export enum UserType{
 
 export enum Skillset
 {
-    
     Carpentry = 0,
     Plumbing = 1,
     HVAC = 2,
@@ -30,7 +31,7 @@ export enum Skillset
     Therapist = 11,
     Drywaller = 12,
     Developer = 13,
-    Millwright = 14,
+    Millwright = 14
 }
 
 

@@ -19,6 +19,7 @@ const Home = () =>  {
       await getAccessTokenSilently().then(async (token) => {
         setAccessToken(token);
         await GetCurrentUser(token, user?.email).then(async (currentUser: LoggedInUser) => {
+          console.log(currentUser);
           setCurrentUser(currentUser);
         });
       });
