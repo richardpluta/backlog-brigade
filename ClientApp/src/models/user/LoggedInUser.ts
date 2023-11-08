@@ -2,7 +2,7 @@ export declare class LoggedInUser {
     userId: string;
     userType?: UserType;
     userName?: string;
-    phone?: string;
+    phone?: number;
     email: string;
     skillset?: Skillset;
     zip?: string;

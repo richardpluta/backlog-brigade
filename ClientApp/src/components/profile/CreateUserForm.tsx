@@ -13,7 +13,7 @@ const CreateUserForm:React.FC = () => {
         userId: "",
         userType: undefined,
         userName: "",
-        phone: "",
+        phone: undefined,
         email: user?.email == undefined ? "" : user.email,
         skillset: undefined,
         zip: "",
@@ -96,7 +96,7 @@ const CreateUserForm:React.FC = () => {
                     onChange={(e) =>
                       setEditableParamProps((editableParamProps) => ({
                         ...editableParamProps,
-                        ...{ phone: e.target.value }
+                        ...{ phone: e.target.valueAsNumber }
                   }))
                   }
                   >

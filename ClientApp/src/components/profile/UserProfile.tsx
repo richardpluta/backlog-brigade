@@ -2,6 +2,7 @@ import React from "react";
 import { Component } from "react";
 import Profile from "../common/Profile";
 import CreateUserForm from "./CreateUserForm";
+import UpdateUserForm from "./UpdateUserForm";
 
 class UserProfileMain extends Component {
 
@@ -13,6 +14,9 @@ class UserProfileMain extends Component {
        <Profile/>
        <p>Testing out create user form here:</p>
        <CreateUserForm/>
+
+       <p>Testing out UPDATE USER form here</p>
+       <UpdateUserForm/>
        </>
       );
     }

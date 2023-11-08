@@ -28,3 +28,17 @@ export const CreateUserAsync = async (token:string, createUserRequest:LoggedInUs
         body
     }).then((response) => response.json());
 }
+
+export const UpdateUserAsync = async (token:string, updateUserRequest:LoggedInUser) => {
+    console.log("In UpdateUserAsync");
+    const body = JSON.stringify(updateUserRequest);
+
+    return await fetch("api/user", {
+        method: "PUT",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body
+    }).then((response) => response.json());
+}
