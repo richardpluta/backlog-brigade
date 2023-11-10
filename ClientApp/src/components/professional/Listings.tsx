@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Listing from '../../models/listingData'
+import flag from '../../../public/assets/red-flag-icon.png'
 
 import "./Listings.css"
 
@@ -42,19 +43,18 @@ export default function Listing(){
 			}
 		},
 	];
-
+/*
 	const [result, setResult] = useState<Listing[]>([]);
 
 	useEffect(() => {
 		const api = async () => {
 			const data = await fetch("api/listing", {method:"GET"});
 			const json = await data.json();
-			console.log(json);
 			setResult(json);
 		}
 		api();
 	}, []);
-
+*/
 	//const listings = [<div> Listing 1</div>, <div> Listing 2</div>, <div> Listing 3</div>];
 
 	const loadedListings = DUMMY_LISTINGS.map(listing => {
@@ -67,11 +67,14 @@ export default function Listing(){
 				</div>
 				<div className='cardContent'>
 					<p>{listing.postContent}</p>
+					<p>{listing.skillSet}</p>
+					<p>{listing.expectedRate}</p>
 				</div>
 				<div className='cardFooter'>
 					<p className='cardFooter-element'>{listing.flagged}</p>
-					<p className='cardFooter-element'>{listing.skillSet}</p>
-					<p className='cardFooter-element'>{listing.expectedRate}</p>
+					<img src={flag} alt="Flagged" className='cardFooter-flagIcon'/>
+					<button className='cardFooter-edit'>Edit</button>
+					<button className='cardFooter-delete'>Delete</button>
 				</div>
 			</div>
 		);
