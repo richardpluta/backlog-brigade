@@ -1,6 +1,11 @@
-import React, { ReactNode, useState, MouseEvent, FormEvent } from "react";
+import React, { ReactNode, useState, MouseEvent, FormEvent, useEffect } from "react";
 import listing from "../../../models/listingData";
 import "./CreateListingModal.css";
+import { useAuth0 } from "@auth0/auth0-react";
+import Test from "../../test/Test";
+import { testPostListing } from "../../../services/TestService";
+import listingData from "../../../models/listingData";
+import LoggedInUser from "../../../models/userData";
 
 
 interface ModalType {
@@ -9,53 +14,59 @@ interface ModalType {
 	toggle: () => void;
 }
 
-const DUMMY_USER = {
+const DUMMY_USER:LoggedInUser = {
 		userID: 123,
 		userType: 0,
 		userName: "DummyUserFromModal",
-		phone: 0,
+		phone: 987654321,
 		email: "nam@email.com",
 		skillset: 0,
-		zip: 12345,
+		zip: '12345',
 		userRate: 0,
 	}
 
 
 
-export default function CreateListingModal(props: ModalType){
+const CreateListingModal = (props: ModalType) => {
+
+	const {getAccessTokenSilently} = useAuth0();
+	const [accessToken, setAccessToken] = useState("");
+	useEffect(() => {
+		(async () => {
+		  await getAccessTokenSilently().then(async (token) => {
+			setAccessToken(token);
+		  });
+		})();
+	  }, []);
+	  
 	const onSubmit = async (event: any) => {
 		event.preventDefault();
 
 		const target = event.target;
 
-		const data = {
-			id: 123,
-			userId: 0,
+		//updated this to constant data just for testing purposes so i could rule out the form being part of the issue
+		const data:listing = {
+			id: 0,
+			userId: 1,
 			postDate: "2023-11-10T04:41:44.124Z",
-			postContent: target.description.value,
+			postContent: "blah",
 			flagged: false,
-			skillSet: Number(target.skills.value),
-			expectedRate: Number(target.rate.value),
-			user: DUMMY_USER,
+			skillSet: 1,
+			expectedRate: 33,
+			user: DUMMY_USER
 		}
 
-		console.log(data);
-
-		await fetch("api/listing",
-			{
-				method: 'POST',
-				headers: {
-					"Content-Type": "application/json"
-				},
-				
-				body: JSON.stringify(data)
-			}
-		).then(res => {
+		//moved call to backend to test service, probably should be broken out into a ListingService with the API calls in it
+		await testPostListing(data)
+		.then((res:any) => {
 			console.log(res.json)
 		});
 	}
+
+	
 	return(
 		<>
+		<Test/>
 			{props.isOpen && (
 				<div className="overlay">
 					<div className="box">
@@ -87,4 +98,7 @@ export default function CreateListingModal(props: ModalType){
 			)}
 		</>
 	)
-}
+			}
+
+export default CreateListingModal;
+

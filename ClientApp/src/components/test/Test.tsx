@@ -7,8 +7,8 @@ export const Test = () => {
 
     useEffect(() => {
         (async () => {
-            await getTestResponse().then(async (resp:TestResponseObject) => {
-            setResponse(resp);
+            await getTestResponse().then(async (resp:TestResponseObject[]) => {
+            setResponse(resp[0]);
             console.log(resp);
           });
         })();
@@ -18,8 +18,8 @@ export const Test = () => {
     <>
         <p>Test Component, here is the response from the backend API: </p>
         <p>Id: {response?.id}</p>
-        <p>Name: {response?.name}</p>
-        <p>Description: {response?.description} </p>
+        <p>content: {response?.content}</p>
+        <p>flagged: {response?.flagged.toString()} </p>
     </>
     );
 

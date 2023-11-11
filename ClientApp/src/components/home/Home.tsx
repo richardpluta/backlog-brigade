@@ -16,6 +16,7 @@ const Home = () =>  {
       return (
         <>
         <p>Welcome {user?.name}!</p>
+        <Test/>
         </>
       );
     }

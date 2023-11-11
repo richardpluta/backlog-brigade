@@ -44,7 +44,7 @@ namespace ServicifyDB.Models
 
         [Column("zip")]
         [Required]
-        public int zip { get; set; }
+        public string zip { get; set; }
 
         [Column("user_rate")]
         [Required]
