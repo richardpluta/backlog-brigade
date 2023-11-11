@@ -43,7 +43,7 @@ export default function Listing(){
 			}
 		},
 	];
-/*
+
 	const [result, setResult] = useState<Listing[]>([]);
 
 	useEffect(() => {
@@ -54,10 +54,10 @@ export default function Listing(){
 		}
 		api();
 	}, []);
-*/
-	//const listings = [<div> Listing 1</div>, <div> Listing 2</div>, <div> Listing 3</div>];
 
-	const loadedListings = DUMMY_LISTINGS.map(listing => {
+	const listings = [<div> Listing 1</div>, <div> Listing 2</div>, <div> Listing 3</div>];
+
+	const loadedListings = result.map(listing => {
 		return(
 			<div className='card'>
 				<div className='cardHeader'>
