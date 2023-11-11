@@ -31,6 +31,7 @@ const Home = () =>  {
       return (
         <>
         <p>Welcome {currentUser?.userName}!</p>
+        <Test/>
         </>
       );
     }
