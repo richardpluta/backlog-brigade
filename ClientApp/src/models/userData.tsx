@@ -1,10 +1,10 @@
 export default interface User{
-    userID: string,
-    userType: string,
+    userID: number,
+    userType: number,
     userName: string,
-    phone: string,
+    phone: number,
     email: string,
-    skillset: string,
+    skillset: number,
     zip: string,
-    userRate: string,
+    userRate: number,
 }

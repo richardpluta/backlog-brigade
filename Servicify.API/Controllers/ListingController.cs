@@ -18,6 +18,7 @@ namespace Servicify.API.Controllers
         [HttpPost]
         public ActionResult<Listing> Create([FromBody] Listing listing)
         {
+
             return Ok(listingService.Create(listing));
         }
 
