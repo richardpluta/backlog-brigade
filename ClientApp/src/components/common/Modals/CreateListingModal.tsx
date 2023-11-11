@@ -6,6 +6,7 @@ import Test from "../../test/Test";
 import { testPostListing } from "../../../services/TestService";
 import listingData from "../../../models/listingData";
 import LoggedInUser from "../../../models/userData";
+import {ListingService} from "../../../services/ListingService";
 
 
 interface ModalType {
@@ -31,6 +32,7 @@ const CreateListingModal = (props: ModalType) => {
 
 	const {getAccessTokenSilently} = useAuth0();
 	const [accessToken, setAccessToken] = useState("");
+
 	useEffect(() => {
 		(async () => {
 		  await getAccessTokenSilently().then(async (token) => {
@@ -38,6 +40,8 @@ const CreateListingModal = (props: ModalType) => {
 		  });
 		})();
 	  }, []);
+
+	const closeModal = useEffect(() => {props.toggle});
 	  
 	const onSubmit = async (event: any) => {
 		event.preventDefault();
@@ -49,24 +53,25 @@ const CreateListingModal = (props: ModalType) => {
 			id: 0,
 			userId: 1,
 			postDate: "2023-11-10T04:41:44.124Z",
-			postContent: "blah",
+			postContent: target.description.value,
 			flagged: false,
-			skillSet: 1,
-			expectedRate: 33,
+			skillSet: Number(target.skills.value),
+			expectedRate: Number(target.rate.value),
 			user: DUMMY_USER
 		}
 
 		//moved call to backend to test service, probably should be broken out into a ListingService with the API calls in it
-		await testPostListing(data)
+		await ListingService(data)
 		.then((res:any) => {
-			console.log(res.json)
+			console.log("Post success");
+			window.location.reload();
 		});
 	}
 
 	
 	return(
+
 		<>
-		<Test/>
 			{props.isOpen && (
 				<div className="overlay">
 					<div className="box">

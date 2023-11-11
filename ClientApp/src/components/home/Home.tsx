@@ -1,5 +1,4 @@
 import React, { Component, useEffect, useState } from "react";
-import Test from "../test/Test";
 import { useAuth0 } from "@auth0/auth0-react";
 import Profile from "../common/Profile";
 import NavMenu from "../common/NavMenu";
@@ -16,7 +15,6 @@ const Home = () =>  {
       return (
         <>
         <p>Welcome {user?.name}!</p>
-        <Test/>
         </>
       );
     }
