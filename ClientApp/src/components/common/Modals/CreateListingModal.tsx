@@ -9,8 +9,7 @@ interface ModalType {
 	toggle: () => void;
 }
 
-const DUMMY_USER = [
-	{
+const DUMMY_USER = {
 		userID: 123,
 		userType: 0,
 		userName: "DummyUserFromModal",
@@ -20,11 +19,11 @@ const DUMMY_USER = [
 		zip: 12345,
 		userRate: 0,
 	}
-]
+
 
 
 export default function CreateListingModal(props: ModalType){
-	const onSubmit = (event: any) => {
+	const onSubmit = async (event: any) => {
 		event.preventDefault();
 
 		const target = event.target;
@@ -40,13 +39,15 @@ export default function CreateListingModal(props: ModalType){
 			user: DUMMY_USER,
 		}
 
-		fetch("api/listing",
+		console.log(data);
+
+		await fetch("api/listing",
 			{
 				method: 'POST',
 				headers: {
-					'Accept': 'application/json, text/plain',
-					'Content-Type': 'application/json;charset=UTF-8'
+					"Content-Type": "application/json"
 				},
+				
 				body: JSON.stringify(data)
 			}
 		).then(res => {
