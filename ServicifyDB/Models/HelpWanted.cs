@@ -8,30 +8,30 @@ namespace ServicifyDB.Models
     {
         [Key]
         [Column("id")]
-        public int Id { get; set; }
+        public int id { get; set; }
 
         [Column("user_id")]
         [Required]
-        public int UserId { get; set; }
+        public int userId { get; set; }
 
         [Column("content")]
         [Required]
-        public string Content { get; set; }
+        public string postContent { get; set; }
 
         [Column("creation_date")]
         [Required]
-        public DateTime CreationDate { get; set; }
+        public DateTime postDate { get; set; }
         
         [NotMapped]
-        public bool Flagged { get; set; }
+        public bool flagged { get; set; }
 
         [Column("skillset")]
-        public Skillset SkillSet { get; set; }
+        public Skillset skillSet { get; set; }
 
         [Column("rate")]
         public int ExpectedRate { get; set; }
 
-        [ForeignKey(nameof(UserId))]
-        public User User { get; set; }
+        [ForeignKey(nameof(userId))]
+        public User user { get; set; }
     }
 }

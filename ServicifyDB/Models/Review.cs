@@ -13,7 +13,7 @@ namespace ServicifyDB.Models
     {
         [Key]
         [Column("id")]
-        public int Id { get; set; }
+        public int id { get; set; }
 
         [Column("post_user")]
         [Required]
@@ -32,7 +32,7 @@ namespace ServicifyDB.Models
         public string postContent { get; set; }
         
         [NotMapped]
-        public bool Flagged { get; set; }
+        public bool flagged { get; set; }
         
         [Column("reply_comment")]
         [Required]

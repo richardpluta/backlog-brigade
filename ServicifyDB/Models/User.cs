@@ -38,7 +38,7 @@ namespace ServicifyDB.Models
 
         [Column("skillset")]
         [Required]
-        public Skillset SkillSet { get; set; }
+        public Skillset skillSet { get; set; }
 
         [Column("zip")]
         public string? Zip { get; set; }

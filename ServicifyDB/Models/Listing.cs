@@ -13,11 +13,11 @@ namespace ServicifyDB.Models
     {
         [Key]
         [Column("id")]
-        public int Id { get; set; }
+        public int id { get; set; }
 
         [Column("user_id")]
         [Required]
-        public int UserId { get; set; }
+        public int userId { get; set; }
 
         [Column("post_date")]
         [Required]
@@ -38,7 +38,7 @@ namespace ServicifyDB.Models
         [Required]
         public int ExpectedRate { get; set; }
 
-        [ForeignKey(nameof(UserId))]
-        public User User { get; set; }
+        [ForeignKey(nameof(userId))]
+        public User user { get; set; }
     }
 }

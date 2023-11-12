@@ -4,8 +4,8 @@ import User from "./userData";
 export default interface helpWanted{
     id: number,
     userId: number,
-    postDate: string,
     postContent: string,
+    postDate: string,
     flagged: boolean,
     skillSet: number,
     expectedRate: number
