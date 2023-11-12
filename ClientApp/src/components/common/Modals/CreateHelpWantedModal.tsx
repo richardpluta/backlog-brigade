@@ -3,7 +3,7 @@ import helpWanted from "../../../models/helpWantedData";
 import "./CreateHelpWantedModal.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import Test from "../../test/Test";
-import { testPostHelpWanted } from "../../../services/TestService";
+
 import helpWantedData from "../../../models/helpWantedData";
 import LoggedInUser from "../../../models/userData";
 import {HelpWantedService} from "../../../services/HelpWantedService";
@@ -21,7 +21,7 @@ const DUMMY_USER:LoggedInUser = {
 		userName: "DummyUserFromModal",
 		phone: 987654321,
 		email: "nam@email.com",
-		skillset: 0,
+		skillSet: 0,
 		zip: '12345',
 		userRate: 0,
 	}

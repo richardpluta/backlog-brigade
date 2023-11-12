@@ -4,7 +4,7 @@ import User from "./userData";
 export default interface listing{
     id: number,
     userId: number,
-    postDate: String,
+    postDate: string,
     postContent: string,
     flagged: boolean,
     skillSet: number,

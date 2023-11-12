@@ -7,6 +7,8 @@ export default interface review{
     reviewedUser: number,
     postDate: string,
     postContent: string,
-    replyComment: boolean,
-    user: User
+    flagged: boolean,
+    replyComment: string,
+    PostUser: User
+    ReviewedUser: User
 }

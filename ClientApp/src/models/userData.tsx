@@ -4,7 +4,7 @@ export default interface User{
     userName: string,
     phone: number,
     email: string,
-    skillset: number,
+    skillSet: number,
     zip: string,
     userRate: number,
 }
