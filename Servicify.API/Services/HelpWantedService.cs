@@ -3,33 +3,33 @@ using ServicifyDB.Repository;
 
 namespace Servicify.API.Services
 {
-    public class ReviewService
+    public class HelpWantedService
     {
-        private readonly IRepository<Review> reviewRepository;
+        private readonly IRepository<HelpWanted> helpWantedRepository;
 
-        public ReviewService(IRepository<Review> reviewRepository)
+        public HelpWantedService(IRepository<HelpWanted> helpWantedRepository)
         {
-            this.reviewRepository = reviewRepository;
+            this.helpWantedRepository = helpWantedRepository;
         }
 
-        public Review Create(Review review)
+        public HelpWanted Create(HelpWanted helpWanted)
         {
-            return reviewRepository.Create(review);
+            return helpWantedRepository.Create(helpWanted);
         }
 
-        public IEnumerable<Review> GetAll()
+        public IEnumerable<HelpWanted> GetAll()
         {
-            return reviewRepository.Get().ToList();
+            return helpWantedRepository.Get().ToList();
         }
 
-        public Review Update(Review review)
+        public HelpWanted Update(HelpWanted helpWanted)
         {
-            return reviewRepository.Update(review);
+            return helpWantedRepository.Update(helpWanted);
         }
 
-        public void Delete(Review review)
+        public void Delete(HelpWanted helpWanted)
         {
-            reviewRepository.Delete(review);
+            helpWantedRepository.Delete(helpWanted);
         }
     }
 }
