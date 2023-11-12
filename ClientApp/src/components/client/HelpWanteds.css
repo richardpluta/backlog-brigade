@@ -1,0 +1,44 @@
+.card{
+	background-color: lightgray;
+	border-radius: 5px;
+	width: 100%;
+	padding: 3%;
+	margin-top: 5%;
+}
+
+.cardHeader{
+	display: flex;
+}
+.cardHeader-element{
+	margin-right: 10%;
+}
+
+.cardContent{
+	background-color: white;
+	border-radius: 5px;
+}
+
+.cardFooter{
+	display: flex;
+}
+
+.cardFooter-element{
+	margin-right: 10%;
+}
+
+.cardFooter-edit{
+	display: flex;
+	border-radius: 5px;
+}
+
+.cardFooter-delete{
+	display: flex;
+	border-radius: 5px;
+	background-color: lightcoral;
+}
+
+.cardFooter-flagIcon{
+	display: flex;
+	width: 5%;
+	height: 5%;
+}
