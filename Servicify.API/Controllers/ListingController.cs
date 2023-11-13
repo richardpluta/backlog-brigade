@@ -29,7 +29,7 @@ namespace Servicify.API.Controllers
         }
 
         [HttpPut]
-        public ActionResult<HelpWanted> Update(Listing listing)
+        public ActionResult<Listing> Update(Listing listing)
         {
             return Ok(listingService.Update(listing));
         }

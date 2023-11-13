@@ -34,6 +34,8 @@ namespace Servicify.API
 
             builder.Services.AddDbContext<ServicifyDataContext>(options => options.UseNpgsql(dbBuilder.ConnectionString));
 
+            builder.Services.AddTransient<HelpWantedService>();
+            builder.Services.AddTransient<ReviewService>();
             builder.Services.AddTransient<ListingService>();
             builder.Services.AddTransient<TestService>();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
