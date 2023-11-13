@@ -41,7 +41,6 @@ const CreateListingModal = (props: ModalType) => {
 		})();
 	  }, []);
 
-	const closeModal = useEffect(() => {props.toggle});
 	  
 	const onSubmit = async (event: any) => {
 		event.preventDefault();

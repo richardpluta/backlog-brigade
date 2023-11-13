@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Listing from '../../models/listingData'
 import flag from '../../../public/assets/red-flag-icon.png'
+import deleteListing from './deleteListing';
 
 import "./Listings.css"
 
@@ -55,6 +56,11 @@ export default function Listing(){
 		api();
 	}, []);
 
+	function prepDeleteListings(event: MouseEvent){
+		event.preventDefault();
+		deleteListing(loadedListings);
+	}
+
 	const listings = [<div> Listing 1</div>, <div> Listing 2</div>, <div> Listing 3</div>];
 
 	const loadedListings = result.map(listing => {
@@ -74,7 +80,7 @@ export default function Listing(){
 					<p className='cardFooter-element'>{listing.flagged}</p>
 					<img src={flag} alt="Flagged" className='cardFooter-flagIcon'/>
 					<button className='cardFooter-edit'>Edit</button>
-					<button className='cardFooter-delete'>Delete</button>
+					<button className='cardFooter-delete' onClick={prepDeleteListings}>Delete</button>
 				</div>
 			</div>
 		);
