@@ -56,10 +56,13 @@ export default function Listing(){
 		api();
 	}, []);
 
-	function deleteListings(event: React.MouseEvent<HTMLButtonElement>){
+	async function deleteListings(event: React.MouseEvent<HTMLButtonElement>){
 		event.preventDefault();
 		const deleteId = event.currentTarget.parentElement?.parentElement?.childNodes[0].childNodes[0].childNodes[0].nodeValue;
-
+		await ListingDeleteService(Number(deleteId))
+		.then((res:any) => {
+			//window.location.reload()
+		});
 
 	}
 

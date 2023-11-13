@@ -4,7 +4,10 @@ export const ListingDeleteService = async (id:number) => {
     
     const response = await fetch('api/listing/' + id,
     {
-       method: 'DELETE'
+       	method: 'DELETE',
+	   	headers: {
+        	"Content-Type": "application/json"
+      	},
     }
   );
   return response;
