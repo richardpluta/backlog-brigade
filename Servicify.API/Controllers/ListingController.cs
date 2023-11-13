@@ -34,10 +34,10 @@ namespace Servicify.API.Controllers
             return Ok(listingService.Update(listing));
         }
 
-        [HttpDelete]
-        public ActionResult Delete(Listing listing)
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
         {
-            listingService.Delete(listing);
+            listingService.Delete(id);
             return  Ok();
         }
     }

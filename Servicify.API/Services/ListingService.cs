@@ -27,8 +27,10 @@ namespace Servicify.API.Services
             return listingRepository.Update(listing);
         }
 
-        public void Delete(Listing listing)
+        public void Delete(int id)
         {
+            Listing listing = listingRepository.Get().Where(x => x.Id == id).First();
+
             listingRepository.Delete(listing);
         }
     }
