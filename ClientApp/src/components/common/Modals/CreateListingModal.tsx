@@ -6,7 +6,7 @@ import Test from "../../test/Test";
 import { testPostListing } from "../../../services/TestService";
 import listingData from "../../../models/listingData";
 import LoggedInUser from "../../../models/userData";
-import {ListingService} from "../../../services/ListingService";
+import {ListingPostService} from "../../../services/ListingPostService";
 
 
 interface ModalType {
@@ -60,7 +60,7 @@ const CreateListingModal = (props: ModalType) => {
 		}
 
 		//moved call to backend to test service, probably should be broken out into a ListingService with the API calls in it
-		await ListingService(data)
+		await ListingPostService(data)
 		.then((res:any) => {
 			console.log("Post success");
 			window.location.reload();
