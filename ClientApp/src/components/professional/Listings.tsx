@@ -61,7 +61,7 @@ export default function Listing(){
 		const deleteId = event.currentTarget.parentElement?.parentElement?.childNodes[0].childNodes[0].childNodes[0].nodeValue;
 		await ListingDeleteService(Number(deleteId))
 		.then((res:any) => {
-			//window.location.reload()
+			window.location.reload()
 		});
 
 	}
