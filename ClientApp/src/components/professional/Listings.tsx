@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Listing from '../../models/listingData'
 import flag from '../../../public/assets/red-flag-icon.png'
-import deleteListing from './deleteListing';
+import {ListingDeleteService} from "../../services/ListingDeleteService";
 
 import "./Listings.css"
 
@@ -56,9 +56,11 @@ export default function Listing(){
 		api();
 	}, []);
 
-	function prepDeleteListings(event: MouseEvent){
+	function deleteListings(event: React.MouseEvent<HTMLButtonElement>){
 		event.preventDefault();
-		deleteListing(loadedListings);
+		const deleteId = event.currentTarget.parentElement?.parentElement?.childNodes[0].childNodes[0].childNodes[0].nodeValue;
+
+
 	}
 
 	const listings = [<div> Listing 1</div>, <div> Listing 2</div>, <div> Listing 3</div>];
@@ -80,7 +82,7 @@ export default function Listing(){
 					<p className='cardFooter-element'>{listing.flagged}</p>
 					<img src={flag} alt="Flagged" className='cardFooter-flagIcon'/>
 					<button className='cardFooter-edit'>Edit</button>
-					<button className='cardFooter-delete' onClick={prepDeleteListings}>Delete</button>
+					<button className='cardFooter-delete' onClick={deleteListings}>Delete</button>
 				</div>
 			</div>
 		);
