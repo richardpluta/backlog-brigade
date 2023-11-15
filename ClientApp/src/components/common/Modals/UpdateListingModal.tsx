@@ -9,7 +9,7 @@ interface ModalType {
 	children?: ReactNode;
 	isOpen: Boolean;
 	toggle: () => void;
-    data: listing;
+    data?: listing;
 }
 
 const DUMMY_USER:LoggedInUser = {
@@ -40,8 +40,9 @@ const UpdateListingModal = (props: ModalType) => {
 	  
 	const onSubmit = async (event: any) => {
 		event.preventDefault();
+        const newRate = event.currentTarget[1];
 
-		await ListingPutService(data).then(
+		await ListingPutService(props.data).then(
 			(res:any) => {
 				console.log("Put Complete");
 				//window.location.reload();
@@ -66,15 +67,15 @@ const UpdateListingModal = (props: ModalType) => {
 							</div>
 							<div className="field">
 								<label htmlFor="rate">Rate:</label>
-								<input id="rate" />
+								<input id="rate" value={props.data?.expectedRate}/>
 							</div>
 							<div className="field">
 								<label htmlFor="skills">Relevant Skills:</label>
-								<input id="skills" />
+								<input id="skills" value={props.data?.skillSet}/>
 							</div>
 							<div className="field">
 								<label htmlFor="description">Description:</label>
-								<textarea name="description" id="description"/>
+								<textarea name="description" id="description" defaultValue={props.data?.postContent}/>
 							</div>
 							<div>
 								<button>Create</button>
