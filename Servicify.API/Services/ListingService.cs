@@ -29,7 +29,7 @@ namespace Servicify.API.Services
 
         public void Delete(int id)
         {
-            Listing listing = listingRepository.Get().Where(x => x.Id == id).First();
+            Listing listing = listingRepository.Get().Where(x => x.id == id).First();
 
             listingRepository.Delete(listing);
         }

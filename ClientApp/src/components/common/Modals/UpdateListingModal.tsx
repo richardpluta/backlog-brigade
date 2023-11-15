@@ -1,16 +1,15 @@
 import React, { ReactNode, useState, MouseEvent, FormEvent, useEffect } from "react";
 import listing from "../../../models/listingData";
-import "./CreateListingModal.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoggedInUser from "../../../models/userData";
-import {ListingPostService} from "../../../services/ListingPostService";
-import {ListingService} from "../../../services/ListingService";
-
+import {ListingPutService} from "../../../services/ListingPutService";
+import "./UpdateListingModal.css";
 
 interface ModalType {
 	children?: ReactNode;
 	isOpen: Boolean;
 	toggle: () => void;
+    data: listing;
 }
 
 const DUMMY_USER:LoggedInUser = {
@@ -19,14 +18,12 @@ const DUMMY_USER:LoggedInUser = {
 		userName: "DummyUserFromModal",
 		phone: 987654321,
 		email: "nam@email.com",
-		skillSet: 0,
+		skillset: 0,
 		zip: '12345',
 		userRate: 0,
-	}
+}
 
-
-
-const CreateListingModal = (props: ModalType) => {
+const UpdateListingModal = (props: ModalType) => {
 
 	const {getAccessTokenSilently} = useAuth0();
 	const [accessToken, setAccessToken] = useState("");
@@ -44,26 +41,14 @@ const CreateListingModal = (props: ModalType) => {
 	const onSubmit = async (event: any) => {
 		event.preventDefault();
 
-		const target = event.target;
+		await ListingPutService(data).then(
+			(res:any) => {
+				console.log("Put Complete");
+				//window.location.reload();
+			}	
+		)
 
-		//updated this to constant data just for testing purposes so i could rule out the form being part of the issue
-		const data:listing = {
-			id: 0,
-			userId: 1,
-			postDate: "2023-11-10T04:41:44.124Z",
-			postContent: target.description.value,
-			flagged: false,
-			skillSet: Number(target.skills.value),
-			expectedRate: Number(target.rate.value),
-			user: DUMMY_USER
-		}
-
-		//moved call to backend to test service, probably should be broken out into a ListingService with the API calls in it
-		await ListingService(data)
-		.then((res:any) => {
-			console.log("Post success");
-			window.location.reload();
-		});
+        
 	}
 
 	
@@ -73,7 +58,7 @@ const CreateListingModal = (props: ModalType) => {
 			{props.isOpen && (
 				<div className="overlay">
 					<div className="box">
-						<form className="create-listing-form" onSubmit={onSubmit}>
+						<form className="update-listing-form" onSubmit={onSubmit}>
 							<h1>Please Enter Listing Information:</h1>
 							<div className="field">
 								<label htmlFor="location">Location:</label>
@@ -101,7 +86,7 @@ const CreateListingModal = (props: ModalType) => {
 			)}
 		</>
 	)
-			}
+}
 
-export default CreateListingModal;
+export default UpdateListingModal;
 

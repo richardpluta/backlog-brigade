@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Listing from '../../models/listingData'
 import flag from '../../../public/assets/red-flag-icon.png'
 import {ListingDeleteService} from "../../services/ListingDeleteService";
+import { ListingPutService } from '../../services/ListingPutService';
 
 import "./Listings.css"
+import listing from '../../models/listingData';
+import UpdateListingModal from '../common/Modals/UpdateListingModal';
+import usePutListingModal from '../common/Hooks/usePutListingModal';
 
 export default function Listing(){
 
@@ -46,6 +50,7 @@ export default function Listing(){
 	];
 
 	const [result, setResult] = useState<Listing[]>([]);
+	const [listingData, setListingData] = useState<listing>();
 
 	useEffect(() => {
 		const api = async () => {
@@ -66,9 +71,19 @@ export default function Listing(){
 
 	}
 
-	const listings = [<div> Listing 1</div>, <div> Listing 2</div>, <div> Listing 3</div>];
+	async function openEditListingModal(event: React.MouseEvent<HTMLButtonElement>, listing:listing){
+		
+		event.preventDefault();
+		setListingData(listing);
+		toggle();
+	}
+
+	//const listings = [<div> Listing 1</div>, <div> Listing 2</div>, <div> Listing 3</div>];
+
+	const {isOpen, toggle} = usePutListingModal();
 
 	const loadedListings = result.map(listing => {
+
 		return(
 			<div className='card'>
 				<div className='cardHeader'>
@@ -84,7 +99,7 @@ export default function Listing(){
 				<div className='cardFooter'>
 					<p className='cardFooter-element'>{listing.flagged}</p>
 					<img src={flag} alt="Flagged" className='cardFooter-flagIcon'/>
-					<button className='cardFooter-edit'>Edit</button>
+					<button className='cardFooter-edit' onClick={(e) => {openEditListingModal(e, listing)}}>Edit</button>
 					<button className='cardFooter-delete' onClick={deleteListings}>Delete</button>
 				</div>
 			</div>
@@ -93,6 +108,9 @@ export default function Listing(){
 
 	return (
 	  	<>
+			<div className='updateListingModal'>
+				<UpdateListingModal isOpen={isOpen} toggle={toggle} data={listingData}></UpdateListingModal>
+			</div>
 			{loadedListings}
 		</>
 	)
