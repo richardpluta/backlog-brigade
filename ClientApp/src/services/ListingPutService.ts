@@ -6,6 +6,13 @@ export const ListingPutService = async (data:listing|undefined) => {
     
     const body = JSON.stringify(data);
     console.log(body);
-    const response = null;
+    const response = await fetch('api/listing',
+    {
+		method: 'PUT',
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body 
+    });
   return response;
 }
