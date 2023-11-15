@@ -11,7 +11,7 @@ import usePutListingModal from '../common/Hooks/usePutListingModal';
 
 export default function Listing(){
 
-	
+	/*
 	const DUMMY_LISTINGS = [
 		{
 			id: "user1",
@@ -48,7 +48,7 @@ export default function Listing(){
 			}
 		},
 	];
-
+	*/
 	const [result, setResult] = useState<Listing[]>([]);
 	const [listingData, setListingData] = useState<listing>();
 

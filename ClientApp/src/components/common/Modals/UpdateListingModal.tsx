@@ -36,23 +36,28 @@ const UpdateListingModal = (props: ModalType) => {
 		})();
 	  }, []);
 
-	//const closeModal = useEffect(() => {props.toggle});
 	  
 	const onSubmit = async (event: any) => {
 		event.preventDefault();
-        const newRate = event.currentTarget[1];
+        const newRate = event.currentTarget[1].value;
+		const newSkills = event.currentTarget[2].value;
+		const newDesc = event.currentTarget[3].value;
 
-		await ListingPutService(props.data).then(
+		const newListing = props.data;
+		newListing!.expectedRate = Number(newRate);
+		newListing!.skillSet = Number(newSkills);
+		newListing!.postContent = newDesc;
+		newListing!.user = DUMMY_USER;
+		newListing!.postDate = "2023-11-10T04:41:44.124Z";
+
+
+		await ListingPutService(newListing).then(
 			(res:any) => {
-				console.log("Put Complete");
 				//window.location.reload();
 			}	
 		)
-
-        
 	}
 
-	
 	return(
 
 		<>
@@ -67,11 +72,11 @@ const UpdateListingModal = (props: ModalType) => {
 							</div>
 							<div className="field">
 								<label htmlFor="rate">Rate:</label>
-								<input id="rate" value={props.data?.expectedRate}/>
+								<input id="rate" defaultValue={props.data?.expectedRate}/>
 							</div>
 							<div className="field">
 								<label htmlFor="skills">Relevant Skills:</label>
-								<input id="skills" value={props.data?.skillSet}/>
+								<input id="skills" defaultValue={props.data?.skillSet}/>
 							</div>
 							<div className="field">
 								<label htmlFor="description">Description:</label>
