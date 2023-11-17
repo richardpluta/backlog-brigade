@@ -20,7 +20,7 @@ namespace ServicifyDB.Models
 
         [Column("creation_date")]
         [Required]
-        public DateTime creationDate { get; set; }
+        public DateTime CreationDate { get; set; }
         
         [NotMapped]
         public bool Flagged { get; set; }
@@ -29,7 +29,7 @@ namespace ServicifyDB.Models
         public Skillset SkillSet { get; set; }
 
         [Column("rate")]
-        public int expectedRate { get; set; }
+        public int ExpectedRate { get; set; }
 
         [ForeignKey(nameof(UserId))]
         public User User { get; set; }
