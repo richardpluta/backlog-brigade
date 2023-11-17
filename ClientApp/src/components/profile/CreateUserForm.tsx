@@ -29,7 +29,6 @@ const CreateUserForm:React.FC = () => {
       }, []);
     
     const CreateUser = async (ev: React.FormEvent<HTMLFormElement>) => {
-      ev.preventDefault();
       let createUserRequest: LoggedInUser  = editableParamProps;
       console.log(createUserRequest);
       await CreateUserAsync(accessToken, createUserRequest).then((response:LoggedInUser) => {
@@ -125,6 +124,26 @@ const CreateUserForm:React.FC = () => {
               </FormGroup>
             </Row>
             <Row>
+          <FormGroup>
+            <Col md={4}>
+              <Label for="zip">Rate ($USD)</Label>
+              <Input
+                id="izip"
+                name="zip"
+                type="number"
+                value={editableParamProps?.userRate}
+                onChange = {(e) => 
+                  setEditableParamProps((editableParamProps) => ({
+                  ...editableParamProps,
+                  ...{userRate: e.target.valueAsNumber}
+                })) 
+              }
+              >
+              </Input>
+            </Col>
+          </FormGroup>
+        </Row>
+            <Row>
               <Label for="usertype">Are You A...</Label>
               <Col md={4}>
               <FormGroup
@@ -172,35 +191,36 @@ const CreateUserForm:React.FC = () => {
                 <Row>
                     <Label for="skillset">What is your Skillset?</Label>
                 </Row>
-              <Row>
-                <Col>
-              {
-                Object.values(Skillset).map((x,i) => {
-                    return (
-                      <FormGroup check>
-                        <Input
-                          type="radio"
-                          key={i}
-                          name="skillset"
-                    onClick = {(e) => 
-                      setEditableParamProps((editableParamProps) => ({
-                      ...editableParamProps,
-                      ...{skillSet: i }
-                    })) 
-                  }
-                  />
-                  <Label check>
-                    {x}
-                  </Label>
-              </FormGroup>
-                    )
-                  })
-                }
-                </Col>
-              </Row>
+                <Row>
+            <Col>
+          {
+            (Object.values(Skillset).filter((v) => isNaN(Number(v)), ) as (keyof typeof Skillset)[]).map((x, i) => {
+                return (
+                  <FormGroup check>
+                    <Input
+                      type="radio"
+                      key={i}
+                      checked = {editableParamProps.skillSet == Skillset[x as keyof typeof Skillset]}
+                      name="skillset"
+                onClick = {(e) => 
+                  setEditableParamProps((editableParamProps) => ({
+                  ...editableParamProps,
+                  ...{skillSet: Skillset[x as keyof typeof Skillset] }
+                })) 
+              }
+              />
+              <Label check>
+                {x}
+              </Label>
+          </FormGroup>
+                )
+              })
+            }
+            </Col>
+          </Row>
               </>
               }
-              <Row>
+              <Row style={{paddingTop:"10px"}}>
                 <Col md={2}>
                 <Button color="primary" type="submit">Submit</Button>
                 </Col>
