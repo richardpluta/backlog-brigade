@@ -35,7 +35,7 @@ namespace Servicify.API.Controllers
         }
 
         [HttpPut]
-        public ActionResult<User> Update(User user)
+        public ActionResult<User> Update( [FromBody] User user)
         {
             return Ok(this.userService.Update(user));
         }

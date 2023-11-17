@@ -10,12 +10,12 @@ const CreateUserForm:React.FC = () => {
     const [accessToken, setAccessToken] = useState("");
 
     const [editableParamProps, setEditableParamProps] = useState<LoggedInUser>({
-        userId: "",
+        id: 0,
         userType: undefined,
         userName: "",
-        phone: undefined,
+        phoneNumber: undefined,
         email: user?.email == undefined ? "" : user.email,
-        skillset: undefined,
+        skillSet: undefined,
         zip: "",
         userRate: undefined
     });
@@ -92,11 +92,11 @@ const CreateUserForm:React.FC = () => {
                     id="iphone"
                     name="phone"
                     type="number"
-                    value={editableParamProps?.phone}
+                    value={editableParamProps?.phoneNumber}
                     onChange={(e) =>
                       setEditableParamProps((editableParamProps) => ({
                         ...editableParamProps,
-                        ...{ phone: e.target.valueAsNumber }
+                        ...{ phoneNumber: e.target.value }
                   }))
                   }
                   >
@@ -185,7 +185,7 @@ const CreateUserForm:React.FC = () => {
                     onClick = {(e) => 
                       setEditableParamProps((editableParamProps) => ({
                       ...editableParamProps,
-                      ...{skillset: i }
+                      ...{skillSet: i }
                     })) 
                   }
                   />

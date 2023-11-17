@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { LoggedInUser, Skillset, UserType } from "../../models/user/LoggedInUser";
 import { GetCurrentUser, UpdateUserAsync } from "../../services/UserService";
 import { Button, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
+import CurrencyInput from 'react-currency-input-field';
 
 
 const UpdateUserForm = () =>  {
@@ -11,12 +12,12 @@ const UpdateUserForm = () =>  {
   const [accessToken, setAccessToken] = useState("");
 
   const [editableParamProps, setEditableParamProps] = useState<LoggedInUser>({
-    userId: "",
+    id: 0,
     userType: undefined,
     userName: "",
-    phone: undefined,
+    phoneNumber: undefined,
     email: user?.email == undefined ? "" : user.email,
-    skillset: undefined,
+    skillSet: undefined,
     zip: "",
     userRate: undefined
 });
@@ -28,12 +29,12 @@ const UpdateUserForm = () =>  {
         await GetCurrentUser(token, user?.email).then(async (currentUser: LoggedInUser) => {
           console.log(currentUser);
           setCurrentUser(currentUser);
-          setEditableParamProps({userId:currentUser.userId,
+          setEditableParamProps({id:currentUser.id,
             userType: currentUser.userType,
             userName: currentUser.userName,
-            phone: currentUser.phone,
+            phoneNumber: currentUser.phoneNumber,
             email: currentUser.email,
-            skillset: currentUser.skillset,
+            skillSet: currentUser.skillSet,
             zip: currentUser.zip,
             userRate: currentUser.userRate
         });
@@ -56,7 +57,7 @@ const UpdateUserForm = () =>  {
       <Form onSubmit = {SaveUser}>
         <Row>
           <Col>
-            <h5>Create User Profile</h5>
+            <h5>User Profile</h5>
           </Col>
         </Row>
         <Row>
@@ -107,15 +108,16 @@ const UpdateUserForm = () =>  {
                 id="iphone"
                 name="phone"
                 type="number"
-                value={editableParamProps?.phone}
+                value={editableParamProps?.phoneNumber}
                 onChange={(e) =>
                   setEditableParamProps((editableParamProps) => ({
                     ...editableParamProps,
-                    ...{ phone: e.target.valueAsNumber }
+                    ...{ phoneNumber: e.target.value }
               }))
               }
               >
               </Input>
+
             </Col>
           </FormGroup>
         </Row>
@@ -140,6 +142,26 @@ const UpdateUserForm = () =>  {
           </FormGroup>
         </Row>
         <Row>
+          <FormGroup>
+            <Col md={4}>
+              <Label for="zip">Rate ($USD)</Label>
+              <Input
+                id="izip"
+                name="zip"
+                type="number"
+                value={editableParamProps?.userRate}
+                onChange = {(e) => 
+                  setEditableParamProps((editableParamProps) => ({
+                  ...editableParamProps,
+                  ...{userRate: e.target.valueAsNumber}
+                })) 
+              }
+              >
+              </Input>
+            </Col>
+          </FormGroup>
+        </Row>
+        <Row>
           <Label for="usertype">Are You A...</Label>
           <Col md={4}>
           <FormGroup
@@ -148,6 +170,8 @@ const UpdateUserForm = () =>  {
               <Input
                 type="radio"
                 name="usertype"
+                key="client"
+                checked = {editableParamProps.userType == 1}
                 onClick = {(e) => 
                   setEditableParamProps((editableParamProps) => ({
                   ...editableParamProps,
@@ -165,7 +189,9 @@ const UpdateUserForm = () =>  {
               <Input
                 type="radio"
                 name="usertype"
+                key="professional"
                 value={editableParamProps?.userType}
+                checked = {editableParamProps.userType == 2}
                 onClick = {(e) => 
                   setEditableParamProps((editableParamProps) => ({
                   ...editableParamProps,
@@ -187,17 +213,18 @@ const UpdateUserForm = () =>  {
           <Row>
             <Col>
           {
-            Object.values(Skillset).map((x,i) => {
+            (Object.values(Skillset).filter((v) => isNaN(Number(v)), ) as (keyof typeof Skillset)[]).map((x, i) => {
                 return (
                   <FormGroup check>
                     <Input
                       type="radio"
                       key={i}
+                      checked = {editableParamProps.skillSet == Skillset[x as keyof typeof Skillset]}
                       name="skillset"
                 onClick = {(e) => 
                   setEditableParamProps((editableParamProps) => ({
                   ...editableParamProps,
-                  ...{skillset: i }
+                  ...{skillSet: Skillset[x as keyof typeof Skillset] }
                 })) 
               }
               />
