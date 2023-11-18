@@ -1,5 +1,9 @@
 import React from "react";
 import { Component } from "react";
+import AdminUserView from "./AdminUserView";
+import AdminListingsView from "./AdminListingsView";
+import AdminHelpWantedsView from "./AdminHelpWantedsView";
+import AdminReviewsView from "./AdminReviewsView";
 
 
 class AdminMain extends Component {
@@ -7,7 +11,10 @@ class AdminMain extends Component {
     render() {
       return (
        <>
-       <p>This is the admin's landing page!</p>
+       <AdminUserView/>
+       <AdminListingsView/>
+       <AdminHelpWantedsView/>
+       <AdminReviewsView/>
        </>
       );
     }
