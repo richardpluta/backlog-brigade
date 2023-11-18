@@ -4,7 +4,8 @@ import AdminUserView from "./AdminUserView";
 import AdminListingsView from "./AdminListingsView";
 import AdminHelpWantedsView from "./AdminHelpWantedsView";
 import AdminReviewsView from "./AdminReviewsView";
-import { Card, CardBody, CardTitle, Col, Row } from "reactstrap";
+import { Card, CardBody, CardHeader, CardTitle, Col, Row } from "reactstrap";
+import AdminStatsBar from "./AdminStatsBar";
 
 
 class AdminMain extends Component {
@@ -12,6 +13,14 @@ class AdminMain extends Component {
     render() {
       return (
        <>
+       <Card
+          inverse
+          style={{backgroundColor:"#0084AE", borderColor:"#00546E", borderWidth:"2px"}}
+          >
+          <CardTitle><h5>Current Stats</h5></CardTitle>
+          <AdminStatsBar/>
+      </Card>
+
         <Row>
           <Col>
             <Card
