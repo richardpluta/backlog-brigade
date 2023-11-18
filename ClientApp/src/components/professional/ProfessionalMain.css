@@ -1,0 +1,15 @@
+.professional-container{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+
+}
+.create-listing-button{
+	background-color: lightgreen;
+	width: 40%;
+	border-radius: 5px;
+}
+.listings{
+	width: 40%;
+}
