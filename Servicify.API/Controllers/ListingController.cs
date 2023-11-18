@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServicifyDB.Models;
 using Servicify.API.Services;
+using Servicify.Data.Models;
 
 namespace Servicify.API.Controllers
 {
@@ -22,7 +23,7 @@ namespace Servicify.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Listing>> GetAll()
+        public ActionResult<List<UserListing>> GetAll()
         {
             return Ok(listingService.GetAll());
         }
@@ -34,10 +35,10 @@ namespace Servicify.API.Controllers
         }
 
         [HttpDelete]
-        public ActionResult Delete(Listing listing)
+        public ActionResult Delete([FromBody] Listing listing)
         {
             listingService.Delete(listing);
-            return  Ok();
+            return  Ok("Deleted");
         }
     }
 }

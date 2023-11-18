@@ -54,3 +54,19 @@ export const UpdateUserAsync = async (token:string, updateUserRequest:LoggedInUs
         body
     }).then((response) => response.json());
 }
+
+export const DeleteUserAsync = async(token:string, user:LoggedInUser) => {
+    console.log("In Delete User");
+    const body = JSON.stringify(user);
+    console.log(body)
+    return await fetch(`api/user`, {
+        method: "DELETE",
+        headers : {
+            Authorization: `Bearer: ${token}`,
+            "Content-Type": "application/json"
+        },
+        body
+    })
+    .then()
+    .catch((err) => console.log(err));
+}

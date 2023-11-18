@@ -27,7 +27,7 @@ namespace ServicifyDB.Models
         [Required]
         public string Content { get; set; }
 
-        [NotMapped]
+        [Column("flagged")]
         public bool Flagged { get; set; }
 
         [Column("skill_set")]
@@ -38,7 +38,7 @@ namespace ServicifyDB.Models
         [Required]
         public int ExpectedRate { get; set; }
 
-        [ForeignKey(nameof(UserId))]
-        public User User { get; set; }
+       // [ForeignKey(nameof(UserId))]
+     //   public User? User { get; set; }
     }
 }

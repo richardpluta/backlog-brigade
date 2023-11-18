@@ -22,7 +22,7 @@ namespace ServicifyDB.Models
         [Required]
         public DateTime CreationDate { get; set; }
         
-        [NotMapped]
+        [Column("flagged")]
         public bool Flagged { get; set; }
 
         [Column("skillset")]

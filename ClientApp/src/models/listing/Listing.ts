@@ -8,5 +8,9 @@ export interface Listing {
     flagged:      boolean;
     skillSet:     number;
     expectedRate: number;
-    user?:        LoggedInUser;
+}
+
+export interface UserListing {
+    listing : Listing;
+    user?: LoggedInUser;
 }

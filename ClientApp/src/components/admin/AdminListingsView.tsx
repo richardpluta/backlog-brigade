@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { GetCurrentUser } from "../../services/UserService";
 import { LoggedInUser } from "../../models/user/LoggedInUser";
 import { useAuth0 } from "@auth0/auth0-react";
-import { GetAllListings } from "../../services/ListingService";
-import { Listing } from "../../models/listing/Listing";
-import { Button, Card, CardBody, CardColumns, CardSubtitle, CardText, CardTitle, Row, Table } from "reactstrap";
+import { DeleteListingAsync, GetAllListings } from "../../services/ListingService";
+import { Listing, UserListing } from "../../models/listing/Listing";
+import { Button, Card, CardBody, CardColumns, CardSubtitle, CardText, CardTitle, Col, Row, Table } from "reactstrap";
 import {format} from 'date-fns';
 
 export const AdminListingsView = () => {
@@ -12,7 +12,7 @@ export const AdminListingsView = () => {
   const [currentUser, setCurrentUser] = useState<LoggedInUser>();
   const [accessToken, setAccessToken] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [listingList, setListingList] = useState<Listing[]>();
+  const [listingList, setListingList] = useState<UserListing[]>();
 
 
   useEffect(() => {
@@ -22,15 +22,24 @@ export const AdminListingsView = () => {
         await GetCurrentUser(token, user?.email).then(async (currentUser: LoggedInUser) => {
           setCurrentUser(currentUser);
         });
-        await GetAllListings(token).then(async (listings: Listing[]) => {
-            //TEMPORARY just to test the flagged color stuff
-            listings[0].flagged = true;
-            listings[3].flagged = true;
+        await GetAllListings(token).then(async (listings: UserListing[]) => {
             setListingList(listings);
+            console.log(listings);
           });
       }).finally(() => setIsLoading(false));
     })();
   }, []);
+
+  const DeleteByListingId = async (listing : Listing) =>
+  {
+    const toDelete:Listing = listing;
+    await DeleteListingAsync(accessToken, toDelete).then(async () => {
+        await GetAllListings(accessToken).then(async (listings: UserListing[]) => {
+            setListingList(listings);
+          });
+        
+      });
+  }
 
 
     if(isLoading)
@@ -45,32 +54,56 @@ export const AdminListingsView = () => {
     {
     return(
     <>
-         
          {
             listingList?.map((x,i) => { return(
-              <CardColumns>
+              
                 <Card
-                    color={x.flagged ? "warning" : "light"}
+                    color={x.listing.flagged ? "warning" : "light"}
                     body
+                    key = {i}
+                    style = {{border: "gray solid 1px"}}
                 >
 
                 <CardBody>
                         <CardTitle tag="h6">
-                            {x.content}
+                            {x.listing.content}
                         </CardTitle>
-                        <CardText>
-                            <p>Date: {format(new Date(x.creationDate), 'MM-dd-yy')}</p>
-                            <p>Rate: ${x.expectedRate.toString()}</p>
-                        </CardText>
+                            <Row>
+                                <Col md={3}>
+                                    <b>Poster</b> 
+                                </Col>
+                                <Col>
+                                    {x.user?.userName == undefined ? "--" : x.user?.userName}
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={3}>
+                                    <b>Date</b> 
+                                </Col>
+                                <Col>
+                                    {format(new Date(x.listing.creationDate), 'MM-dd-yy')} 
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={3}>
+                                    <b>Rate</b> 
+                                </Col>
+                                <Col>
+                                    ${x.listing.expectedRate.toString()}
+                                </Col>
+                            </Row> 
                         <Button
-                            color="danger">
+                            onClick={() => DeleteByListingId(x.listing)}
+                            color="danger"
+                            >
                             Remove
                         </Button>
                 </CardBody>
                 </Card>
-             </CardColumns> 
+             
             );
-            })
+            }
+            )
           }
     </>
     );

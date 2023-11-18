@@ -31,7 +31,7 @@ namespace ServicifyDB.Models
         [Required]
         public string postContent { get; set; }
         
-        [NotMapped]
+        [Column("flagged")]
         public bool Flagged { get; set; }
         
         [Column("reply_comment")]
