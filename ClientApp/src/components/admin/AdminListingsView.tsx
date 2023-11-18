@@ -4,7 +4,7 @@ import { LoggedInUser } from "../../models/user/LoggedInUser";
 import { useAuth0 } from "@auth0/auth0-react";
 import { DeleteListingAsync, GetAllListings } from "../../services/ListingService";
 import { Listing, UserListing } from "../../models/listing/Listing";
-import { Button, Card, CardBody, CardColumns, CardSubtitle, CardText, CardTitle, Col, Row, Table } from "reactstrap";
+import { Accordion, AccordionBody, AccordionHeader, Button, Card, CardBody, CardColumns, CardSubtitle, CardText, CardTitle, Col, Row, Table, UncontrolledAccordion } from "reactstrap";
 import {format} from 'date-fns';
 
 export const AdminListingsView = () => {
@@ -12,8 +12,8 @@ export const AdminListingsView = () => {
   const [currentUser, setCurrentUser] = useState<LoggedInUser>();
   const [accessToken, setAccessToken] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [flaggedList, setFlaggedList] = useState<UserListing[]>();
   const [listingList, setListingList] = useState<UserListing[]>();
-
 
   useEffect(() => {
     (async () => {
@@ -23,8 +23,8 @@ export const AdminListingsView = () => {
           setCurrentUser(currentUser);
         });
         await GetAllListings(token).then(async (listings: UserListing[]) => {
-            setListingList(listings);
-            console.log(listings);
+            setFlaggedList(listings.filter(x => x.listing.flagged))
+            setListingList(listings.filter(x => !x.listing.flagged));
           });
       }).finally(() => setIsLoading(false));
     })();
@@ -54,14 +54,17 @@ export const AdminListingsView = () => {
     {
     return(
     <>
-         {
-            listingList?.map((x,i) => { return(
+    <UncontrolledAccordion flush defaultOpen={'1'}>
+            <AccordionHeader className="border rounded" targetId="1"><h6>Flagged Listings</h6></AccordionHeader>
+            <AccordionBody accordionId="1">
+     {
+            flaggedList?.map((x,i) => { return(
               
                 <Card
                     color={x.listing.flagged ? "warning" : "light"}
                     body
                     key = {i}
-                    style = {{border: "gray solid 1px"}}
+                    style = {{border: "gray solid 1px", margin:"5px"}}
                 >
 
                 <CardBody>
@@ -105,6 +108,63 @@ export const AdminListingsView = () => {
             }
             )
           }
+          </AccordionBody>
+          </UncontrolledAccordion>
+          <UncontrolledAccordion flush>
+            <AccordionHeader className="border rounded" targetId="1" ><h6>Other Listings</h6></AccordionHeader>
+            <AccordionBody accordionId="1">
+         {
+            listingList?.map((x,i) => { return(
+                <Card
+                    color={x.listing.flagged ? "warning" : "light"}
+                    body
+                    key = {i}
+                    style = {{border: "gray solid 1px", margin:"5px"}}
+                >
+
+                <CardBody>
+                        <CardTitle tag="h6">
+                            {x.listing.content}
+                        </CardTitle>
+                            <Row>
+                                <Col md={3}>
+                                    <b>Poster</b> 
+                                </Col>
+                                <Col>
+                                    {x.user?.userName == undefined ? "--" : x.user?.userName}
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={3}>
+                                    <b>Date</b> 
+                                </Col>
+                                <Col>
+                                    {format(new Date(x.listing.creationDate), 'MM-dd-yy')} 
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col md={3}>
+                                    <b>Rate</b> 
+                                </Col>
+                                <Col>
+                                    ${x.listing.expectedRate.toString()}
+                                </Col>
+                            </Row> 
+                        <Button
+                            onClick={() => DeleteByListingId(x.listing)}
+                            color="danger"
+                            >
+                            Remove
+                        </Button>
+                </CardBody>
+                </Card>
+             
+            );
+            }
+            )
+          }
+          </AccordionBody>
+          </UncontrolledAccordion>
     </>
     );
     }

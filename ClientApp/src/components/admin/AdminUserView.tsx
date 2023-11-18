@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { DeleteUserAsync, GetAllUsers, GetCurrentUser } from "../../services/UserService";
 import { LoggedInUser, UserType } from "../../models/user/LoggedInUser";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Button, Col, Row, Table } from "reactstrap";
+import { AccordionBody, AccordionHeader, Button, Col, Row, Table, UncontrolledAccordion } from "reactstrap";
 
 export const AdminUserView = () => {
     const  { getAccessTokenSilently, user } = useAuth0();
@@ -54,7 +54,9 @@ export const AdminUserView = () => {
     {
     return(
     <>
-        <h6>Admins</h6>
+    <UncontrolledAccordion flush>
+    <AccordionHeader className="border rounded" targetId="1"><h6>Admins</h6></AccordionHeader>
+    <AccordionBody accordionId="1">
         <Table
             hover
             responsive
@@ -87,8 +89,11 @@ export const AdminUserView = () => {
           }
           </tbody>
         </Table>
-
-        <h6>Clients</h6>
+        </AccordionBody>
+        </UncontrolledAccordion>
+        <UncontrolledAccordion flush>
+        <AccordionHeader className="border rounded" targetId="1"><h6>Clients</h6></AccordionHeader>
+        <AccordionBody accordionId="1">
         <Table
             hover
             responsive
@@ -130,8 +135,11 @@ export const AdminUserView = () => {
           }
           </tbody>
         </Table>
-
-        <h6>Professionals</h6>
+        </AccordionBody>
+        </UncontrolledAccordion>
+        <UncontrolledAccordion flush>
+        <AccordionHeader className="border rounded" targetId="1"><h6>Professionals</h6></AccordionHeader>
+        <AccordionBody accordionId="1">
         <Table
             hover
             responsive
@@ -173,6 +181,8 @@ export const AdminUserView = () => {
           }
           </tbody>
         </Table>
+        </AccordionBody>
+        </UncontrolledAccordion>
     </>
     );
     }
