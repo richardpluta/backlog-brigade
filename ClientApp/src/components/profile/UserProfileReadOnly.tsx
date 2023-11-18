@@ -7,6 +7,8 @@ import { GetAllListings } from "../../services/ListingService";
 import { UserListing } from "../../models/listing/Listing";
 import { Button, Card, CardBody, CardTitle, Col, Row, Table } from "reactstrap";
 import { format } from "date-fns";
+import { FaFlag } from "react-icons/fa";
+import { AiFillSafetyCertificate } from "react-icons/ai";
 
 
 const UserProfileReadOnly = () =>
@@ -115,7 +117,7 @@ return(
                             {x.listing.content}
                         </CardTitle>
                             <Row>
-                                <Col md={3}>
+                                <Col md={4}>
                                     <b>Date</b> 
                                 </Col>
                                 <Col>
@@ -123,7 +125,7 @@ return(
                                 </Col>
                             </Row>
                             <Row>
-                                <Col md={3}>
+                                <Col md={4}>
                                     <b>Rate</b> 
                                 </Col>
                                 <Col>
@@ -131,11 +133,19 @@ return(
                                 </Col>
                             </Row> 
                             <Row>
-                                <Col md={3}>
+                                <Col md={4}>
                                     <b>Skillset</b> 
                                 </Col>
                                 <Col>
                                     {Skillset[x.listing.skillSet]}
+                                </Col>
+                            </Row> 
+                            <Row>
+                                <Col md={4}>
+                                    <b>Flagged?</b> 
+                                </Col>
+                                <Col>
+                                    {x.listing.flagged ? <>Yes <FaFlag style={{color:"red"}}/></> : <>No <AiFillSafetyCertificate style={{color:"green"}} /></>}
                                 </Col>
                             </Row> 
                 </CardBody>

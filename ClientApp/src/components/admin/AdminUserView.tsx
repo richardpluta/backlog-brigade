@@ -165,6 +165,7 @@ export const AdminUserView = () => {
                 <th>Username</th>
                 <th>Email</th>
                 <th>Phone</th> 
+                <th>Info</th>
                 <th>Remove</th>
             </tr>
          </thead>
@@ -181,6 +182,14 @@ export const AdminUserView = () => {
                     </td>
                     <td>
                         <p>{x.phoneNumber}</p>
+                    </td>
+                    <td>
+                        <Button
+                            color="primary"
+                         onClick={() => routeChange(x.id)}
+                        >
+                            Info
+                        </Button>
                     </td>
                     <td>
                         <Button
