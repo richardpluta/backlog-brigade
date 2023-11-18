@@ -6,6 +6,7 @@ import ProfessionalMain from '../professional/ProfessionalMain';
 import ClientMain from '../client/ClientMain';
 import AdminMain from '../admin/AdminMain';
 import UserProfileMain from '../profile/UserProfile';
+import UserProfileReadOnly from '../profile/UserProfileReadOnly';
 
 export default class App extends Component {
 
@@ -18,6 +19,7 @@ export default class App extends Component {
           <Route path="/client" element = {<ClientMain/>}/>
           <Route path="/admin" element = {<AdminMain />}/>
           <Route path="/profile" element = {<UserProfileMain/>}/>
+          <Route path="/profile/:id" element={<UserProfileReadOnly />} />
         </Routes>
       </Layout>
     );

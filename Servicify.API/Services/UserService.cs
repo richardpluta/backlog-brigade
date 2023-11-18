@@ -22,6 +22,11 @@ namespace Servicify.API.Services
             return userRepository.Get().Where(x => x.Email == email).FirstOrDefault();
         }
 
+        public User? GetById(int id)
+        {
+            return userRepository.Get().Where(x => x.Id == id).FirstOrDefault();
+        }
+
         public IEnumerable<User> GetAll()
         {
             return userRepository.Get().ToList();

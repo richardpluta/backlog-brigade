@@ -70,3 +70,15 @@ export const DeleteUserAsync = async(token:string, user:LoggedInUser) => {
     .then()
     .catch((err) => console.log(err));
 }
+
+export const GetUserByIdAsync = async (token:string, id:number) => {
+    console.log("In GetCurrentUserById");
+
+    return await fetch(`http://localhost:6035/api/user/byid/${id}`, {
+        headers : {
+            Authorization: `Bearer: ${token}`
+        },
+    })
+    .then((response) => response.json())
+    .catch((err) => console.log(err));
+}

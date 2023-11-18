@@ -3,8 +3,10 @@ import { DeleteUserAsync, GetAllUsers, GetCurrentUser } from "../../services/Use
 import { LoggedInUser, UserType } from "../../models/user/LoggedInUser";
 import { useAuth0 } from "@auth0/auth0-react";
 import { AccordionBody, AccordionHeader, Button, Col, Row, Table, UncontrolledAccordion } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 
 export const AdminUserView = () => {
+    let navigate = useNavigate();
     const  { getAccessTokenSilently, user } = useAuth0();
   const [currentUser, setCurrentUser] = useState<LoggedInUser>();
   const [accessToken, setAccessToken] = useState("");
@@ -29,6 +31,10 @@ export const AdminUserView = () => {
       }).finally(() => setIsLoading(false));
     })();
   }, []);
+
+  const routeChange = (id: number) => {
+    navigate(`/profile/${id}`);
+  };
 
   const DeleteUserById = async (user : LoggedInUser) =>
   {
@@ -104,6 +110,7 @@ export const AdminUserView = () => {
                 <th>Username</th>
                 <th>Email</th>
                 <th>Phone</th> 
+                <th>Info</th>
                 <th>Remove</th>
             </tr>
          </thead>
@@ -120,6 +127,14 @@ export const AdminUserView = () => {
                     </td>
                     <td>
                         <p>{x.phoneNumber}</p>
+                    </td>
+                    <td>
+                        <Button
+                            color="primary"
+                         onClick={() => routeChange(x.id)}
+                        >
+                            Info
+                        </Button>
                     </td>
                     <td>
                         <Button
