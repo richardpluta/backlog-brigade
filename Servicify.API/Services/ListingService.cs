@@ -22,8 +22,9 @@ namespace Servicify.API.Services
             return listingRepository.Get().ToList();
         }
 
-        public Listing Update(Listing listing)
+        public Listing Update(int id)
         {
+            Listing listing = listingRepository.Get().Where(x => x.id == id).First();
             return listingRepository.Update(listing);
         }
 
