@@ -15,6 +15,18 @@ export const GetCurrentUser = async (token:string, email:string|undefined) => {
     .catch((err) => console.log(err));
 }
 
+export const GetAllUsers = async (token:string) => {
+    console.log("In GetAllUsers");
+   
+    return await fetch(`api/user`, {
+        headers : {
+            Authorization: `Bearer: ${token}`
+        },
+    })
+    .then((response) => response.json())
+    .catch((err) => console.log(err));
+}
+
 export const CreateUserAsync = async (token:string, createUserRequest:LoggedInUser) => {
     console.log("In CreateUserAsync");
     const body = JSON.stringify(createUserRequest);
