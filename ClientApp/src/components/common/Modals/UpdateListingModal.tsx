@@ -48,8 +48,6 @@ const UpdateListingModal = (props: ModalType) => {
 		newListing!.skillSet = Number(newSkills);
 		newListing!.postContent = newDesc;
 		newListing!.user = DUMMY_USER;
-		newListing!.postDate = "2023-11-10T04:41:44.124Z";
-
 
 		await ListingPutService(newListing).then(
 			(res:any) => {

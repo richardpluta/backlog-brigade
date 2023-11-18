@@ -28,10 +28,11 @@ namespace Servicify.API.Controllers
             return Ok(listingService.GetAll());
         }
 
-        [HttpPut]
-        public ActionResult<Listing> Update(Listing listing)
+        [HttpPut("{id}")]
+        public ActionResult<Listing> Update(int id)
         {
-            return Ok(listingService.Update(listing));
+            listingService.Update(id);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
