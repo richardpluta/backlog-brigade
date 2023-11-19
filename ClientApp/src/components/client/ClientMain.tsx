@@ -5,7 +5,7 @@ import useCreateHelpWantedModal from "../common/Hooks/useCreateHelpWantedModal";
 import "./ClientMain.css";
 import HelpWanteds from "./HelpWanteds"
 
-export default function ProfessionalMain() {
+export default function ClientMain() {
 
 	const {isOpen, toggle} = useCreateHelpWantedModal();
     return (

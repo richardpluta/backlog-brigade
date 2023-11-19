@@ -27,17 +27,18 @@ namespace Servicify.API.Controllers
             return Ok(helpWantedService.GetAll());
         }
 
-        [HttpPut]
-        public ActionResult<HelpWanted> Update(HelpWanted helpWanted)
+        [HttpPut("{id}")]
+        public ActionResult<HelpWanted> Update(int id)
         {
-            return Ok(helpWantedService.Update(helpWanted));
+            helpWantedService.Update(id);
+            return Ok();
         }
 
-        [HttpDelete]
-        public ActionResult Delete(HelpWanted helpWanted)
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
         {
-            helpWantedService.Delete(helpWanted);
-            return  Ok();
+            helpWantedService.Delete(id);
+            return Ok();
         }
     }
 }
