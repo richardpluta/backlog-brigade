@@ -25,18 +25,18 @@ namespace ServicifyDB.Models
         
         [Column("post_content")]
         [Required]
-        public string Content { get; set; }
+        public string postContent { get; set; }
 
         [NotMapped]
         public bool Flagged { get; set; }
 
         [Column("skill_set")]
         [Required]
-        public Skillset SkillSet { get; set; }
+        public Skillset skillSet { get; set; }
         
         [Column("expected_rate")]
         [Required]
-        public int ExpectedRate { get; set; }
+        public int expectedRate { get; set; }
 
         [ForeignKey(nameof(userId))]
         public User user { get; set; }
