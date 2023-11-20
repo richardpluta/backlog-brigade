@@ -29,9 +29,9 @@ namespace Servicify.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<Listing> Update(int id)
+        public ActionResult<Listing> Update(int id, [FromBody] Listing listing)
         {
-            listingService.Update(id);
+            listingService.Update(id, listing);
             return Ok();
         }
 
