@@ -1,8 +1,8 @@
 .overlay {
 	z-index: 9999;
-	width: 100vw;
-	height: 100vh;
-	position: absolute;
+	width: 80vw;
+	height: 80vh;
+	position: sticky;
 	top: 0;
 	background: rgba(0, 0, 0, 0.7);
 	display: flex;
@@ -13,11 +13,10 @@
   .box {
 	display: block;
 	background: white;
-	width: 70%;
-	height: 70%;
+	width: 40%;
+	height: 40%;
 	padding: 1rem;
 	border-radius: 1rem;
-	
   }
   .update-listing-form{
 	display: flex;

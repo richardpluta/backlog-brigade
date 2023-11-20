@@ -5,14 +5,14 @@ import listingData from "../models/listingData";
 export const ListingPutService = async (data:listing|undefined) => {
     
     const body = JSON.stringify(data);
-    console.log(body);
+	console.log(body);
     const response = await fetch('api/listing/' + data?.id.valueOf().toString(),
     {
 		method: 'PUT',
 		headers: {
 			"Content-Type": "application/json"
 		},
-		body 
+		body: body 
     });
   return response;
 }
