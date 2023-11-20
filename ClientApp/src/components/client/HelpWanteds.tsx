@@ -1,50 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import HelpWanted from '../../models/helpWantedData'
 import flag from '../../../public/assets/red-flag-icon.png'
+import {HelpWantedDeleteService} from "../../services/HelpWantedDeleteService";
+import { HelpWantedPutService } from '../../services/HelpWantedPutService';
 
 import "./HelpWanteds.css"
+import helpWanted from '../../models/helpWantedData';
+import UpdateHelpWantedModal from '../common/Modals/UpdateHelpWantedModal';
+import usePutHelpWantedModal from '../common/Hooks/usePutHelpWantedModal';
 
 export default function HelpWanted(){
 
-	
-	const DUMMY_HelpWanteds = [
-		{
-			id: "user1",
-			postDate: "11052023",
-			postContent: "This is the content of post # 1",
-			flagged: false,
-			skillSet: "Skill1",
-			expectedRate: "$50.00/hr",
-			user: {
-				userID: "123",
-				userType: "type",
-				userName: "mrProgramGuy",
-				phone: "123-456-7890",
-				skillset: "none",
-				zip: "12345",
-				userRate: "0",
-			}
-		},
-		{
-			id: "user2",
-			postDate: "11072023",
-			postContent: "This is the content of post # 2",
-			flagged: false,
-			skillSet: "Skill1, skill2",
-			expectedRate: "$75.00/hr",
-			user: {
-				userID: "321",
-				userType: "type3",
-				userName: "XxMyUsernamexX",
-				phone: "098-765-4321",
-				skillset: "none",
-				zip: "12345",
-				userRate: "0",
-			}
-		},
-	];
-
-	const [result, setResult] = useState<HelpWanted[]>([]);
+	const [result, setResult] = useState<helpWanted[]>([]);
+	const [helpWantedData, setHelpWantedData] = useState<helpWanted>();
 
 	useEffect(() => {
 		const api = async () => {
@@ -55,26 +23,44 @@ export default function HelpWanted(){
 		api();
 	}, []);
 
-	const helpWanteds = [<div> Help Wanted 1</div>, <div> Help Wanted 2</div>, <div> Help Wanted 3</div>];
+	async function deleteHelpWanteds(event: React.MouseEvent<HTMLButtonElement>){
+		event.preventDefault();
+		const deleteId = event.currentTarget.parentElement?.parentElement?.childNodes[0].childNodes[0].childNodes[0].nodeValue;
+		await HelpWantedDeleteService(Number(deleteId))
+		.then((res:any) => {
+			window.location.reload()
+		});
 
-	const loadedHelpWanteds = result.map(helpWanteds => {
+	}
+
+	async function openEditHelpWantedModal(event: React.MouseEvent<HTMLButtonElement>, helpwanted:helpWanted){
+		
+		event.preventDefault();
+		setHelpWantedData(helpwanted);
+		toggle();
+	}
+
+	const {isOpen, toggle} = usePutHelpWantedModal();
+
+	const loadedHelpWanteds = result.map(helpWanted => {
+
 		return(
 			<div className='card'>
 				<div className='cardHeader'>
-					<p className='cardHeader-element'>{helpWanteds.id}</p>
+					<p className='cardHeader-element'>{helpWanted.id}</p>
 					<p className='cardHeader-element'>{/*listing.user.userID*/}DUMMY NAME</p>
-					<p className='cardHeader-element'>{helpWanteds.postDate}</p>
+					<p className='cardHeader-element'>{helpWanted.postDate}</p>
 				</div>
 				<div className='cardContent'>
-					<p>{helpWanteds.postContent}</p>
-					<p>{helpWanteds.skillSet}</p>
-					<p>{helpWanteds.expectedRate}</p>
+					<p>{helpWanted.postContent}</p>
+					<p>{helpWanted.skillSet}</p>
+					<p>{helpWanted.expectedRate}</p>
 				</div>
 				<div className='cardFooter'>
-					<p className='cardFooter-element'>{helpWanteds.flagged}</p>
-					<img src={flag} alt="Flagged" className='cardFooter-flagIcon'/>
-					<button className='cardFooter-edit'>Edit</button>
-					<button className='cardFooter-delete'>Delete</button>
+				<p className='cardFooter-element'>{helpWanted.flagged}</p>
+					<button><img src={flag} alt="Flagged" className='cardFooter-flagIcon'/></button>
+					<button className='cardFooter-edit' onClick={(e) => {openEditHelpWantedModal(e, helpWanted)}}>Edit</button>
+					<button className='cardFooter-delete' onClick={deleteHelpWanteds}>Delete</button>
 				</div>
 			</div>
 		);
@@ -82,6 +68,9 @@ export default function HelpWanted(){
 
 	return (
 	  	<>
+			<div className='updateHelpWantedModal'>
+				<UpdateHelpWantedModal isOpen={isOpen} toggle={toggle} data={helpWantedData}></UpdateHelpWantedModal>
+			</div>
 			{loadedHelpWanteds}
 		</>
 	)

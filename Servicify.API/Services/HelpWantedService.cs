@@ -22,13 +22,15 @@ namespace Servicify.API.Services
             return helpWantedRepository.Get().ToList();
         }
 
-        public HelpWanted Update(HelpWanted helpWanted)
+        public HelpWanted Update(int id)
         {
+            HelpWanted helpWanted = helpWantedRepository.Get().Where(x => x.id == id).First();
             return helpWantedRepository.Update(helpWanted);
         }
 
-        public void Delete(HelpWanted helpWanted)
+        public void Delete(int id)
         {
+            HelpWanted helpWanted = helpWantedRepository.Get().Where(x => x.id == id).First();
             helpWantedRepository.Delete(helpWanted);
         }
     }

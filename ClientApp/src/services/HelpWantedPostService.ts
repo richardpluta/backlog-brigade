@@ -1,7 +1,6 @@
 import helpWanted from "../models/helpWantedData";
-import helpWantedData from "../models/helpWantedData";
  
-export const HelpWantedService = async (data:helpWanted) => {
+export const HelpWantedPostService = async (data:helpWanted) => {
     
     const body = JSON.stringify(data);
 
