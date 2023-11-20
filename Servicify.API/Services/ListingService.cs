@@ -22,13 +22,22 @@ namespace Servicify.API.Services
             return listingRepository.Get().ToList();
         }
 
-        public Listing Update(Listing listing)
+        public Listing Update(int id, Listing listing)
         {
-            return listingRepository.Update(listing);
+            Listing dbListing = listingRepository.Get().Where(x => x.id == id).First()
+                ?? throw new BadHttpRequestException("Listing not found", 404);
+
+            dbListing.postContent = listing.postContent;
+            dbListing.skillSet = listing.skillSet;
+            dbListing.expectedRate = listing.expectedRate;
+
+            return listingRepository.Update(dbListing);
         }
 
-        public void Delete(Listing listing)
+        public void Delete(int id)
         {
+            Listing listing = listingRepository.Get().Where(x => x.id == id).First();
+
             listingRepository.Delete(listing);
         }
     }

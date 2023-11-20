@@ -3,7 +3,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { LoggedInUser, Skillset, UserType } from "../../models/user/LoggedInUser";
 import { GetCurrentUser, UpdateUserAsync } from "../../services/UserService";
 import { Button, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
-import CurrencyInput from 'react-currency-input-field';
 
 
 const UpdateUserForm = () =>  {
