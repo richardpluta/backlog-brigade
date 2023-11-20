@@ -51,7 +51,7 @@ const UpdateHelpWantedModal = (props: ModalType) => {
 
 		await HelpWantedPutService(newHelpWanted).then(
 			(res:any) => {
-				//window.location.reload();
+				window.location.reload();
 			}	
 		)
 	}
