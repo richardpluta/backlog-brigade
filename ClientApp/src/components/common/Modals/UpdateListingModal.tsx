@@ -39,9 +39,9 @@ const UpdateListingModal = (props: ModalType) => {
 	  
 	const onSubmit = async (event: any) => {
 		event.preventDefault();
-        const newRate = event.currentTarget[1].value;
-		const newSkills = event.currentTarget[2].value;
-		const newDesc = event.currentTarget[3].value;
+        const newRate = event.currentTarget[0].value;
+		const newSkills = event.currentTarget[1].value;
+		const newDesc = event.currentTarget[2].value;
 
 		const newListing = props.data;
 		newListing!.expectedRate = Number(newRate);
