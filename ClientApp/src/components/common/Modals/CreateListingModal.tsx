@@ -75,10 +75,7 @@ const CreateListingModal = (props: ModalType) => {
 					<div className="box">
 						<form className="create-listing-form" onSubmit={onSubmit}>
 							<h1>Please Enter Listing Information:</h1>
-							<div className="field">
-								<label htmlFor="location">Location:</label>
-								<input id="location" />
-							</div>
+							
 							<div className="field">
 								<label htmlFor="rate">Rate:</label>
 								<input id="rate" />

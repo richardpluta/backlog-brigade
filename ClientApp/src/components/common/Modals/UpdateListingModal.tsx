@@ -51,7 +51,8 @@ const UpdateListingModal = (props: ModalType) => {
 
 		await ListingPutService(newListing).then(
 			(res:any) => {
-				//window.location.reload();
+				console.log(res);
+				window.location.reload();
 			}	
 		)
 	}
@@ -63,11 +64,7 @@ const UpdateListingModal = (props: ModalType) => {
 				<div className="overlay">
 					<div className="box">
 						<form className="update-listing-form" onSubmit={onSubmit}>
-							<h1>Please Enter Listing Information:</h1>
-							<div className="field">
-								<label htmlFor="location">Location:</label>
-								<input id="location" />
-							</div>
+							<h1>Please Update Your Listing Information:</h1>
 							<div className="field">
 								<label htmlFor="rate">Rate:</label>
 								<input id="rate" defaultValue={props.data?.expectedRate}/>
@@ -81,7 +78,7 @@ const UpdateListingModal = (props: ModalType) => {
 								<textarea name="description" id="description" defaultValue={props.data?.postContent}/>
 							</div>
 							<div>
-								<button>Create</button>
+								<button>Update</button>
 								<button onClick={props.toggle}>Cancel</button>
 							</div>
 						</form>
