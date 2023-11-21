@@ -1,7 +1,6 @@
-import review from "../models/reviewData";
-import reviewData from "../models/reviewData";
+import Review from "../models/reviewData";
  
-export const ReviewService = async (data:review) => {
+export const CreateReview = async (data: Review) => {
     
     const body = JSON.stringify(data);
 
@@ -14,5 +13,21 @@ export const ReviewService = async (data:review) => {
       body 
     }
   );
+
   return response;
+}
+
+export const GetReviewsForUser = async (userId: number) => {
+  const response = await fetch(`api/review/user/${userId}`,
+    {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json"
+      },
+    }
+  );
+
+  const reviews =  await response.json() as Review[];
+
+  return reviews;
 }

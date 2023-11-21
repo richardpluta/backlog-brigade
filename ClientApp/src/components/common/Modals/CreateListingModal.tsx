@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, MouseEvent, FormEvent, useEffect } from "react";
-import listing from "../../../models/listingData";
+import Listing from "../../../models/listingData";
 import "./CreateListingModal.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoggedInUser from "../../../models/userData";
@@ -47,7 +47,7 @@ const CreateListingModal = (props: ModalType) => {
 		const target = event.target;
 
 		//updated this to constant data just for testing purposes so i could rule out the form being part of the issue
-		const data:listing = {
+		const data:Listing = {
 			id: 0,
 			userId: 1,
 			postDate: "2023-11-10T04:41:44.124Z",

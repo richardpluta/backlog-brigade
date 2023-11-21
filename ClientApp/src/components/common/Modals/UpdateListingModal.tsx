@@ -1,5 +1,5 @@
 import React, { ReactNode, useState, MouseEvent, FormEvent, useEffect } from "react";
-import listing from "../../../models/listingData";
+import Listing from "../../../models/listingData";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoggedInUser from "../../../models/userData";
 import {ListingPutService} from "../../../services/ListingPutService";
@@ -9,7 +9,7 @@ interface ModalType {
 	children?: ReactNode;
 	isOpen: Boolean;
 	toggle: () => void;
-    data?: listing;
+    data?: Listing;
 }
 
 const DUMMY_USER:LoggedInUser = {

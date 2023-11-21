@@ -17,31 +17,30 @@ namespace ServicifyDB.Models
 
         [Column("post_user")]
         [Required]
-        public int postUser { get; set; }
+        public int PostUserId { get; set; }
 
         [Column("reviewed_user")]
         [Required]
-        public int reviewedUser { get; set; }
+        public int ReviewedUserId { get; set; }
 
         [Column("post_date")]
         [Required]
-        public DateTime postDate { get; set; }
+        public DateTime PostDate { get; set; }
 
         [Column("post_content")]
         [Required]
-        public string postContent { get; set; }
+        public string PostContent { get; set; }
         
         [NotMapped]
         public bool flagged { get; set; }
         
         [Column("reply_comment")]
-        [Required]
-        public string replyComment { get; set; }
+        public string? ReplyComment { get; set; }
 
-        [ForeignKey(nameof(postUser))]
-        public User PostUser { get; set; }
+        [ForeignKey(nameof(PostUserId))]
+        public User? PostUser { get; set; }
 
-        [ForeignKey(nameof(reviewedUser))]
-        public User ReviewedUser { get; set; }
+        [ForeignKey(nameof(ReviewedUserId))]
+        public User? ReviewedUser { get; set; }
     }
 }

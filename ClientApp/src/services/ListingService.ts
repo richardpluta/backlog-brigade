@@ -1,8 +1,8 @@
-import listing from "../models/listingData";
+import Listing from "../models/listingData";
 import listingData from "../models/listingData";
  
   //may need to clean this up a bit and move to its own service, lots of logging. 
-export const ListingService = async (data:listing) => {
+export const ListingService = async (data:Listing) => {
     
     const body = JSON.stringify(data);
 

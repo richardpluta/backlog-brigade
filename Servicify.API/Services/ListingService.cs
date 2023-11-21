@@ -1,4 +1,5 @@
-﻿using ServicifyDB.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using ServicifyDB.Models;
 using ServicifyDB.Repository;
 
 namespace Servicify.API.Services
@@ -19,7 +20,7 @@ namespace Servicify.API.Services
 
         public IEnumerable<Listing> GetAll()
         {
-            return listingRepository.Get().ToList();
+            return listingRepository.Get().Include(x => x.user);
         }
 
         public Listing Update(int id, Listing listing)
