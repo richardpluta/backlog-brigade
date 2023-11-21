@@ -39,9 +39,9 @@ const UpdateHelpWantedModal = (props: ModalType) => {
 	  
 	const onSubmit = async (event: any) => {
 		event.preventDefault();
-        const newRate = event.currentTarget[1].value;
-		const newSkills = event.currentTarget[2].value;
-		const newDesc = event.currentTarget[3].value;
+        const newRate = event.currentTarget[0].value;
+		const newSkills = event.currentTarget[1].value;
+		const newDesc = event.currentTarget[2].value;
 
 		const newHelpWanted = props.data;
 		newHelpWanted!.expectedRate = Number(newRate);
@@ -63,11 +63,7 @@ const UpdateHelpWantedModal = (props: ModalType) => {
 				<div className="overlay">
 					<div className="box">
 						<form className="update-helpwanted-form" onSubmit={onSubmit}>
-							<h1>Please Enter Help Wanted Information:</h1>
-							<div className="field">
-								<label htmlFor="location">Location:</label>
-								<input id="location" />
-							</div>
+							<h1>Please Update Help Wanted Information:</h1>
 							<div className="field">
 								<label htmlFor="rate">Rate:</label>
 								<input id="rate" defaultValue={props.data?.expectedRate}/>
@@ -81,7 +77,7 @@ const UpdateHelpWantedModal = (props: ModalType) => {
 								<textarea name="description" id="description" defaultValue={props.data?.postContent}/>
 							</div>
 							<div>
-								<button>Create</button>
+								<button>Update</button>
 								<button onClick={props.toggle}>Cancel</button>
 							</div>
 						</form>

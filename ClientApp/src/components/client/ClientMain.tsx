@@ -13,7 +13,7 @@ export default function ClientMain() {
 			<h1>View Help Wanteds</h1>
 			<button onClick={toggle} className="create-helpwanted-button">Create a new Help Wanted</button>
 			<CreateHelpWantedModal isOpen={isOpen} toggle={toggle}></CreateHelpWantedModal>
-			<div className="helpwanteds">
+			<div className="helpWanteds">
 				<HelpWanteds />
 			</div>
 			

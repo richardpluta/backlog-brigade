@@ -75,10 +75,6 @@ const CreateHelpWantedModal = (props: ModalType) => {
 						<form className="create-helpwanted-form" onSubmit={onSubmit}>
 							<h1>Please Enter Help Wanted Information:</h1>
 							<div className="field">
-								<label htmlFor="location">Location:</label>
-								<input id="location" />
-							</div>
-							<div className="field">
 								<label htmlFor="rate">Rate:</label>
 								<input id="rate" />
 							</div>
