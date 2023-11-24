@@ -21,14 +21,14 @@ namespace ServicifyDB.Models
 
         [Column("post_date")]
         [Required]
-        public DateTime postDate { get; set; }
+        public DateTime CreationDate { get; set; }
         
         [Column("post_content")]
         [Required]
         public string postContent { get; set; }
 
         [NotMapped]
-        public bool flagged { get; set; }
+        public bool Flagged { get; set; }
 
         [Column("skill_set")]
         [Required]

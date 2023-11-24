@@ -18,7 +18,7 @@ const DUMMY_USER:LoggedInUser = {
 		userName: "DummyUserFromModal",
 		phone: 987654321,
 		email: "nam@email.com",
-		skillset: 0,
+		skillSet: 0,
 		zip: '12345',
 		userRate: 0,
 	}
