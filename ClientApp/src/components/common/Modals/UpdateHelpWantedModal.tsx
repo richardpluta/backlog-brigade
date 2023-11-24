@@ -51,6 +51,7 @@ const UpdateHelpWantedModal = (props: ModalType) => {
 
 		await HelpWantedPutService(newHelpWanted).then(
 			(res:any) => {
+				console.log(res);
 				window.location.reload();
 			}	
 		)
@@ -63,11 +64,7 @@ const UpdateHelpWantedModal = (props: ModalType) => {
 				<div className="overlay">
 					<div className="box">
 						<form className="update-helpwanted-form" onSubmit={onSubmit}>
-							<h1>Please Enter Help Wanted Information:</h1>
-							<div className="field">
-								<label htmlFor="location">Location:</label>
-								<input id="location" />
-							</div>
+							<h1>Please Update Your Help Wanted Information:</h1>
 							<div className="field">
 								<label htmlFor="rate">Rate:</label>
 								<input id="rate" defaultValue={props.data?.expectedRate}/>
@@ -81,7 +78,7 @@ const UpdateHelpWantedModal = (props: ModalType) => {
 								<textarea name="description" id="description" defaultValue={props.data?.postContent}/>
 							</div>
 							<div>
-								<button>Create</button>
+								<button>Update</button>
 								<button onClick={props.toggle}>Cancel</button>
 							</div>
 						</form>

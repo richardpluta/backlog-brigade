@@ -29,7 +29,7 @@ namespace ServicifyDB.Models
         public Skillset skillSet { get; set; }
 
         [Column("rate")]
-        public int ExpectedRate { get; set; }
+        public int expectedRate { get; set; }
 
         [ForeignKey(nameof(userId))]
         public User user { get; set; }

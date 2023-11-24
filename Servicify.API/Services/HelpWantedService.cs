@@ -1,5 +1,6 @@
 ﻿using ServicifyDB.Models;
 using ServicifyDB.Repository;
+using System.Reflection;
 
 namespace Servicify.API.Services
 {
@@ -22,10 +23,16 @@ namespace Servicify.API.Services
             return helpWantedRepository.Get().ToList();
         }
 
-        public HelpWanted Update(int id)
+        public HelpWanted Update(int id, HelpWanted helpWanted)
         {
-            HelpWanted helpWanted = helpWantedRepository.Get().Where(x => x.id == id).First();
-            return helpWantedRepository.Update(helpWanted);
+            HelpWanted dbHelpWanted = helpWantedRepository.Get().Where(x => x.id == id).First()
+                ?? throw new BadHttpRequestException("Help wanted not found", 404);
+
+            dbHelpWanted.postContent = helpWanted.postContent;
+            dbHelpWanted.skillSet = helpWanted.skillSet;
+            dbHelpWanted.expectedRate = helpWanted.expectedRate;
+
+            return helpWantedRepository.Update(dbHelpWanted);
         }
 
         public void Delete(int id)
