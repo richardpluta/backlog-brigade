@@ -31,6 +31,7 @@ namespace Servicify.API.Services
             dbHelpWanted.postContent = helpWanted.postContent;
             dbHelpWanted.skillSet = helpWanted.skillSet;
             dbHelpWanted.expectedRate = helpWanted.expectedRate;
+            dbHelpWanted.flagged = helpWanted.flagged;
 
             return helpWantedRepository.Update(dbHelpWanted);
         }
