@@ -23,6 +23,7 @@ export default function HelpWanted(){
 		userRate: 0,
 	}
 
+	const [generalSearchString, setGeneralSearchString] = useState<helpWanted>();
 	const [matchedLoggedInUser, setLoggedInUserID] = useState<LoggedInUser>();
 	const [result, setResult] = useState<helpWanted[]>([]);
 	const [helpWantedData, setHelpWantedData] = useState<helpWanted>();
@@ -33,6 +34,7 @@ export default function HelpWanted(){
 			const json = await data.json();
 			setResult(json);
 			setLoggedInUserID(DUMMY_USER);
+			setGeneralSearchString(helpWantedData); 
 		}
 		api();
 	}, []);
@@ -59,7 +61,7 @@ export default function HelpWanted(){
 
 	async function onFlagSubmit(event: React.MouseEvent<HTMLButtonElement>, helpwanted:helpWanted)
 	{
-		//event.preventDefault();
+		event.preventDefault();
 		helpwanted.flagged = true;
 		helpwanted.user = DUMMY_USER; 
 
@@ -68,7 +70,7 @@ export default function HelpWanted(){
 		await HelpWantedPutService(helpwanted).then(
 			(res:any) => {
 				console.log(res);
-				//window.location.reload();
+				window.location.reload();
 			}	
 		)
 	}
@@ -76,6 +78,7 @@ export default function HelpWanted(){
 	const loadedHelpWanteds = result.map(helpWanted => {
 
 		return(
+			
 			<div className='card'>
 				<div className='cardHeader'>
 					<p className='cardHeader-element'>{helpWanted.id}</p>
@@ -98,6 +101,7 @@ export default function HelpWanted(){
 					}
 				</div>
 			</div>
+			
 		);
 	})
 
