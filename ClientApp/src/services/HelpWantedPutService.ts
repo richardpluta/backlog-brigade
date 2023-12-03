@@ -10,7 +10,7 @@ export const HelpWantedPutService = async (data:helpWanted|undefined) => {
 		headers: {
 			"Content-Type": "application/json"
 		},
-		body 
+		body: body 
     });
   return response;
 }

@@ -3,14 +3,28 @@ import HelpWanted from '../../models/helpWantedData'
 import flag from '../../../public/assets/red-flag-icon.png'
 import {HelpWantedDeleteService} from "../../services/HelpWantedDeleteService";
 import { HelpWantedPutService } from '../../services/HelpWantedPutService';
-
 import "./HelpWanteds.css"
 import helpWanted from '../../models/helpWantedData';
 import UpdateHelpWantedModal from '../common/Modals/UpdateHelpWantedModal';
 import usePutHelpWantedModal from '../common/Hooks/usePutHelpWantedModal';
+import LoggedInUser from "../../models/userData";
 
 export default function HelpWanted(){
 
+	
+	const DUMMY_USER:LoggedInUser = {
+		userID: 123,
+		userType: 0,
+		userName: "DummyUserFromModal",
+		phone: 987654321,
+		email: "nam@email.com",
+		skillSet: 0,
+		zip: '12345',
+		userRate: 0,
+	}
+
+	const [generalSearchString, setGeneralSearchString] = useState<helpWanted>();
+	const [matchedLoggedInUser, setLoggedInUserID] = useState<LoggedInUser>();
 	const [result, setResult] = useState<helpWanted[]>([]);
 	const [helpWantedData, setHelpWantedData] = useState<helpWanted>();
 
@@ -19,6 +33,8 @@ export default function HelpWanted(){
 			const data = await fetch("api/helpwanted", {method:"GET"});
 			const json = await data.json();
 			setResult(json);
+			setLoggedInUserID(DUMMY_USER);
+			setGeneralSearchString(helpWantedData); 
 		}
 		api();
 	}, []);
@@ -40,15 +56,33 @@ export default function HelpWanted(){
 		toggle();
 	}
 
+
 	const {isOpen, toggle} = usePutHelpWantedModal();
+
+	async function onFlagSubmit(event: React.MouseEvent<HTMLButtonElement>, helpwanted:helpWanted)
+	{
+		event.preventDefault();
+		helpwanted.flagged = true;
+		helpwanted.user = DUMMY_USER; 
+
+		console.log(helpwanted)
+
+		await HelpWantedPutService(helpwanted).then(
+			(res:any) => {
+				console.log(res);
+				window.location.reload();
+			}	
+		)
+	}
 
 	const loadedHelpWanteds = result.map(helpWanted => {
 
 		return(
+			
 			<div className='card'>
 				<div className='cardHeader'>
 					<p className='cardHeader-element'>{helpWanted.id}</p>
-					<p className='cardHeader-element'>{/*listing.user.userID*/}DUMMY NAME</p>
+					<p className='cardHeader-element'>{helpWanted.userId}</p>
 					<p className='cardHeader-element'>{helpWanted.postDate}</p>
 				</div>
 				<div className='cardContent'>
@@ -58,11 +92,16 @@ export default function HelpWanted(){
 				</div>
 				<div className='cardFooter'>
 				<p className='cardFooter-element'>{helpWanted.flagged}</p>
-					<button><img src={flag} alt="Flagged" className='cardFooter-flagIcon'/></button>
-					<button className='cardFooter-edit' onClick={(e) => {openEditHelpWantedModal(e, helpWanted)}}>Edit</button>
-					<button className='cardFooter-delete' onClick={deleteHelpWanteds}>Delete</button>
+					<button onClick={(e) => onFlagSubmit(e, helpWanted)}><img src={flag} alt="Flagged" className='cardFooter-flagIcon'/></button>
+					{matchedLoggedInUser?.userID == helpWanted.userId &&(
+						<div>				
+							<button className='cardFooter-edit' onClick={(e) => {openEditHelpWantedModal(e, helpWanted)}}>Edit</button>
+							<button className='cardFooter-delete' onClick={deleteHelpWanteds}>Delete</button>
+						</div>)
+					}
 				</div>
 			</div>
+			
 		);
 	})
 
@@ -74,4 +113,5 @@ export default function HelpWanted(){
 			{loadedHelpWanteds}
 		</>
 	)
+
 }
