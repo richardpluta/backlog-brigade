@@ -4,6 +4,7 @@ import "./CreateListingModal.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoggedInUser from "../../../models/userData";
 import {ListingPostService} from "../../../services/ListingPostService";
+import {ListingService} from "../../../services/ListingService";
 
 
 interface ModalType {
@@ -18,7 +19,7 @@ const DUMMY_USER:LoggedInUser = {
 		userName: "DummyUserFromModal",
 		phone: 987654321,
 		email: "nam@email.com",
-		skillset: 0,
+		skillSet: 0,
 		zip: '12345',
 		userRate: 0,
 	}
@@ -58,7 +59,7 @@ const CreateListingModal = (props: ModalType) => {
 		}
 
 		//moved call to backend to test service, probably should be broken out into a ListingService with the API calls in it
-		await ListingPostService(data)
+		await ListingService(data)
 		.then((res:any) => {
 			console.log("Post success");
 			window.location.reload();

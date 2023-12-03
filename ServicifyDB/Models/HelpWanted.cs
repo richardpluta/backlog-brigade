@@ -21,8 +21,9 @@ namespace ServicifyDB.Models
         [Column("creation_date")]
         [Required]
         public DateTime postDate { get; set; }
-        
-        [NotMapped]
+
+        [Column("flagged")]
+        [Required]
         public bool flagged { get; set; }
 
         [Column("skillset")]

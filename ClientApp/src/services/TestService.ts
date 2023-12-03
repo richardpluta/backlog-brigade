@@ -27,4 +27,3 @@ export const getTestResponse = async () => {
   );
   return response;
 }
-  

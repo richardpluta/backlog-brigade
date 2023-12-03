@@ -18,7 +18,7 @@ const DUMMY_USER:LoggedInUser = {
 		userName: "DummyUserFromModal",
 		phone: 987654321,
 		email: "nam@email.com",
-		skillset: 0,
+		skillSet: 0,
 		zip: '12345',
 		userRate: 0,
 }
@@ -39,9 +39,9 @@ const UpdateListingModal = (props: ModalType) => {
 	  
 	const onSubmit = async (event: any) => {
 		event.preventDefault();
-        const newRate = event.currentTarget[1].value;
-		const newSkills = event.currentTarget[2].value;
-		const newDesc = event.currentTarget[3].value;
+        const newRate = event.currentTarget[0].value;
+		const newSkills = event.currentTarget[1].value;
+		const newDesc = event.currentTarget[2].value;
 
 		const newListing = props.data;
 		newListing!.expectedRate = Number(newRate);
