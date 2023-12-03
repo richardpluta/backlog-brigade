@@ -18,6 +18,8 @@
   - You should be able to try out the testget endpoint in swagger, or by going to localhost:7035/api/Test/testget.
   - If it worked, it will display a JSON "test object" that was created.
   - leave this running
+  - In the Properties -> launchSettings.json folder, in the "DATABASE_PASSWORD" section under "profiles" please ensure that the database password is filled in before running the front end.
+  - If there is no password filled in, please reach out so that we can determine if you should be given access to the database and if so, we can provide the password at that time.
     
 **3. Open up ClientApp folder in IDE of your choice, I used Visual Studio Code.**
   - Run "npm install" and it should install all required packages to run.
