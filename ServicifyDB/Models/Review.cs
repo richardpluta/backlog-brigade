@@ -13,7 +13,7 @@ namespace ServicifyDB.Models
     {
         [Key]
         [Column("id")]
-        public int Id { get; set; }
+        public int id { get; set; }
 
         [Column("post_user")]
         [Required]

@@ -19,6 +19,7 @@ namespace Servicify.API.Controllers
         [HttpPost]
         public ActionResult<Listing> Create([FromBody] Listing listing)
         {
+
             return Ok(listingService.Create(listing));
         }
 
@@ -28,10 +29,11 @@ namespace Servicify.API.Controllers
             return Ok(listingService.GetAll());
         }
 
-        [HttpPut]
-        public ActionResult<Listing> Update(Listing listing)
+        [HttpPut("{id}")]
+        public ActionResult<Listing> Update(int id, [FromBody] Listing listing)
         {
-            return Ok(listingService.Update(listing));
+            listingService.Update(id, listing);
+            return Ok();
         }
 
         [HttpDelete]
@@ -39,6 +41,13 @@ namespace Servicify.API.Controllers
         {
             listingService.Delete(listing);
             return  Ok("Deleted");
+        }
+        
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
+        {
+            listingService.Delete(id);
+            return  Ok();
         }
     }
 }

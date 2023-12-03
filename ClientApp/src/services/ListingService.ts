@@ -1,4 +1,5 @@
 import { Listing } from "../models/listing/Listing";
+import listing from "../models/listingData";
 
 export const GetAllListings = async (token:string) => {
     console.log("In GetAllListings");
@@ -26,4 +27,21 @@ export const DeleteListingAsync = async(token:string, listing:Listing) => {
     })
     .then()
     .catch((err) => console.log(err));
+  }
+ 
+  //may need to clean this up a bit and move to its own service, lots of logging. 
+export const ListingService = async (data:listing) => {
+    
+    const body = JSON.stringify(data);
+
+    const response = await fetch('api/listing',
+    {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body 
+    }
+  );
+  return response;
 }

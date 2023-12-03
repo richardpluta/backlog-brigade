@@ -1,16 +1,15 @@
 import React, { ReactNode, useState, MouseEvent, FormEvent, useEffect } from "react";
 import listing from "../../../models/listingData";
-import "./CreateListingModal.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoggedInUser from "../../../models/userData";
-import {ListingPostService} from "../../../services/ListingPostService";
-import {ListingService} from "../../../services/ListingService";
-
+import {ListingPutService} from "../../../services/ListingPutService";
+import "./UpdateListingModal.css";
 
 interface ModalType {
 	children?: ReactNode;
 	isOpen: Boolean;
 	toggle: () => void;
+    data?: listing;
 }
 
 const DUMMY_USER:LoggedInUser = {
@@ -22,11 +21,9 @@ const DUMMY_USER:LoggedInUser = {
 		skillSet: 0,
 		zip: '12345',
 		userRate: 0,
-	}
+}
 
-
-
-const CreateListingModal = (props: ModalType) => {
+const UpdateListingModal = (props: ModalType) => {
 
 	const {getAccessTokenSilently} = useAuth0();
 	const [accessToken, setAccessToken] = useState("");
@@ -39,57 +36,49 @@ const CreateListingModal = (props: ModalType) => {
 		})();
 	  }, []);
 
-	//const closeModal = useEffect(() => {props.toggle});
 	  
 	const onSubmit = async (event: any) => {
 		event.preventDefault();
+        const newRate = event.currentTarget[0].value;
+		const newSkills = event.currentTarget[1].value;
+		const newDesc = event.currentTarget[2].value;
 
-		const target = event.target;
+		const newListing = props.data;
+		newListing!.expectedRate = Number(newRate);
+		newListing!.skillSet = Number(newSkills);
+		newListing!.postContent = newDesc;
+		newListing!.user = DUMMY_USER;
 
-		//updated this to constant data just for testing purposes so i could rule out the form being part of the issue
-		const data:listing = {
-			id: 0,
-			userId: 1,
-			postDate: "2023-11-10T04:41:44.124Z",
-			postContent: target.description.value,
-			flagged: false,
-			skillSet: Number(target.skills.value),
-			expectedRate: Number(target.rate.value),
-			user: DUMMY_USER
-		}
-
-		//moved call to backend to test service, probably should be broken out into a ListingService with the API calls in it
-		await ListingService(data)
-		.then((res:any) => {
-			console.log("Post success");
-			window.location.reload();
-		});
+		await ListingPutService(newListing).then(
+			(res:any) => {
+				console.log(res);
+				window.location.reload();
+			}	
+		)
 	}
 
-	
 	return(
 
 		<>
 			{props.isOpen && (
 				<div className="overlay">
 					<div className="box">
-						<form className="create-listing-form" onSubmit={onSubmit}>
-							<h1>Please Enter Listing Information:</h1>
-							
+						<form className="update-listing-form" onSubmit={onSubmit}>
+							<h1>Please Update Your Listing Information:</h1>
 							<div className="field">
 								<label htmlFor="rate">Rate:</label>
-								<input id="rate" />
+								<input id="rate" defaultValue={props.data?.expectedRate}/>
 							</div>
 							<div className="field">
 								<label htmlFor="skills">Relevant Skills:</label>
-								<input id="skills" />
+								<input id="skills" defaultValue={props.data?.skillSet}/>
 							</div>
 							<div className="field">
 								<label htmlFor="description">Description:</label>
-								<textarea name="description" id="description"/>
+								<textarea name="description" id="description" defaultValue={props.data?.postContent}/>
 							</div>
 							<div>
-								<button>Create</button>
+								<button>Update</button>
 								<button onClick={props.toggle}>Cancel</button>
 							</div>
 						</form>
@@ -98,7 +87,7 @@ const CreateListingModal = (props: ModalType) => {
 			)}
 		</>
 	)
-			}
+}
 
-export default CreateListingModal;
+export default UpdateListingModal;
 
