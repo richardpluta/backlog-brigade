@@ -20,24 +20,25 @@ namespace Servicify.API.Services
 
         public IEnumerable<Listing> GetAll()
         {
-            return listingRepository.Get().Include(x => x.user);
+            return listingRepository.Get().Include(x => x.User).ToList();
         }
 
         public Listing Update(int id, Listing listing)
         {
-            Listing dbListing = listingRepository.Get().Where(x => x.id == id).First()
+            Listing dbListing = listingRepository.Get().Where(x => x.Id == id).FirstOrDefault()
                 ?? throw new BadHttpRequestException("Listing not found", 404);
 
-            dbListing.postContent = listing.postContent;
-            dbListing.skillSet = listing.skillSet;
-            dbListing.expectedRate = listing.expectedRate;
+            dbListing.PostContent = listing.PostContent;
+            dbListing.SkillSet = listing.SkillSet;
+            dbListing.ExpectedRate = listing.ExpectedRate;
 
             return listingRepository.Update(dbListing);
         }
 
         public void Delete(int id)
         {
-            Listing listing = listingRepository.Get().Where(x => x.id == id).First();
+            Listing listing = listingRepository.Get().Where(x => x.Id == id).FirstOrDefault()
+                ?? throw new BadHttpRequestException("Listing not found", 404);
 
             listingRepository.Delete(listing);
         }
