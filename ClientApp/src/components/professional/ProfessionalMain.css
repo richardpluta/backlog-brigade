@@ -1,6 +1,7 @@
 .professional-container {
 	display: flex;
 	flex-direction: row;
+	justify-content: space-evenly;
 }
 
 .professional-column {
@@ -8,6 +9,7 @@
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: center;
+	width: 40%;
 }
 
 .create-listing-button{
@@ -16,6 +18,6 @@
 	border-radius: 5px;
 }
 
-.listings{
-	width: 40%;
+.data-list {
+	width: 100%
 }

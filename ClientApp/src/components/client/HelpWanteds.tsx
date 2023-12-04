@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import HelpWanted from '../../models/helpWantedData'
 import flag from '../../../public/assets/red-flag-icon.png'
 import {HelpWantedDeleteService} from "../../services/HelpWantedDeleteService";
 import { HelpWantedPutService } from '../../services/HelpWantedPutService';

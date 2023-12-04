@@ -1,5 +1,5 @@
 export default class User{
-    userID?: number;
+    id: number = 0;
     userType?: number;
     userName?: string;
     phone?: number;

@@ -1,46 +1,13 @@
-import React, { ReactNode, useState, MouseEvent, FormEvent, useEffect } from "react";
+import React, { useEffect } from "react";
 import Listing from "../../../models/listingData";
 import "./CreateListingModal.css";
-import { useAuth0 } from "@auth0/auth0-react";
-import LoggedInUser from "../../../models/userData";
-import {ListingPostService} from "../../../services/ListingPostService";
-import {ListingService} from "../../../services/ListingService";
+import {CreateListing} from "../../../services/ListingService";
+import User from "../../../models/userData";
 
-
-interface ModalType {
-	children?: ReactNode;
-	isOpen: Boolean;
-	toggle: () => void;
-}
-
-const DUMMY_USER:LoggedInUser = {
-		userID: 123,
-		userType: 0,
-		userName: "DummyUserFromModal",
-		phone: 987654321,
-		email: "nam@email.com",
-		skillSet: 0,
-		zip: '12345',
-		userRate: 0,
-	}
-
-
-
-const CreateListingModal = (props: ModalType) => {
-
-	const {getAccessTokenSilently} = useAuth0();
-	const [accessToken, setAccessToken] = useState("");
-
+const CreateListingModal = ({currentUser, isOpen, toggle}: {currentUser: User, isOpen: boolean, toggle: () => void}) => {
 	useEffect(() => {
-		(async () => {
-		  await getAccessTokenSilently().then(async (token) => {
-			setAccessToken(token);
-		  });
-		})();
 	  }, []);
 
-	//const closeModal = useEffect(() => {props.toggle});
-	  
 	const onSubmit = async (event: any) => {
 		event.preventDefault();
 
@@ -49,17 +16,16 @@ const CreateListingModal = (props: ModalType) => {
 		//updated this to constant data just for testing purposes so i could rule out the form being part of the issue
 		const data:Listing = {
 			id: 0,
-			userId: 1,
-			postDate: "2023-11-10T04:41:44.124Z",
+			userId: currentUser.id,
 			postContent: target.description.value,
 			flagged: false,
 			skillSet: Number(target.skills.value),
 			expectedRate: Number(target.rate.value),
-			user: DUMMY_USER
+			user: currentUser
 		}
 
 		//moved call to backend to test service, probably should be broken out into a ListingService with the API calls in it
-		await ListingService(data)
+		await CreateListing(data)
 		.then((res:any) => {
 			console.log("Post success");
 			window.location.reload();
@@ -70,7 +36,7 @@ const CreateListingModal = (props: ModalType) => {
 	return(
 
 		<>
-			{props.isOpen && (
+			{isOpen && (
 				<div className="overlay">
 					<div className="box">
 						<form className="create-listing-form" onSubmit={onSubmit}>
@@ -90,7 +56,7 @@ const CreateListingModal = (props: ModalType) => {
 							</div>
 							<div>
 								<button>Create</button>
-								<button onClick={props.toggle}>Cancel</button>
+								<button onClick={toggle}>Cancel</button>
 							</div>
 						</form>
 					</div>

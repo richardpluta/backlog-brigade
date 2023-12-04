@@ -1,8 +1,6 @@
 import Listing from "../models/listingData";
-import listingData from "../models/listingData";
- 
-  //may need to clean this up a bit and move to its own service, lots of logging. 
-export const ListingService = async (data:Listing) => {
+
+export const CreateListing = async (data: Listing) => {
     
     const body = JSON.stringify(data);
 
@@ -16,4 +14,15 @@ export const ListingService = async (data:Listing) => {
     }
   );
   return response;
+}
+
+export const GetListings = async () => {
+  const response = await fetch('api/listing', {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json"
+    },
+  }).then(response => response.json());
+
+  return response as Listing[];
 }

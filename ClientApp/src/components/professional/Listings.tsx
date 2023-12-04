@@ -10,54 +10,16 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import Review from '../../models/reviewData';
 import Listing from '../../models/listingData';
 import { CreateReview, GetReviewsForUser } from '../../services/ReviewService';
-import { GetCurrentUser } from '../../services/UserService';
+import User from '../../models/userData';
+import { GetListings } from '../../services/ListingService';
 
-export default function Listings(){
-
-	/*
-	const DUMMY_LISTINGS = [
-		{
-			id: "user1",
-			postDate: "11052023",
-			postContent: "This is the content of post # 1",
-			flagged: false,
-			skillSet: "Skill1",
-			expectedRate: "$50.00/hr",
-			user: {
-				userID: "123",
-				userType: "type",
-				userName: "mrProgramGuy",
-				phone: "123-456-7890",
-				skillset: "none",
-				zip: "12345",
-				userRate: "0",
-			}
-		},
-		{
-			id: "user2",
-			postDate: "11072023",
-			postContent: "This is the content of post # 2",
-			flagged: false,
-			skillSet: "Skill1, skill2",
-			expectedRate: "$75.00/hr",
-			user: {
-				userID: "321",
-				userType: "type3",
-				userName: "XxMyUsernamexX",
-				phone: "098-765-4321",
-				skillset: "none",
-				zip: "12345",
-				userRate: "0",
-			}
-		},
-	];
-	*/
+export default function Listings({currentUser} : {currentUser: User}){
 	const [listings, setListings] = useState<Listing[]>([]);
 	const [listingData, setListingData] = useState<Listing>();
 	const [showReviewModal, setShowReviewModal] = useState(false);
 	const [reviewModal, setReviewModal] = useState<Review>({
-		postUserId: 30,
-		reviewedUserId: 42,
+		postUserId: currentUser.id,
+		reviewedUserId: 0,
 		postContent: "",
 		flagged: false,
 		replyComment: ""
@@ -66,15 +28,11 @@ export default function Listings(){
 	const {isOpen, toggle} = usePutListingModal();
 
 	useEffect(() => {
-		const api = async () => {
-			const data = await fetch("api/listing", {method:"GET"});
-			const json = await data.json();
-			setListings(json);
-		}
-		api();
+		GetListings().then(listings => setListings(listings));
 	}, []);
 
 	const openReviewModal = (listing: Listing) => {
+		setReviewModal({...reviewModal, reviewedUserId: listing.userId})
 		setShowReviewModal(true)
 	}
 
@@ -111,10 +69,10 @@ export default function Listings(){
 	const loadedListings = listings.map(listing => {
 
 		return(
-			<div className='card'>
+			<div key={listing.id} className='card'>
 				<div className='cardHeader'>
 					<p className='cardHeader-element'>{listing.id}</p>
-					<p className='cardHeader-element'>{listing.user?.userID}</p>
+					<p className='cardHeader-element'>{listing.user?.id}</p>
 					<p className='cardHeader-element'>{listing.postDate}</p>
 				</div>
 				<div className='cardContent'>
