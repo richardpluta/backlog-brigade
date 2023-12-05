@@ -4,9 +4,9 @@ import { LoggedInUser } from "../../models/user/LoggedInUser";
 import { useAuth0 } from "@auth0/auth0-react";
 import { format } from "date-fns";
 import { UncontrolledAccordion, AccordionHeader, AccordionBody, Card, CardBody, CardTitle, Row, Col, Button } from "reactstrap";
-import { GetAllHelpWantedsAsync } from "../../services/HelpWantedService";
+import { DeleteHelpWanted, GetAllHelpWantedsAsync } from "../../services/HelpWantedService";
 import helpWanted from "../../models/helpWantedData";
-import { HelpWantedDeleteService } from "../../services/HelpWantedDeleteService";
+
 
 export const AdminHelpWantedsView = () => {
     const  { getAccessTokenSilently, user } = useAuth0();
@@ -34,7 +34,7 @@ export const AdminHelpWantedsView = () => {
   const DeleteById = async (id: number | undefined) =>
   {
     if(id != undefined)
-    await HelpWantedDeleteService(id).then(async () => {
+    await DeleteHelpWanted(id).then(async () => {
        window.location.reload();
       });
   }
@@ -170,3 +170,7 @@ export const AdminHelpWantedsView = () => {
 }
 
 export default AdminHelpWantedsView;
+
+function HelpWantedDeleteService(id: number) {
+  throw new Error("Function not implemented.");
+}
