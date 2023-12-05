@@ -31,8 +31,9 @@ export const AdminHelpWantedsView = () => {
     })();
   }, []);
 
-  const DeleteById = async (id: number) =>
+  const DeleteById = async (id: number | undefined) =>
   {
+    if(id != undefined)
     await HelpWantedDeleteService(id).then(async () => {
        window.location.reload();
       });
@@ -81,7 +82,7 @@ export const AdminHelpWantedsView = () => {
                                     <b>Date</b> 
                                 </Col>
                                 <Col>
-                                    {format(new Date(x.postDate), 'MM-dd-yy')} 
+                                    {x?.postDate != undefined ? format(new Date(x.postDate), 'MM-dd-yy') : "--"} 
                                 </Col>
                             </Row>
                             <Row>
@@ -89,7 +90,7 @@ export const AdminHelpWantedsView = () => {
                                     <b>Rate</b> 
                                 </Col>
                                 <Col>
-                                    ${x.expectedRate.toString()}
+                                    ${x?.expectedRate?.toString()}
                                 </Col>
                             </Row> 
                         <Button
@@ -136,7 +137,7 @@ export const AdminHelpWantedsView = () => {
                                     <b>Date</b> 
                                 </Col>
                                 <Col>
-                                    {format(new Date(x.postDate), 'MM-dd-yy')} 
+                                    {x?.postDate != undefined ? format(new Date(x.postDate), 'MM-dd-yy') : "--"} 
                                 </Col>
                             </Row>
                             <Row>
@@ -144,7 +145,7 @@ export const AdminHelpWantedsView = () => {
                                     <b>Rate</b> 
                                 </Col>
                                 <Col>
-                                    ${x.expectedRate.toString()}
+                                    ${x?.expectedRate?.toString()}
                                 </Col>
                             </Row> 
                         <Button

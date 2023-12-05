@@ -21,7 +21,7 @@ namespace Servicify.API.Services
             return listingRepository.Create(listing);
         }
 
-        public IEnumerable<UserListing> GetAll()
+        public IEnumerable<Listing> GetAll()
         {
             return listingRepository.Get().Include(x => x.User).ToList();
         }

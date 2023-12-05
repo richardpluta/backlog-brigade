@@ -30,8 +30,9 @@ export const AdminReviewsView = () => {
     })();
   }, []);
 
-  const DeleteById = async (id: number) =>
+  const DeleteById = async (id: number| undefined) =>
   {
+    if(id != undefined)
     await DeleteReviewByIDAsync(accessToken, id).then(async () => {
        window.location.reload();
       });
@@ -85,7 +86,7 @@ export const AdminReviewsView = () => {
                                     <b>Posted By</b> 
                                 </Col>
                                 <Col>
-                                    {x.PostUser?.userName == undefined ? "--" : x.PostUser.userName}
+                                    {x.postUser?.userName == undefined ? "--" : x.postUser.userName}
                                 </Col>
                             </Row>
                             <Row>
@@ -93,7 +94,7 @@ export const AdminReviewsView = () => {
                                     <b>Date</b> 
                                 </Col>
                                 <Col>
-                                    {format(new Date(x.postDate), 'MM-dd-yy')} 
+                                    {x?.postDate != undefined ? format(new Date(x?.postDate), 'MM-dd-yy') : "--"} 
                                 </Col>
                             </Row>
                             <Row>
@@ -101,7 +102,7 @@ export const AdminReviewsView = () => {
                                     <b>Reviewed User</b> 
                                 </Col>
                                 <Col>
-                                    {x.ReviewedUser?.toString()}
+                                    {x.reviewedUser?.toString()}
                                 </Col>
                             </Row> 
                         <Button
@@ -140,7 +141,7 @@ export const AdminReviewsView = () => {
                                     <b>Poster</b> 
                                 </Col>
                                 <Col>
-                                    {x.PostUser?.userName == undefined ? "--" : x.PostUser.userName}
+                                    {x.postUser?.userName == undefined ? "--" : x.postUser.userName}
                                 </Col>
                             </Row>
                             <Row>
@@ -148,7 +149,7 @@ export const AdminReviewsView = () => {
                                     <b>Date</b> 
                                 </Col>
                                 <Col>
-                                    {format(new Date(x.postDate), 'MM-dd-yy')} 
+                                    {x.postDate != undefined ? format(new Date(x.postDate), 'MM-dd-yy') : "--"} 
                                 </Col>
                             </Row>
                             <Row>
@@ -156,7 +157,7 @@ export const AdminReviewsView = () => {
                                     <b>Reviewed User</b> 
                                 </Col>
                                 <Col>
-                                    {x.ReviewedUser?.toString()}
+                                    {x.reviewedUser?.toString()}
                                 </Col>
                             </Row> 
                         <Button

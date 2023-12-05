@@ -3,17 +3,18 @@ import { GetCurrentUser } from "../../services/UserService";
 import { LoggedInUser } from "../../models/user/LoggedInUser";
 import { useAuth0 } from "@auth0/auth0-react";
 import { DeleteListingAsync, GetAllListings } from "../../services/ListingService";
-import { Listing, UserListing } from "../../models/listing/Listing";
 import { Accordion, AccordionBody, AccordionHeader, Button, Card, CardBody, CardColumns, CardSubtitle, CardText, CardTitle, Col, Row, Table, UncontrolledAccordion } from "reactstrap";
 import {format} from 'date-fns';
+import { Listing } from "../../models/listing/Listing";
+
 
 export const AdminListingsView = () => {
     const  { getAccessTokenSilently, user } = useAuth0();
   const [currentUser, setCurrentUser] = useState<LoggedInUser>();
   const [accessToken, setAccessToken] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [flaggedList, setFlaggedList] = useState<UserListing[]>();
-  const [listingList, setListingList] = useState<UserListing[]>();
+  const [flaggedList, setFlaggedList] = useState<Listing[]>();
+  const [listingList, setListingList] = useState<Listing[]>();
 
   useEffect(() => {
     (async () => {
@@ -22,18 +23,18 @@ export const AdminListingsView = () => {
         await GetCurrentUser(token, user?.email).then(async (currentUser: LoggedInUser) => {
           setCurrentUser(currentUser);
         });
-        await GetAllListings(token).then(async (listings: UserListing[]) => {
-            setFlaggedList(listings.filter(x => x.listing.flagged))
-            setListingList(listings.filter(x => !x.listing.flagged));
+        await GetAllListings(token).then(async (listings: Listing[]) => {
+            setFlaggedList(listings.filter(x => x.flagged))
+            setListingList(listings.filter(x => !x.flagged));
           });
       }).finally(() => setIsLoading(false));
     })();
   }, []);
 
-  const DeleteByListingId = async (listing : Listing) =>
+  const DeleteByListingId = async (id:number|undefined) =>
   {
-    const toDelete:Listing = listing;
-    await DeleteListingAsync(accessToken, toDelete.id).then(async () => {
+    if(id != undefined)
+    await DeleteListingAsync(accessToken, id).then(async () => {
        window.location.reload();
         
       });
@@ -59,7 +60,7 @@ export const AdminListingsView = () => {
             flaggedList?.map((x,i) => { return(
               
                 <Card
-                    color={x.listing.flagged ? "warning" : "light"}
+                    color={x.flagged ? "warning" : "light"}
                     body
                     key = {i}
                     style = {{border: "gray solid 1px", margin:"5px"}}
@@ -67,7 +68,7 @@ export const AdminListingsView = () => {
 
                 <CardBody>
                         <CardTitle tag="h6">
-                            {x.listing.postContent}
+                            {x.postContent}
                         </CardTitle>
                             <Row>
                                 <Col md={3}>
@@ -82,7 +83,7 @@ export const AdminListingsView = () => {
                                     <b>Date</b> 
                                 </Col>
                                 <Col>
-                                    {format(new Date(x.listing.creationDate), 'MM-dd-yy')} 
+                                    {x?.creationDate != undefined ? format(new Date(x.creationDate), 'MM-dd-yy') : "--"} 
                                 </Col>
                             </Row>
                             <Row>
@@ -90,11 +91,11 @@ export const AdminListingsView = () => {
                                     <b>Rate</b> 
                                 </Col>
                                 <Col>
-                                    ${x.listing.expectedRate.toString()}
+                                    ${x?.expectedRate?.toString()}
                                 </Col>
                             </Row> 
                         <Button
-                            onClick={() => DeleteByListingId(x.listing)}
+                            onClick={() => DeleteByListingId(x.id)}
                             color="danger"
                             >
                             Remove
@@ -114,7 +115,7 @@ export const AdminListingsView = () => {
          {
             listingList?.map((x,i) => { return(
                 <Card
-                    color={x.listing.flagged ? "warning" : "light"}
+                    color={x.flagged ? "warning" : "light"}
                     body
                     key = {i}
                     style = {{border: "gray solid 1px", margin:"5px"}}
@@ -122,7 +123,7 @@ export const AdminListingsView = () => {
 
                 <CardBody>
                         <CardTitle tag="h6">
-                            {x.listing.postContent}
+                            {x.postContent}
                         </CardTitle>
                             <Row>
                                 <Col md={3}>
@@ -137,7 +138,7 @@ export const AdminListingsView = () => {
                                     <b>Date</b> 
                                 </Col>
                                 <Col>
-                                    {format(new Date(x.listing.creationDate), 'MM-dd-yy')} 
+                                    {x.creationDate != undefined ? format(new Date(x.creationDate), 'MM-dd-yy') : "--"} 
                                 </Col>
                             </Row>
                             <Row>
@@ -145,11 +146,11 @@ export const AdminListingsView = () => {
                                     <b>Rate</b> 
                                 </Col>
                                 <Col>
-                                    ${x.listing.expectedRate.toString()}
+                                    ${x?.expectedRate?.toString()}
                                 </Col>
                             </Row> 
                         <Button
-                            onClick={() => DeleteByListingId(x.listing)}
+                            onClick={() => DeleteByListingId(x.id)}
                             color="danger"
                             >
                             Remove

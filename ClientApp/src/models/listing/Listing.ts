@@ -5,10 +5,10 @@ export interface Listing {
     userId:       number;
     postContent:  string;
     creationDate: Date;
-    content:      string;
     flagged:      boolean;
     skillSet:     number;
     expectedRate: number;
+    user?: LoggedInUser;
 }
 
 export interface UserListing {

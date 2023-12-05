@@ -4,7 +4,7 @@ import { LoggedInUser, UserType } from "../../models/user/LoggedInUser";
 import { useAuth0 } from "@auth0/auth0-react";
 import { AccordionBody, AccordionHeader, Button, Card, CardBody, CardTitle, Col, Row, Table, UncontrolledAccordion } from "reactstrap";
 import { GetAllListings } from "../../services/ListingService";
-import { UserListing } from "../../models/listing/Listing";
+import { Listing, UserListing } from "../../models/listing/Listing";
 import { GetAllHelpWantedsAsync } from "../../services/HelpWantedService";
 import helpWanted from "../../models/helpWantedData";
 
@@ -32,9 +32,9 @@ export const AdminStatsBar = () => {
             setProCount(users.filter(x => x.userType == UserType.Professional).length);
             setClientCount(users.filter(x => x.userType == UserType.Professional).length);      
           });
-          await GetAllListings(token).then(async (listings: UserListing[]) => {
+          await GetAllListings(token).then(async (listings: Listing[]) => {
             setListingsCount(listings.length);
-            setFlaggedListingsCount(listings.filter(x => x.listing.flagged).length)
+            setFlaggedListingsCount(listings.filter(x => x.flagged).length)
         });
           await GetAllHelpWantedsAsync(token).then(async (helpWanteds: helpWanted[])=> {
             setHelpWantedCount(helpWanteds.length);

@@ -6,16 +6,17 @@ import "./HelpWanteds.css"
 import helpWanted from '../../models/helpWantedData';
 import UpdateHelpWantedModal from '../common/Modals/UpdateHelpWantedModal';
 import usePutHelpWantedModal from '../common/Hooks/usePutHelpWantedModal';
-import LoggedInUser from "../../models/userData";
+import { LoggedInUser } from '../../models/user/LoggedInUser';
+
 
 export default function HelpWanted(){
 
 	
 	const DUMMY_USER:LoggedInUser = {
-		userID: 123,
+		id: 123,
 		userType: 0,
 		userName: "DummyUserFromModal",
-		phone: 987654321,
+		phoneNumber: "987654321",
 		email: "nam@email.com",
 		skillSet: 0,
 		zip: '12345',
@@ -92,7 +93,7 @@ export default function HelpWanted(){
 				<div className='cardFooter'>
 				<p className='cardFooter-element'>{helpWanted.flagged}</p>
 					<button onClick={(e) => onFlagSubmit(e, helpWanted)}><img src={flag} alt="Flagged" className='cardFooter-flagIcon'/></button>
-					{matchedLoggedInUser?.userID == helpWanted.userId &&(
+					{matchedLoggedInUser?.id == helpWanted.userId &&(
 						<div>				
 							<button className='cardFooter-edit' onClick={(e) => {openEditHelpWantedModal(e, helpWanted)}}>Edit</button>
 							<button className='cardFooter-delete' onClick={deleteHelpWanteds}>Delete</button>
