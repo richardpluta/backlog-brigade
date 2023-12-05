@@ -1,4 +1,4 @@
-import listing from "../models/listingData";
+import Listing from "../models/listingData";
 import listingData from "../models/listingData";
 
 export const getTestResponse = async () => {
@@ -10,7 +10,7 @@ export const getTestResponse = async () => {
 
   
   //may need to clean this up a bit and move to its own service, lots of logging. 
-  export const testPostListing = async (data:listing) => {
+  export const testPostListing = async (data:Listing) => {
     console.log(data);
     const body = JSON.stringify(data);
     console.log(body);

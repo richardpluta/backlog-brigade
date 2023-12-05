@@ -13,7 +13,7 @@ interface ModalType {
 }
 
 const DUMMY_USER:LoggedInUser = {
-		userID: 123,
+		id: 123,
 		userType: 0,
 		userName: "DummyUserFromModal",
 		phone: 987654321,
