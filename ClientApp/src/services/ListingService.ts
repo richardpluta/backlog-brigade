@@ -13,17 +13,14 @@ export const GetAllListings = async (token:string) => {
     .catch((err) => console.log(err));
 }
 
-export const DeleteListingAsync = async(token:string, listing:Listing) => {
+export const DeleteListingAsync = async(token:string, id:number) => {
     console.log("In Delete Listing");
-    const body = JSON.stringify(listing);
-    console.log(body)
-    return await fetch(`api/listing`, {
+    return await fetch(`/api/listing/${id}`, {
         method: "DELETE",
         headers : {
             Authorization: `Bearer: ${token}`,
             "Content-Type": "application/json"
         },
-        body
     })
     .then()
     .catch((err) => console.log(err));
@@ -34,7 +31,7 @@ export const ListingService = async (data:listing) => {
     
     const body = JSON.stringify(data);
 
-    const response = await fetch('api/listing',
+    const response = await fetch('/api/listing',
     {
       method: 'POST',
       headers: {

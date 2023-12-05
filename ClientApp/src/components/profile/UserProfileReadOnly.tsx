@@ -114,7 +114,7 @@ return(
                 >
                 <CardBody>
                         <CardTitle tag="h6">
-                            {x.listing.content}
+                            {x.listing.postContent}
                         </CardTitle>
                             <Row>
                                 <Col md={4}>

@@ -29,7 +29,7 @@ namespace Servicify.API.Services
             {
                 var userListingItem = new UserListing();
                 userListingItem.Listing = listing;
-                userListingItem.User = users.Where(x => x.Id == listing.UserId).FirstOrDefault();
+                userListingItem.User = users.Where(x => x.Id == listing.userId).FirstOrDefault();
                 userListingList.Add(userListingItem);
             }
             return userListingList;

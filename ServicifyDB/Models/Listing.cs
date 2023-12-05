@@ -28,7 +28,7 @@ namespace ServicifyDB.Models
         public string postContent { get; set; }
 
         [Column("flagged")]
-        public bool Flagged { get; set; }
+        public bool? Flagged { get; set; }
 
         [Column("skill_set")]
         [Required]

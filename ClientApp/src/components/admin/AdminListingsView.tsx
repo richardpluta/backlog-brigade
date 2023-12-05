@@ -33,10 +33,8 @@ export const AdminListingsView = () => {
   const DeleteByListingId = async (listing : Listing) =>
   {
     const toDelete:Listing = listing;
-    await DeleteListingAsync(accessToken, toDelete).then(async () => {
-        await GetAllListings(accessToken).then(async (listings: UserListing[]) => {
-            setListingList(listings);
-          });
+    await DeleteListingAsync(accessToken, toDelete.id).then(async () => {
+       window.location.reload();
         
       });
   }
@@ -69,7 +67,7 @@ export const AdminListingsView = () => {
 
                 <CardBody>
                         <CardTitle tag="h6">
-                            {x.listing.content}
+                            {x.listing.postContent}
                         </CardTitle>
                             <Row>
                                 <Col md={3}>
@@ -124,7 +122,7 @@ export const AdminListingsView = () => {
 
                 <CardBody>
                         <CardTitle tag="h6">
-                            {x.listing.content}
+                            {x.listing.postContent}
                         </CardTitle>
                             <Row>
                                 <Col md={3}>

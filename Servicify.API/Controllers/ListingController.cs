@@ -36,12 +36,6 @@ namespace Servicify.API.Controllers
             return Ok();
         }
 
-        [HttpDelete]
-        public ActionResult Delete([FromBody] Listing listing)
-        {
-            listingService.Delete(listing);
-            return  Ok("Deleted");
-        }
         
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
