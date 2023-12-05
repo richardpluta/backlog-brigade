@@ -1,4 +1,5 @@
-﻿using ServicifyDB.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using ServicifyDB.Models;
 using ServicifyDB.Repository;
 using System.Reflection;
 
@@ -20,7 +21,7 @@ namespace Servicify.API.Services
 
         public IEnumerable<HelpWanted> GetAll()
         {
-            return helpWantedRepository.Get().ToList();
+            return helpWantedRepository.Get().Include(x => x.user).ToList();
         }
 
         public HelpWanted Update(int id, HelpWanted helpWanted)

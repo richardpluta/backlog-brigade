@@ -21,7 +21,7 @@ namespace Servicify.API.Services
 
         public IEnumerable<Review> GetAll()
         {
-            return reviewRepository.Get();
+            return reviewRepository.Get().Include(x => x.PostUser).Include(x => x.ReviewedUser);
         }
 
         public IEnumerable<Review> GetForUser(int userId)
