@@ -1,15 +1,23 @@
-.professional-container{
+.professional-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
+
+.professional-column {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
-
+	width: 40%;
 }
+
 .create-listing-button{
 	background-color: lightgreen;
 	width: 40%;
 	border-radius: 5px;
 }
-.listings{
-	width: 40%;
+
+.data-list {
+	width: 100%
 }

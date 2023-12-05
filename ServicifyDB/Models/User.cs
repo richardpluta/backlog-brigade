@@ -28,7 +28,7 @@ namespace ServicifyDB.Models
 
         [Column("user_name")]
         [Required]
-        public string UserName { get; set; } = string.Empty;
+        public string? UserName { get; set; }
 
         [Column("phone")]
         public string? PhoneNumber { get; set; }

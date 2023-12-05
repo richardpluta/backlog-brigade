@@ -1,4 +1,5 @@
 ﻿using Servicify.Data.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using ServicifyDB.Models;
 using ServicifyDB.Repository;
 
@@ -22,34 +23,25 @@ namespace Servicify.API.Services
 
         public IEnumerable<UserListing> GetAll()
         {
-            var listings = listingRepository.Get().ToList();
-            var users = userRepository.Get().ToList();
-            var userListingList = new List<UserListing>();
-            foreach(var listing in listings)
-            {
-                var userListingItem = new UserListing();
-                userListingItem.Listing = listing;
-                userListingItem.User = users.Where(x => x.Id == listing.userId).FirstOrDefault();
-                userListingList.Add(userListingItem);
-            }
-            return userListingList;
+            return listingRepository.Get().Include(x => x.User).ToList();
         }
 
         public Listing Update(int id, Listing listing)
         {
-            Listing dbListing = listingRepository.Get().Where(x => x.id == id).First()
+            Listing dbListing = listingRepository.Get().Where(x => x.Id == id).FirstOrDefault()
                 ?? throw new BadHttpRequestException("Listing not found", 404);
 
-            dbListing.postContent = listing.postContent;
-            dbListing.skillSet = listing.skillSet;
-            dbListing.expectedRate = listing.expectedRate;
+            dbListing.PostContent = listing.PostContent;
+            dbListing.SkillSet = listing.SkillSet;
+            dbListing.ExpectedRate = listing.ExpectedRate;
 
             return listingRepository.Update(dbListing);
         }
 
         public void Delete(int id)
         {
-            Listing listing = listingRepository.Get().Where(x => x.id == id).First();
+            Listing listing = listingRepository.Get().Where(x => x.Id == id).FirstOrDefault()
+                ?? throw new BadHttpRequestException("Listing not found", 404);
 
             listingRepository.Delete(listing);
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServicifyDB.Models;
 using Servicify.API.Services;
+
 namespace Servicify.API.Controllers
 {
     [Route("api/review")]
@@ -12,25 +13,35 @@ namespace Servicify.API.Controllers
         {
             this.reviewService = reviewService;
         }
+
         [HttpPost]
         public ActionResult<Review> Create([FromBody] Review review)
         {
             return Ok(reviewService.Create(review));
         }
+
         [HttpGet]
         public ActionResult<List<Review>> GetAll()
         {
             return Ok(reviewService.GetAll());
         }
-        [HttpPut]
-        public ActionResult<Review> Update(Review review)
+
+        [HttpGet("user/{userId}")]
+        public ActionResult<List<Review>> GetForUser(int userId)
         {
-            return Ok(reviewService.Update(review));
+            return Ok(reviewService.GetForUser(userId));
         }
-        [HttpDelete]
-        public ActionResult Delete(Review review)
+
+        [HttpPut("{id}")]
+        public ActionResult<Review> Update(int id, [FromBody] Review review)
         {
-            reviewService.Delete(review);
+            return Ok(reviewService.Update(id, review));
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
+        {
+            reviewService.Delete(id);
             return Ok();
         }
     }

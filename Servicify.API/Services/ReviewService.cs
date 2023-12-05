@@ -1,4 +1,6 @@
-﻿using ServicifyDB.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ServicifyDB.Models;
 using ServicifyDB.Repository;
 
 namespace Servicify.API.Services
@@ -19,16 +21,29 @@ namespace Servicify.API.Services
 
         public IEnumerable<Review> GetAll()
         {
-            return reviewRepository.Get().ToList();
+            return reviewRepository.Get();
         }
 
-        public Review Update(Review review)
+        public IEnumerable<Review> GetForUser(int userId)
         {
-            return reviewRepository.Update(review);
+            return reviewRepository.Get().Where(x => x.ReviewedUserId == userId).Include(x => x.PostUser);
         }
 
-        public void Delete(Review review)
+        public Review Update(int id, Review review)
         {
+            Review dbReview = reviewRepository.Get().FirstOrDefault(x => x.id == id)
+                ?? throw new BadHttpRequestException("Review not found", 404);
+
+            dbReview.PostContent = review.PostContent;
+            dbReview.ReplyComment = review.ReplyComment;
+
+            return reviewRepository.Update(dbReview);
+        }
+
+        public void Delete(int id)
+        {
+            Review review = reviewRepository.Get().FirstOrDefault(x => x.id == id)
+                ?? throw new BadHttpRequestException("Review not found", 404);
             reviewRepository.Delete(review);
         }
     }

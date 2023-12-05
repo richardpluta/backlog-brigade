@@ -25,9 +25,8 @@ export const DeleteListingAsync = async(token:string, id:number) => {
     .then()
     .catch((err) => console.log(err));
   }
- 
-  //may need to clean this up a bit and move to its own service, lots of logging. 
-export const ListingService = async (data:listing) => {
+
+export const CreateListing = async (data: Listing) => {
     
     const body = JSON.stringify(data);
 
@@ -41,4 +40,15 @@ export const ListingService = async (data:listing) => {
     }
   );
   return response;
+}
+
+export const GetListings = async () => {
+  const response = await fetch('api/listing', {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json"
+    },
+  }).then(response => response.json());
+
+  return response as Listing[];
 }

@@ -28,9 +28,9 @@ namespace Servicify.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<HelpWanted> Update(int id)
+        public ActionResult<HelpWanted> Update(int id, [FromBody] HelpWanted helpWanted)
         {
-            helpWantedService.Update(id);
+            helpWantedService.Update(id, helpWanted);
             return Ok();
         }
 
