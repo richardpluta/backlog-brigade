@@ -11,6 +11,7 @@ interface ModalType {
 	children?: ReactNode;
 	isOpen: Boolean;
 	toggle: () => void;
+	currentUser: LoggedInUser
 }
 
 const DUMMY_USER:LoggedInUser = {
@@ -55,7 +56,7 @@ const CreateListingModal = (props: ModalType) => {
 			flagged: false,
 			skillSet: Number(target.skills.value),
 			expectedRate: Number(target.rate.value),
-			user: DUMMY_USER
+			user: props.currentUser
 		}
 
 		//moved call to backend to test service, probably should be broken out into a ListingService with the API calls in it

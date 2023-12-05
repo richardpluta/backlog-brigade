@@ -7,16 +7,16 @@ import useCreateListingModal from "../common/Hooks/useCreateListingModal";
 import "./ProfessionalMain.css";
 import Listings from "./Listings"
 
-export default function ProfessionalMain() {
+export default function ProfessionalMain(props:any) {
 
 	const {isOpen, toggle} = useCreateListingModal();
 	return (
 		<div className="professional-container">
 			<h1>View Listings</h1>
 			<button onClick={toggle} className="create-listing-button">Create a new Listing</button>
-			<CreateListingModal isOpen={isOpen} toggle={toggle}></CreateListingModal>
+			<CreateListingModal isOpen={isOpen} toggle={toggle} currentUser={props.currentUser}></CreateListingModal>
 			<div className="listings">
-				<Listings />
+				<Listings currentUser={props.currentUser}/>
 			</div>
 			
 		</div>

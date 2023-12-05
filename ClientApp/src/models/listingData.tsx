@@ -9,5 +9,5 @@ export default interface listing{
     flagged: boolean,
     skillSet: number,
     expectedRate: number
-    user: User
+    user: User | undefined
 }

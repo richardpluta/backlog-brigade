@@ -9,7 +9,7 @@ import listing from '../../models/listingData';
 import UpdateListingModal from '../common/Modals/UpdateListingModal';
 import usePutListingModal from '../common/Hooks/usePutListingModal';
 
-export default function Listing(){
+export default function Listing(props:any){
 
 	/*
 	const DUMMY_LISTINGS = [
@@ -88,7 +88,7 @@ export default function Listing(){
 			<div className='card'>
 				<div className='cardHeader'>
 					<p className='cardHeader-element'>{listing.id}</p>
-					<p className='cardHeader-element'>{/*listing.user.userID*/}DUMMY NAME</p>
+					<p className='cardHeader-element'>{listing.user?.userName}</p>
 					<p className='cardHeader-element'>{listing.postDate}</p>
 				</div>
 				<div className='cardContent'>

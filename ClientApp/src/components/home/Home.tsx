@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import Profile from "../common/Profile";
 import NavMenu from "../common/NavMenu";
@@ -9,9 +9,9 @@ import { GetCurrentUser } from "../../services/UserService";
 import CreateUserForm from "../profile/CreateUserForm";
 
 
-const Home = () =>  {
+const Home = (props:any) =>  {
   const  { getAccessTokenSilently, loginWithRedirect, user, isAuthenticated } = useAuth0();
-  const [currentUser, setCurrentUser] = useState<LoggedInUser>();
+  //const [currentUser, setCurrentUser] = useState<LoggedInUser>();
   const [accessToken, setAccessToken] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -21,21 +21,21 @@ const Home = () =>  {
         setAccessToken(token);
         await GetCurrentUser(token, user?.email).then(async (currentUser: LoggedInUser) => {
           console.log(currentUser);
-          setCurrentUser(currentUser);
+          props.setCurrentUser(currentUser);
         }).finally(() => setIsLoading(false));
       });
     })();
   }, []);
 
-    if(!isLoading && isAuthenticated && currentUser != undefined)
+    if(!isLoading && isAuthenticated && props.currentUser != undefined)
     {
       return (
         <>
-        <p>Welcome {currentUser?.userName}!</p>
+        <p>Welcome {props.currentUser?.userName}!</p>
         </>
       );
     }
-    else if(!isLoading && isAuthenticated && currentUser == undefined)
+    else if(!isLoading && isAuthenticated && props.currentUser == undefined)
     {
       return (
         <>
