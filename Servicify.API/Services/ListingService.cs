@@ -18,7 +18,16 @@ namespace Servicify.API.Services
 
         public Listing Create(Listing listing)
         {
-            return listingRepository.Create(listing);
+            Listing newListing = new()
+            {
+                UserId = listing.UserId,
+                CreationDate = DateTime.UtcNow,
+                PostContent = listing.PostContent,
+                SkillSet = listing.SkillSet,
+                ExpectedRate = listing.ExpectedRate
+            };
+
+            return listingRepository.Create(newListing);
         }
 
         public IEnumerable<Listing> GetAll()

@@ -1,73 +1,61 @@
 import React, { useEffect, useState } from 'react'
 import flag from '../../../public/assets/red-flag-icon.png'
-import {HelpWantedDeleteService} from "../../services/HelpWantedDeleteService";
-import { HelpWantedPutService } from '../../services/HelpWantedPutService';
+import {DeleteHelpWanted, GetHelpWanteds} from "../../services/HelpWantedService";
+import { UpdateHelpWanted } from '../../services/HelpWantedService';
 import "./HelpWanteds.css"
-import helpWanted from '../../models/helpWantedData';
+import HelpWanted from '../../models/helpWantedData';
 import UpdateHelpWantedModal from '../common/Modals/UpdateHelpWantedModal';
 import usePutHelpWantedModal from '../common/Hooks/usePutHelpWantedModal';
-import { LoggedInUser } from '../../models/user/LoggedInUser';
+import User from '../../models/userData';
 
 
-export default function HelpWanted(){
+export default function HelpWanteds({currentUser} : {currentUser: User}) {
+	const [helpWanteds, setHelpWanteds] = useState<HelpWanted[]>([]);
+	const [helpWantedData, setHelpWantedData] = useState<HelpWanted>();
+	const [postContentFilter, setPostContentFilter] = useState("");
 
-	
-	const DUMMY_USER:LoggedInUser = {
-		id: 123,
-		userType: 0,
-		userName: "DummyUserFromModal",
-		phoneNumber: "987654321",
-		email: "nam@email.com",
-		skillSet: 0,
-		zip: '12345',
-		userRate: 0,
+	const GetData = () => {
+		let filterParameters: {[key: string]: string} = {}
+
+		if (postContentFilter) {
+			filterParameters["postContent"] = postContentFilter;
+		}
+
+		GetHelpWanteds(filterParameters).then(result => setHelpWanteds(result))
 	}
 
-	const [generalSearchString, setGeneralSearchString] = useState<helpWanted>();
-	const [matchedLoggedInUser, setLoggedInUserID] = useState<LoggedInUser>();
-	const [result, setResult] = useState<helpWanted[]>([]);
-	const [helpWantedData, setHelpWantedData] = useState<helpWanted>();
-
 	useEffect(() => {
-		const api = async () => {
-			const data = await fetch("api/helpwanted", {method:"GET"});
-			const json = await data.json();
-			setResult(json);
-			setLoggedInUserID(DUMMY_USER);
-			setGeneralSearchString(helpWantedData); 
-		}
-		api();
+		GetData();
 	}, []);
 
 	async function deleteHelpWanteds(event: React.MouseEvent<HTMLButtonElement>){
 		event.preventDefault();
 		const deleteId = event.currentTarget.parentElement?.parentElement?.childNodes[0].childNodes[0].childNodes[0].nodeValue;
-		await HelpWantedDeleteService(Number(deleteId))
+		await DeleteHelpWanted(Number(deleteId))
 		.then((res:any) => {
 			window.location.reload()
 		});
 
 	}
 
-	async function openEditHelpWantedModal(event: React.MouseEvent<HTMLButtonElement>, helpwanted:helpWanted){
+	async function openEditHelpWantedModal(event: React.MouseEvent<HTMLButtonElement>, helpwanted:HelpWanted){
 		
 		event.preventDefault();
 		setHelpWantedData(helpwanted);
 		toggle();
 	}
 
-
 	const {isOpen, toggle} = usePutHelpWantedModal();
 
-	async function onFlagSubmit(event: React.MouseEvent<HTMLButtonElement>, helpwanted:helpWanted)
+	async function onFlagSubmit(event: React.MouseEvent<HTMLButtonElement>, helpwanted:HelpWanted)
 	{
 		event.preventDefault();
 		helpwanted.flagged = true;
-		helpwanted.user = DUMMY_USER; 
+		helpwanted.user = currentUser; 
 
 		console.log(helpwanted)
 
-		await HelpWantedPutService(helpwanted).then(
+		await UpdateHelpWanted(helpwanted).then(
 			(res:any) => {
 				console.log(res);
 				window.location.reload();
@@ -75,7 +63,7 @@ export default function HelpWanted(){
 		)
 	}
 
-	const loadedHelpWanteds = result.map(helpWanted => {
+	const loadedHelpWanteds = helpWanteds.map(helpWanted => {
 
 		return(
 			
@@ -93,7 +81,7 @@ export default function HelpWanted(){
 				<div className='cardFooter'>
 				<p className='cardFooter-element'>{helpWanted.flagged}</p>
 					<button onClick={(e) => onFlagSubmit(e, helpWanted)}><img src={flag} alt="Flagged" className='cardFooter-flagIcon'/></button>
-					{matchedLoggedInUser?.id == helpWanted.userId &&(
+					{currentUser.id == helpWanted.userId &&(
 						<div>				
 							<button className='cardFooter-edit' onClick={(e) => {openEditHelpWantedModal(e, helpWanted)}}>Edit</button>
 							<button className='cardFooter-delete' onClick={deleteHelpWanteds}>Delete</button>
@@ -107,6 +95,17 @@ export default function HelpWanted(){
 
 	return (
 	  	<>
+			<div className="sorting">
+				<label>Content Search:</label>
+				<input className="sortingInput" id="contentSearch" value={postContentFilter} onChange={(e) => setPostContentFilter(e.target.value)}/>
+				<label>Skill/Service Sort:</label>
+				<input className="sortingInput" id="skillSort" />
+				<label>Highest Price Sort:</label>
+				<input className="sortingInput" id="priceSort" />
+				<label>Location Sort:</label>
+				<input className="sortingInput" id="locationSort" />		
+			</div>
+			<button className="applyButton" onClick={() => GetData()}>Apply Filters and Searches</button>
 			<div className='updateHelpWantedModal'>
 				<UpdateHelpWantedModal isOpen={isOpen} toggle={toggle} data={helpWantedData}></UpdateHelpWantedModal>
 			</div>

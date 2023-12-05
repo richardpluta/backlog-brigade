@@ -22,9 +22,9 @@ namespace Servicify.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<HelpWanted>> GetAll()
+        public ActionResult<List<HelpWanted>> GetAll([FromQuery] Dictionary<string, string> filterParameters)
         {
-            return Ok(helpWantedService.GetAll());
+            return Ok(helpWantedService.GetAll(filterParameters));
         }
 
         [HttpPut("{id}")]

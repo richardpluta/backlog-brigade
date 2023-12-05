@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ServicifyDB.Models;
 using ServicifyDB.Repository;
 
@@ -16,7 +15,15 @@ namespace Servicify.API.Services
 
         public Review Create(Review review)
         {
-            return reviewRepository.Create(review);
+            Review newReview = new()
+            {
+                PostUserId = review.PostUserId,
+                ReviewedUserId = review.ReviewedUserId,
+                PostDate = DateTime.UtcNow,
+                PostContent = review.PostContent
+            };
+
+            return reviewRepository.Create(newReview);
         }
 
         public IEnumerable<Review> GetAll()

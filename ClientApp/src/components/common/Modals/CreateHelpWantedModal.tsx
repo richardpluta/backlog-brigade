@@ -1,9 +1,10 @@
 import React, { ReactNode, useState, MouseEvent, FormEvent, useEffect } from "react";
-import helpWanted from "../../../models/helpWantedData";
+import HelpWanted from "../../../models/helpWantedData";
 import "./CreateHelpWantedModal.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoggedInUser from "../../../models/userData";
-import {HelpWantedPostService} from "../../../services/HelpWantedPostService";
+import {CreateHelpWanted} from "../../../services/HelpWantedService";
+import User from "../../../models/userData";
 
 
 interface ModalType {
@@ -12,33 +13,10 @@ interface ModalType {
 	toggle: () => void;
 }
 
-const DUMMY_USER:LoggedInUser = {
-		id: 123,
-		userType: 0,
-		userName: "DummyUserFromModal",
-		phone: 987654321,
-		email: "nam@email.com",
-		skillSet: 0,
-		zip: '12345',
-		userRate: 0,
-	}
+const CreateHelpWantedModal = ({currentUser, isOpen, toggle}: {currentUser: User, isOpen: boolean, toggle: () => void}) => {
+	useEffect(() => { }, []);
 
-
-
-const CreateHelpWantedModal = (props: ModalType) => {
-
-	const {getAccessTokenSilently} = useAuth0();
-	const [accessToken, setAccessToken] = useState("");
-
-	useEffect(() => {
-		(async () => {
-		  await getAccessTokenSilently().then(async (token) => {
-			setAccessToken(token);
-		  });
-		})();
-	  }, []);
-
-	const closeModal = useEffect(() => {props.toggle});
+	const closeModal = useEffect(() => {toggle});
 	  
 	const onSubmit = async (event: any) => {
 		event.preventDefault();
@@ -46,19 +24,18 @@ const CreateHelpWantedModal = (props: ModalType) => {
 		const target = event.target;
 
 		//updated this to constant data just for testing purposes so i could rule out the form being part of the issue
-		const data:helpWanted = {
+		const data:HelpWanted = {
 			id: 0,
-			userId: 1,
-			postDate: "2023-11-10T04:41:44.124Z",
+			userId: currentUser.id,
 			postContent: target.description.value,
 			flagged: false,
 			skillSet: Number(target.skills.value),
 			expectedRate: Number(target.rate.value),
-			user: DUMMY_USER
+			user: currentUser
 		}
 
 		//moved call to backend to test service, probably should be broken out into a ListingService with the API calls in it
-		await HelpWantedPostService(data)
+		await CreateHelpWanted(data)
 		.then((res:any) => {
 			console.log("Post success");
 			window.location.reload();
@@ -69,7 +46,7 @@ const CreateHelpWantedModal = (props: ModalType) => {
 	return(
 
 		<>
-			{props.isOpen && (
+			{isOpen && (
 				<div className="overlay">
 					<div className="box">
 						<form className="create-helpwanted-form" onSubmit={onSubmit}>
@@ -92,7 +69,7 @@ const CreateHelpWantedModal = (props: ModalType) => {
 							</div>
 							<div>
 								<button>Create</button>
-								<button onClick={props.toggle}>Cancel</button>
+								<button onClick={toggle}>Cancel</button>
 							</div>
 						</form>
 					</div>

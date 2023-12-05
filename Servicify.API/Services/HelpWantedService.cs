@@ -16,12 +16,48 @@ namespace Servicify.API.Services
 
         public HelpWanted Create(HelpWanted helpWanted)
         {
-            return helpWantedRepository.Create(helpWanted);
+            HelpWanted newHelpWanted = new()
+            {
+                userId = helpWanted.userId,
+                postDate = DateTime.UtcNow,
+                postContent = helpWanted.postContent,
+                skillSet = helpWanted.skillSet,
+                expectedRate = helpWanted.expectedRate,
+            };
+
+            return helpWantedRepository.Create(newHelpWanted);
         }
 
-        public IEnumerable<HelpWanted> GetAll()
+        public IEnumerable<HelpWanted> GetAll(Dictionary<string, string> filterParameters)
         {
-            return helpWantedRepository.Get().Include(x => x.user).ToList();
+            IQueryable<HelpWanted> queryable = helpWantedRepository.Get();
+
+            if (filterParameters.ContainsKey("postContent"))
+            {
+                queryable = queryable.Where(x => x.postContent.Contains(filterParameters["postContent"]));
+            }
+
+            if (filterParameters.ContainsKey("skillSet"))
+            {
+                queryable = queryable.Where(x => x.skillSet == (Skillset) int.Parse(filterParameters["skillSet"]));
+            }
+
+            if (filterParameters.ContainsKey("userName"))
+            {
+                queryable = queryable.Where(x => x.user.UserName != null && x.user.UserName.Contains(filterParameters["userName"]));
+            }
+
+            if (filterParameters.ContainsKey("expectedRate"))
+            {
+                queryable = queryable.Where(x => x.expectedRate <= int.Parse(filterParameters["expectedRate"]));
+            }
+
+            if (filterParameters.ContainsKey("zip"))
+            {
+                queryable = queryable.Where(x => x.user.Zip != null && x.user.Zip.Contains(filterParameters["expectedRate"]));
+            }
+
+            return queryable.ToList();
         }
 
         public HelpWanted Update(int id, HelpWanted helpWanted)

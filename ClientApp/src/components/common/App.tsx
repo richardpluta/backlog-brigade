@@ -20,7 +20,7 @@ export default function App() {
       let user = await getAccessTokenSilently().then(async token => {
           return await GetCurrentUser(token, auth0User?.email).then((currentUser: LoggedInUser) => {
               return {
-                  id:currentUser.id,
+                  id: currentUser.id,
                   userType: currentUser.userType,
                   userName: currentUser.userName,
                   phoneNumber: currentUser.phoneNumber,
@@ -44,7 +44,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/professional" element = {<ProfessionalMain currentUser={user as User}/>}/>
-          <Route path="/client" element = {<ClientMain/>}/>
+          <Route path="/client" element = {<ClientMain currentUser={user as User}/>}/>
           <Route path="/admin" element = {<AdminMain />}/>
           <Route path="/profile" element = {<UserProfileMain/>}/>
           <Route path="/profile/:id" element={<UserProfileReadOnly />} />
