@@ -1,15 +1,15 @@
 import React, { ReactNode, useState, MouseEvent, FormEvent, useEffect } from "react";
-import helpWanted from "../../../models/helpWantedData";
+import HelpWanted from "../../../models/helpWantedData";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoggedInUser from "../../../models/userData";
-import {HelpWantedPutService} from "../../../services/HelpWantedPutService";
+import {UpdateHelpWanted} from "../../../services/HelpWantedService";
 import "./UpdateHelpWantedModal.css";
 
 interface ModalType {
 	children?: ReactNode;
 	isOpen: Boolean;
 	toggle: () => void;
-    data?: helpWanted;
+    data?: HelpWanted;
 }
 
 const DUMMY_USER:LoggedInUser = {
@@ -49,7 +49,7 @@ const UpdateHelpWantedModal = (props: ModalType) => {
 		newHelpWanted!.postContent = newDesc;
 		newHelpWanted!.user = DUMMY_USER;
 
-		await HelpWantedPutService(newHelpWanted).then(
+		await UpdateHelpWanted(newHelpWanted).then(
 			(res:any) => {
 				console.log(res);
 				window.location.reload();
