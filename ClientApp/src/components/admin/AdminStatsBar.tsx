@@ -5,6 +5,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { AccordionBody, AccordionHeader, Button, Card, CardBody, CardTitle, Col, Row, Table, UncontrolledAccordion } from "reactstrap";
 import { GetAllListings } from "../../services/ListingService";
 import { UserListing } from "../../models/listing/Listing";
+import { GetAllHelpWantedsAsync } from "../../services/HelpWantedService";
+import helpWanted from "../../models/helpWantedData";
 
 export const AdminStatsBar = () => {
     const  { getAccessTokenSilently, user } = useAuth0();
@@ -15,6 +17,8 @@ export const AdminStatsBar = () => {
   const [clientCount, setClientCount] = useState(0);
   const [listingsCount, setListingsCount] = useState(0);
   const [flaggedListingsCount, setFlaggedListingsCount] = useState(0);
+  const [helpWantedCount, setHelpWantedCount] = useState(0);
+  const [flaggedHelpWantedCount, setFlaggedHelpWantedCount] = useState(0);
 
 
   useEffect(() => {
@@ -31,6 +35,10 @@ export const AdminStatsBar = () => {
           await GetAllListings(token).then(async (listings: UserListing[]) => {
             setListingsCount(listings.length);
             setFlaggedListingsCount(listings.filter(x => x.listing.flagged).length)
+        });
+          await GetAllHelpWantedsAsync(token).then(async (helpWanteds: helpWanted[])=> {
+            setHelpWantedCount(helpWanteds.length);
+            setFlaggedHelpWantedCount(helpWanteds.filter(x => x.flagged).length)
         });
       }).finally(() => setIsLoading(false));
     })();
@@ -95,8 +103,8 @@ export const AdminStatsBar = () => {
                     <Col>Total</Col>
                 </Row>
                 <Row>
-                    <Col><h2>0</h2></Col>
-                    <Col><h2>0</h2></Col>
+                    <Col><h2>{flaggedHelpWantedCount.toString()}</h2></Col>
+                    <Col><h2>{helpWantedCount.toString()}</h2></Col>
                 </Row>
             </CardBody>
         </Card>

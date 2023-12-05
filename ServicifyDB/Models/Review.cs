@@ -32,16 +32,16 @@ namespace ServicifyDB.Models
         public string postContent { get; set; }
         
         [Column("flagged")]
-        public bool Flagged { get; set; }
+        public bool? Flagged { get; set; }
         
         [Column("reply_comment")]
         [Required]
         public string replyComment { get; set; }
 
-        [ForeignKey(nameof(postUser))]
-        public User PostUser { get; set; }
+        //[ForeignKey(nameof(postUser))]
+        //public User PostUser { get; set; }
 
-        [ForeignKey(nameof(reviewedUser))]
-        public User ReviewedUser { get; set; }
+        //[ForeignKey(nameof(reviewedUser))]
+        //public User ReviewedUser { get; set; }
     }
 }
