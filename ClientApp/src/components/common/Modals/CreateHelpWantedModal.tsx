@@ -5,6 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import LoggedInUser from "../../../models/userData";
 import {CreateHelpWanted} from "../../../services/HelpWantedService";
 import User from "../../../models/userData";
+import { Button, Input, Label } from "reactstrap";
 
 
 interface ModalType {
@@ -52,24 +53,24 @@ const CreateHelpWantedModal = ({currentUser, isOpen, toggle}: {currentUser: User
 						<form className="create-helpwanted-form" onSubmit={onSubmit}>
 							<h1>Please Enter Help Wanted Information:</h1>
 							<div className="field">
-								<label htmlFor="location">Location:</label>
-								<input id="location" />
+								<Label htmlFor="location">Location:</Label>
+								<Input id="location" />
 							</div>
 							<div className="field">
-								<label htmlFor="rate">Rate:</label>
-								<input id="rate" />
+								<Label htmlFor="rate">Rate:</Label>
+								<Input id="rate" />
 							</div>
 							<div className="field">
-								<label htmlFor="skills">Relevant Skills:</label>
-								<input id="skills" />
+								<Label htmlFor="skills">Relevant Skills:</Label>
+								<Input id="skills" />
 							</div>
 							<div className="field">
-								<label htmlFor="description">Description:</label>
+								<Label htmlFor="description">Description:</Label>
 								<textarea name="description" id="description"/>
 							</div>
 							<div>
-								<button>Create</button>
-								<button onClick={toggle}>Cancel</button>
+								<Button>Create</Button>
+								<Button onClick={toggle}>Cancel</Button>
 							</div>
 						</form>
 					</div>

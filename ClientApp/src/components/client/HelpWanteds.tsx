@@ -7,6 +7,10 @@ import HelpWanted from '../../models/helpWantedData';
 import UpdateHelpWantedModal from '../common/Modals/UpdateHelpWantedModal';
 import usePutHelpWantedModal from '../common/Hooks/usePutHelpWantedModal';
 import User from '../../models/userData';
+import { format } from 'date-fns';
+import { Button, Card, Col, Input, Label, Row } from 'reactstrap';
+import { FaFlag } from 'react-icons/fa';
+import { Skillset } from '../../models/user/LoggedInUser';
 
 
 export default function HelpWanteds({currentUser} : {currentUser: User}) {
@@ -66,50 +70,101 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 	const loadedHelpWanteds = helpWanteds.map(helpWanted => {
 
 		return(
-			
-			<div className='card'>
-				<div className='cardHeader'>
-					<p className='cardHeader-element'>{helpWanted.id}</p>
-					<p className='cardHeader-element'>{helpWanted.userId}</p>
-					<p className='cardHeader-element'>{helpWanted.postDate}</p>
-				</div>
-				<div className='cardContent'>
-					<p>{helpWanted.postContent}</p>
-					<p>{helpWanted.skillSet}</p>
-					<p>{helpWanted.expectedRate}</p>
-				</div>
-				<div className='cardFooter'>
-				<p className='cardFooter-element'>{helpWanted.flagged}</p>
-					<button onClick={(e) => onFlagSubmit(e, helpWanted)}><img src={flag} alt="Flagged" className='cardFooter-flagIcon'/></button>
+			<Card
+				style={{width:"30%", margin:"5px", padding:"10px", border:"black 1px solid", backgroundColor:helpWanted?.flagged ? "lightcoral" : "lightgray"}}
+				>
+				<Row>
+					<Col md={8}>
+						<b>{helpWanted.postDate != undefined ? format(new Date(helpWanted?.postDate), 'MM-dd-yyyy') : "--"}</b>
+					</Col>
+					<Col md={4}>
+						{helpWanted.skillSet != undefined? Skillset[helpWanted?.skillSet] : "--"}
+					</Col>
+				</Row>
+					<Row className="text-center">
+						<Col md={12}><h5>{helpWanted.postContent}</h5></Col></Row>
+					<Row>
+						<Col md={9}>
+							Rate: ${helpWanted.expectedRate}
+						</Col>
+					</Row>				
 					{currentUser.id == helpWanted.userId &&(
-						<div>				
-							<button className='cardFooter-edit' onClick={(e) => {openEditHelpWantedModal(e, helpWanted)}}>Edit</button>
-							<button className='cardFooter-delete' onClick={deleteHelpWanteds}>Delete</button>
-						</div>)
-					}
+						<Row>	
+							<Col md={2}>		
+								<Button color="primary" onClick={(e) => {openEditHelpWantedModal(e, helpWanted)}}>Edit</Button>
+							</Col>	
+							<Col md={5}>
+								<Button color="danger" onClick={deleteHelpWanteds}>Delete</Button>
+							</Col>
+						</Row>)
+						}
+					{currentUser.id != helpWanted.userId && !helpWanted.flagged &&(
+						<Row>	
+							<Col md={2}>		
+		
+							</Col>	
+							<Col md={6}>
+						
+							</Col>
+							<Col>
+								<Button color="primary" onClick={(e) => onFlagSubmit(e, helpWanted)}><FaFlag style={{color:"red"}}/> Flag</Button>
+							</Col>
+						</Row>)
+						}
+				<div className='cardFooter'>
+					
+					
 				</div>
-			</div>
-			
+			</Card>
+	
 		);
 	})
 
 	return (
 	  	<>
-			<div className="sorting">
-				<label>Content Search:</label>
-				<input className="sortingInput" id="contentSearch" value={postContentFilter} onChange={(e) => setPostContentFilter(e.target.value)}/>
-				<label>Skill/Service Sort:</label>
-				<input className="sortingInput" id="skillSort" />
-				<label>Highest Price Sort:</label>
-				<input className="sortingInput" id="priceSort" />
-				<label>Location Sort:</label>
-				<input className="sortingInput" id="locationSort" />		
-			</div>
-			<button className="applyButton" onClick={() => GetData()}>Apply Filters and Searches</button>
+		<Card
+		style={{backgroundColor:"light", border:"1px black solid", margin:"3px"}}
+		>
+		<Row className="text-center">
+			<Col>
+				<h5>Filter Content</h5>
+			</Col>
+		</Row>
+		<Row>
+			<Col>
+				<Label>Content Search:</Label>
+				<Input className="sortingInput" id="contentSearch" value={postContentFilter} onChange={(e) => setPostContentFilter(e.target.value)}/>
+			</Col>
+			<Col>
+				<Label>By Skill/Service:</Label>
+				<Input className="sortingInput" id="skillSort" />
+			</Col>
+		</Row>
+		<Row>
+
+			<Col>
+				<Label>By Highest Price:</Label>
+				<Input className="sortingInput" id="priceSort" />
+			</Col>
+			<Col>
+				<Label>By Location:</Label>
+				<Input className="sortingInput" id="locationSort" />	
+			</Col>
+	
+		</Row>
+		<Row style ={{marginTop:"10px"}}>
+			<Col md={12} className="text-center">
+				<Button color="warning" onClick={() => GetData()}>Apply</Button>
+			</Col>
 			<div className='updateHelpWantedModal'>
 				<UpdateHelpWantedModal isOpen={isOpen} toggle={toggle} data={helpWantedData}></UpdateHelpWantedModal>
 			</div>
+		</Row>
+		</Card>
+		<Card className="helpwanteds">
 			{loadedHelpWanteds}
+		</Card>
+		
 		</>
 	)
 

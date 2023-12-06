@@ -48,3 +48,15 @@
 	top: 0%;
 	left: 0%;
 }
+
+.helpwanteds
+{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	flex-direction: row;
+	margin: 5px;
+	margin-top: 10px;
+	border: black solid 1px;
+	background-color: #0084AE;
+}
