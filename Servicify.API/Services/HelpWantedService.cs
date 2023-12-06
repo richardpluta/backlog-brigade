@@ -1,4 +1,5 @@
-﻿using ServicifyDB.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using ServicifyDB.Models;
 using ServicifyDB.Repository;
 using System.Reflection;
 
@@ -17,11 +18,11 @@ namespace Servicify.API.Services
         {
             HelpWanted newHelpWanted = new()
             {
-                userId = helpWanted.userId,
-                postDate = DateTime.UtcNow,
-                postContent = helpWanted.postContent,
-                skillSet = helpWanted.skillSet,
-                expectedRate = helpWanted.expectedRate,
+                UserId = helpWanted.UserId,
+                PostDate = DateTime.UtcNow,
+                PostContent = helpWanted.PostContent,
+                SkillSet = helpWanted.SkillSet,
+                ExpectedRate = helpWanted.ExpectedRate,
             };
 
             return helpWantedRepository.Create(newHelpWanted);
@@ -29,31 +30,31 @@ namespace Servicify.API.Services
 
         public IEnumerable<HelpWanted> GetAll(Dictionary<string, string> filterParameters)
         {
-            IQueryable<HelpWanted> queryable = helpWantedRepository.Get();
+            IQueryable<HelpWanted> queryable = helpWantedRepository.Get().Include(x => x.User);
 
             if (filterParameters.ContainsKey("postContent"))
             {
-                queryable = queryable.Where(x => x.postContent.Contains(filterParameters["postContent"]));
+                queryable = queryable.Where(x => x.PostContent.Contains(filterParameters["postContent"]));
             }
 
             if (filterParameters.ContainsKey("skillSet"))
             {
-                queryable = queryable.Where(x => x.skillSet == (Skillset) int.Parse(filterParameters["skillSet"]));
+                queryable = queryable.Where(x => x.SkillSet == (Skillset) int.Parse(filterParameters["skillSet"]));
             }
 
             if (filterParameters.ContainsKey("userName"))
             {
-                queryable = queryable.Where(x => x.user.UserName != null && x.user.UserName.Contains(filterParameters["userName"]));
+                queryable = queryable.Where(x => x.User.UserName != null && x.User.UserName.Contains(filterParameters["userName"]));
             }
 
             if (filterParameters.ContainsKey("expectedRate"))
             {
-                queryable = queryable.Where(x => x.expectedRate <= int.Parse(filterParameters["expectedRate"]));
+                queryable = queryable.Where(x => x.ExpectedRate <= int.Parse(filterParameters["expectedRate"]));
             }
 
             if (filterParameters.ContainsKey("zip"))
             {
-                queryable = queryable.Where(x => x.user.Zip != null && x.user.Zip.Contains(filterParameters["expectedRate"]));
+                queryable = queryable.Where(x => x.User.Zip != null && x.User.Zip.Contains(filterParameters["expectedRate"]));
             }
 
             return queryable.ToList();
@@ -61,20 +62,20 @@ namespace Servicify.API.Services
 
         public HelpWanted Update(int id, HelpWanted helpWanted)
         {
-            HelpWanted dbHelpWanted = helpWantedRepository.Get().Where(x => x.id == id).First()
+            HelpWanted dbHelpWanted = helpWantedRepository.Get().Where(x => x.Id == id).First()
                 ?? throw new BadHttpRequestException("Help wanted not found", 404);
 
-            dbHelpWanted.postContent = helpWanted.postContent;
-            dbHelpWanted.skillSet = helpWanted.skillSet;
-            dbHelpWanted.expectedRate = helpWanted.expectedRate;
-            dbHelpWanted.flagged = helpWanted.flagged;
+            dbHelpWanted.PostContent = helpWanted.PostContent;
+            dbHelpWanted.SkillSet = helpWanted.SkillSet;
+            dbHelpWanted.ExpectedRate = helpWanted.ExpectedRate;
+            dbHelpWanted.Flagged = helpWanted.Flagged;
 
             return helpWantedRepository.Update(dbHelpWanted);
         }
 
         public void Delete(int id)
         {
-            HelpWanted helpWanted = helpWantedRepository.Get().Where(x => x.id == id).First();
+            HelpWanted helpWanted = helpWantedRepository.Get().Where(x => x.Id == id).First();
             helpWantedRepository.Delete(helpWanted);
         }
     }

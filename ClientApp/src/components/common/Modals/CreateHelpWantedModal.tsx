@@ -17,7 +17,7 @@ const CreateHelpWantedModal = ({ currentUser, isOpen, toggle }: { currentUser: U
 	useEffect(() => { }, []);
 
 	const closeModal = useEffect(() => { toggle });
-	const [currentSkillset, setCurrentSkillset] = React.useState<Skillset>(Skillset.Carpentry);
+	const [currentSkillset, setCurrentSkillset] = React.useState<number>(Skillset.Carpentry);
 
 	const onSubmit = async (event: any) => {
 		event.preventDefault();
@@ -30,7 +30,7 @@ const CreateHelpWantedModal = ({ currentUser, isOpen, toggle }: { currentUser: U
 			userId: currentUser.id,
 			postContent: target.description.value,
 			flagged: false,
-			skillSet: Number(target.skills.value),
+			skillSet: currentSkillset,
 			expectedRate: Number(target.rate.value),
 			user: currentUser
 		}
@@ -63,13 +63,11 @@ const CreateHelpWantedModal = ({ currentUser, isOpen, toggle }: { currentUser: U
 							<div className="field">
 							<label htmlFor="skills">Relevant Skills:</label>
 							<select id="skills"
-								value={currentSkillset}
-								onChange={(e) => {
-									setCurrentSkillset(Skillset[e.target.value as keyof typeof Skillset]);
-								}}
+								value={currentSkillset.toString()}
+								onChange={(e) => setCurrentSkillset(Number(e.target.value))}
 							>
-								{getEnumKeys(Skillset).map((key, index) => (
-									<option key={index} value={Skillset[key]}>
+								{Object.values(Skillset).filter(x => isNaN(Number(x))).map((key, index) => (
+									<option key={index} value={index}>
 										{key}
 									</option>
 								))}
@@ -91,16 +89,4 @@ const CreateHelpWantedModal = ({ currentUser, isOpen, toggle }: { currentUser: U
 	)
 }
 
-function getEnumKeys<
-   T extends string,
-   TEnumValue extends string | number,
->(enumVariable: { [key in T]: TEnumValue }) {
-    return Object.keys(enumVariable) as Array<T>;
-}
-
 export default CreateHelpWantedModal;
-
-//<div className="field">
-//								<label htmlFor="skills">Relevant Skills:</label>
-//								<input id="skills" />
-//							</div>

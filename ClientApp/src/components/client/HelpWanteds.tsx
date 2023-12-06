@@ -6,8 +6,8 @@ import "./HelpWanteds.css"
 import HelpWanted from '../../models/helpWantedData';
 import UpdateHelpWantedModal from '../common/Modals/UpdateHelpWantedModal';
 import usePutHelpWantedModal from '../common/Hooks/usePutHelpWantedModal';
-import LoggedInUser from "../../models/userData";
 import User from '../../models/userData';
+import { Skillset } from '../../models/skillSet';
 
 export default function HelpWanteds({currentUser} : {currentUser: User}) {
 	const [helpWanteds, setHelpWanteds] = useState<HelpWanted[]>([]);
@@ -18,24 +18,20 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 
 	const GetData = () => {
 		let filterParameters: {[key: string]: string} = {}
-		let filterParametersPrice: {[key: string]: string} = {}
-		let filterParametersUserName: {[key: string]: string} = {}
 
 		if (postContentFilter) {
 			filterParameters["postContent"] = postContentFilter;
 		}
 
 		if (priceFilter) {
-			filterParametersPrice["expectedRate"] = priceFilter;
+			filterParameters["expectedRate"] = priceFilter;
 		}
 
 		if (userNameFilter) {
-			filterParametersUserName["userName"] = userNameFilter;
+			filterParameters["userName"] = userNameFilter;
 		}
 
 		GetHelpWanteds(filterParameters).then(result => setHelpWanteds(result))
-		GetHelpWanteds(filterParametersPrice).then(result => setHelpWanteds(result))
-		GetHelpWanteds(filterParametersUserName).then(result => setHelpWanteds(result))
 	}
 
 	useEffect(() => {
@@ -83,13 +79,12 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 			
 			<div className='card'>
 				<div className='cardHeader'>
-					<p className='cardHeader-element'>{helpWanted.id}</p>
-					<p className='cardHeader-element'>{helpWanted.userId}</p>
+					<p className='cardHeader-element'>{helpWanted.user?.userName}</p>
 					<p className='cardHeader-element'>{helpWanted.postDate}</p>
 				</div>
 				<div className='cardContent'>
 					<p>{helpWanted.postContent}</p>
-					<p>{helpWanted.skillSet}</p>
+					<p>{helpWanted.skillSet ? Skillset[helpWanted.skillSet] : null}</p>
 					<p>{helpWanted.expectedRate}</p>
 				</div>
 				<div className='cardFooter'>
@@ -113,9 +108,9 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 				<label>Content Search:</label>
 				<input className="sortingInput" id="contentSearch" value={postContentFilter} onChange={(e) => setPostContentFilter(e.target.value)}/>
 				<label>Skill/Service Sort:</label>
-				<input className="sortingInput" id="userNameSort" value={userNameFilter} onChange={(e) => setUserNameFilter(e.target.value)}/>
+				<input className="sortingInput" id="skillSort" value={userNameFilter} onChange={(e) => setUserNameFilter(e.target.value)}/>
 				<label>Username Sort:</label>
-				<input className="sortingInput" id="skillSort" />
+				<input className="sortingInput" id="userNameSort" value={userNameFilter} onChange={(e) => setUserNameFilter(e.target.value)}/>
 				<label>Highest Price Sort:</label>
 				<input className="sortingInput" id="priceSort" type="number" value={priceFilter} onChange={(e) => setPriceFilter(e.target.value)}/>
 				<label>Location Sort:</label>
@@ -123,7 +118,7 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 			</div>
 			<button className="applyButton" onClick={() => GetData()}>Apply Filters and Searches</button>
 			<div className='updateHelpWantedModal'>
-				<UpdateHelpWantedModal isOpen={isOpen} toggle={toggle} data={helpWantedData}></UpdateHelpWantedModal>
+				<UpdateHelpWantedModal isOpen={isOpen} toggle={toggle} data={helpWantedData} currentUser={currentUser}></UpdateHelpWantedModal>
 			</div>
 			{loadedHelpWanteds}
 		</>
