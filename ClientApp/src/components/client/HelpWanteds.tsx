@@ -13,15 +13,29 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 	const [helpWanteds, setHelpWanteds] = useState<HelpWanted[]>([]);
 	const [helpWantedData, setHelpWantedData] = useState<HelpWanted>();
 	const [postContentFilter, setPostContentFilter] = useState("");
+	const [priceFilter, setPriceFilter] = useState("");
+	const [userNameFilter, setUserNameFilter] = useState("");
 
 	const GetData = () => {
 		let filterParameters: {[key: string]: string} = {}
+		let filterParametersPrice: {[key: string]: string} = {}
+		let filterParametersUserName: {[key: string]: string} = {}
 
 		if (postContentFilter) {
 			filterParameters["postContent"] = postContentFilter;
 		}
 
+		if (priceFilter) {
+			filterParametersPrice["expectedRate"] = priceFilter;
+		}
+
+		if (userNameFilter) {
+			filterParametersUserName["userName"] = userNameFilter;
+		}
+
 		GetHelpWanteds(filterParameters).then(result => setHelpWanteds(result))
+		GetHelpWanteds(filterParametersPrice).then(result => setHelpWanteds(result))
+		GetHelpWanteds(filterParametersUserName).then(result => setHelpWanteds(result))
 	}
 
 	useEffect(() => {
@@ -99,9 +113,11 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 				<label>Content Search:</label>
 				<input className="sortingInput" id="contentSearch" value={postContentFilter} onChange={(e) => setPostContentFilter(e.target.value)}/>
 				<label>Skill/Service Sort:</label>
+				<input className="sortingInput" id="userNameSort" value={userNameFilter} onChange={(e) => setUserNameFilter(e.target.value)}/>
+				<label>Username Sort:</label>
 				<input className="sortingInput" id="skillSort" />
 				<label>Highest Price Sort:</label>
-				<input className="sortingInput" id="priceSort" />
+				<input className="sortingInput" id="priceSort" type="number" value={priceFilter} onChange={(e) => setPriceFilter(e.target.value)}/>
 				<label>Location Sort:</label>
 				<input className="sortingInput" id="locationSort" />		
 			</div>

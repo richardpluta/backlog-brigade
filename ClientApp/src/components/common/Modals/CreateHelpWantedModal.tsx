@@ -3,9 +3,9 @@ import HelpWanted from "../../../models/helpWantedData";
 import "./CreateHelpWantedModal.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoggedInUser from "../../../models/userData";
-import {CreateHelpWanted} from "../../../services/HelpWantedService";
+import { CreateHelpWanted } from "../../../services/HelpWantedService";
 import User from "../../../models/userData";
-
+import { Skillset } from "../../../models/skillSet";
 
 interface ModalType {
 	children?: ReactNode;
@@ -13,18 +13,19 @@ interface ModalType {
 	toggle: () => void;
 }
 
-const CreateHelpWantedModal = ({currentUser, isOpen, toggle}: {currentUser: User, isOpen: boolean, toggle: () => void}) => {
+const CreateHelpWantedModal = ({ currentUser, isOpen, toggle }: { currentUser: User, isOpen: boolean, toggle: () => void }) => {
 	useEffect(() => { }, []);
 
-	const closeModal = useEffect(() => {toggle});
-	  
+	const closeModal = useEffect(() => { toggle });
+	const [currentSkillset, setCurrentSkillset] = React.useState<Skillset>(Skillset.Carpentry);
+
 	const onSubmit = async (event: any) => {
 		event.preventDefault();
 
 		const target = event.target;
 
 		//updated this to constant data just for testing purposes so i could rule out the form being part of the issue
-		const data:HelpWanted = {
+		const data: HelpWanted = {
 			id: 0,
 			userId: currentUser.id,
 			postContent: target.description.value,
@@ -36,14 +37,14 @@ const CreateHelpWantedModal = ({currentUser, isOpen, toggle}: {currentUser: User
 
 		//moved call to backend to test service, probably should be broken out into a ListingService with the API calls in it
 		await CreateHelpWanted(data)
-		.then((res:any) => {
-			console.log("Post success");
-			window.location.reload();
-		});
+			.then((res: any) => {
+				console.log("Post success");
+				window.location.reload();
+			});
 	}
 
-	
-	return(
+
+	return (
 
 		<>
 			{isOpen && (
@@ -60,12 +61,23 @@ const CreateHelpWantedModal = ({currentUser, isOpen, toggle}: {currentUser: User
 								<input id="rate" />
 							</div>
 							<div className="field">
-								<label htmlFor="skills">Relevant Skills:</label>
-								<input id="skills" />
+							<label htmlFor="skills">Relevant Skills:</label>
+							<select id="skills"
+								value={currentSkillset}
+								onChange={(e) => {
+									setCurrentSkillset(Skillset[e.target.value as keyof typeof Skillset]);
+								}}
+							>
+								{getEnumKeys(Skillset).map((key, index) => (
+									<option key={index} value={Skillset[key]}>
+										{key}
+									</option>
+								))}
+							</select>
 							</div>
 							<div className="field">
 								<label htmlFor="description">Description:</label>
-								<textarea name="description" id="description"/>
+								<textarea name="description" id="description" />
 							</div>
 							<div>
 								<button>Create</button>
@@ -77,7 +89,18 @@ const CreateHelpWantedModal = ({currentUser, isOpen, toggle}: {currentUser: User
 			)}
 		</>
 	)
-			}
+}
+
+function getEnumKeys<
+   T extends string,
+   TEnumValue extends string | number,
+>(enumVariable: { [key in T]: TEnumValue }) {
+    return Object.keys(enumVariable) as Array<T>;
+}
 
 export default CreateHelpWantedModal;
 
+//<div className="field">
+//								<label htmlFor="skills">Relevant Skills:</label>
+//								<input id="skills" />
+//							</div>
