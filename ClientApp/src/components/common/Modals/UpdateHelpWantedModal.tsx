@@ -15,24 +15,13 @@ interface ModalType {
 }
 
 const UpdateHelpWantedModal = ({data, currentUser, isOpen, toggle}: {data: HelpWanted | undefined, currentUser: User, isOpen: boolean, toggle: () => void}) => {
-
-	const {getAccessTokenSilently} = useAuth0();
-	const [accessToken, setAccessToken] = useState("");
+	const [helpWanted, setHelpWanted] = useState<HelpWanted>();
 
 	useEffect(() => {
-		(async () => {
-		  await getAccessTokenSilently().then(async (token) => {
-			setAccessToken(token);
-		  });
-		})();
-	  }, []);
-
-	
-	const setSkillSet = (e : React.ChangeEvent<HTMLSelectElement>) => {
 		if (data) {
-			data.skillSet = Number(e.target.value);
+			setHelpWanted(data)
 		}
-	}
+	}, []);
 	  
 	const onSubmit = async (event: any) => {
 		event.preventDefault();
@@ -40,18 +29,18 @@ const UpdateHelpWantedModal = ({data, currentUser, isOpen, toggle}: {data: HelpW
 		const newSkills = event.currentTarget[1].value;
 		const newDesc = event.currentTarget[2].value;
 
-		const newHelpWanted = data;
+		const newHelpWanted = helpWanted;
 		newHelpWanted!.expectedRate = Number(newRate);
 		newHelpWanted!.skillSet = Number(newSkills);
 		newHelpWanted!.postContent = newDesc;
 		newHelpWanted!.user = currentUser;
 
-		await UpdateHelpWanted(newHelpWanted).then(
-			(res:any) => {
-				console.log(res);
-				window.location.reload();
-			}	
-		)
+		// await UpdateHelpWanted(newHelpWanted).then(
+		// 	(res:any) => {
+		// 		console.log(res);
+		// 		window.location.reload();
+		// 	}	
+		// )
 	}
 
 	return(
@@ -64,14 +53,17 @@ const UpdateHelpWantedModal = ({data, currentUser, isOpen, toggle}: {data: HelpW
 							<h1>Please Update Your Help Wanted Information:</h1>
 							<div className="field">
 								<label htmlFor="rate">Rate:</label>
-								<input id="rate" defaultValue={data?.expectedRate}/>
+								<input id="rate" defaultValue={helpWanted?.expectedRate}/>
 							</div>
 							<div className="field">
 								<label htmlFor="skills">Relevant Skills:</label>
 								{/* <input id="skills" defaultValue={data?.skillSet ? Skillset[data.skillSet] : ""}/>								 */}
 								<select id="skills"
-									value={data?.skillSet?.toString()}
-									onChange={(e) => setSkillSet(e)}
+									value={helpWanted?.skillSet}
+									onChange={(e) => {
+										console.log(e)
+										setHelpWanted({...helpWanted, skillSet: Number(e.target.value)})
+									}}
 									>
 									{Object.values(Skillset).filter(x => isNaN(Number(x))).map((key, index) => (
 										<option key={index} value={index}>
@@ -82,7 +74,7 @@ const UpdateHelpWantedModal = ({data, currentUser, isOpen, toggle}: {data: HelpW
 							</div>
 							<div className="field">
 								<label htmlFor="description">Description:</label>
-								<textarea name="description" id="description" defaultValue={data?.postContent}/>
+								<textarea name="description" id="description" defaultValue={helpWanted?.postContent}/>
 							</div>
 							<div>
 								<button type="submit">Submit</button>

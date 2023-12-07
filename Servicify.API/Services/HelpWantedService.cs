@@ -62,7 +62,7 @@ namespace Servicify.API.Services
 
         public HelpWanted Update(int id, HelpWanted helpWanted)
         {
-            HelpWanted dbHelpWanted = helpWantedRepository.Get().Where(x => x.Id == id).First()
+            HelpWanted dbHelpWanted = helpWantedRepository.Get().Where(x => x.Id == id).Include(x => x.User).FirstOrDefault()
                 ?? throw new BadHttpRequestException("Help wanted not found", 404);
 
             dbHelpWanted.PostContent = helpWanted.PostContent;
@@ -75,7 +75,9 @@ namespace Servicify.API.Services
 
         public void Delete(int id)
         {
-            HelpWanted helpWanted = helpWantedRepository.Get().Where(x => x.Id == id).First();
+            HelpWanted helpWanted = helpWantedRepository.Get().Where(x => x.Id == id).FirstOrDefault()
+                ?? throw new BadHttpRequestException("Help wanted not found", 404);
+
             helpWantedRepository.Delete(helpWanted);
         }
     }

@@ -43,8 +43,7 @@
 	height: 20px;
 }
 
-.updateHelpWantedModal{
-	position: absolute;
-	top: 0%;
-	left: 0%;
+.modal-body {
+	display: flex;
+	flex-direction: column;
 }

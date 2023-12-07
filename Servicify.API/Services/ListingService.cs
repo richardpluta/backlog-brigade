@@ -34,7 +34,7 @@ namespace Servicify.API.Services
 
         public Listing Update(int id, Listing listing)
         {
-            Listing dbListing = listingRepository.Get().Where(x => x.Id == id).FirstOrDefault()
+            Listing dbListing = listingRepository.Get().Where(x => x.Id == id).Include(x => x.User).FirstOrDefault()
                 ?? throw new BadHttpRequestException("Listing not found", 404);
 
             dbListing.PostContent = listing.PostContent;
