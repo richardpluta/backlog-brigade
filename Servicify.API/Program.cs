@@ -38,7 +38,6 @@ namespace Servicify.API
             builder.Services.AddTransient<HelpWantedService>();
             builder.Services.AddTransient<ReviewService>();
             builder.Services.AddTransient<ListingService>();
-            builder.Services.AddTransient<TestService>();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             var app = builder.Build();
