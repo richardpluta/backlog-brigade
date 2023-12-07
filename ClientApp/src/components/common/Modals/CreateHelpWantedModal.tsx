@@ -37,7 +37,6 @@ const CreateHelpWantedModal = ({ currentUser, isOpen, toggle }: { currentUser: U
 		//moved call to backend to test service, probably should be broken out into a ListingService with the API calls in it
 		await CreateHelpWanted(data)
 			.then((res: any) => {
-				console.log("Post success");
 				window.location.reload();
 			});
 	}

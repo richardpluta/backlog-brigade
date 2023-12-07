@@ -15,7 +15,6 @@ export const GetAllHelpWantedsAsync = async (token:string) => {
 export const CreateHelpWanted = async (data: HelpWanted) => {
 
   const body = JSON.stringify(data);
-console.log(body);
   const response = await fetch('api/helpwanted',
     {
       method: 'POST',
@@ -31,7 +30,6 @@ console.log(body);
 export const UpdateHelpWanted = async (data: HelpWanted) => {
 
   const body = JSON.stringify(data);
-  console.log(body);
   const response = await fetch('api/helpwanted/' + data?.id?.valueOf().toString(),
     {
       method: 'PUT',

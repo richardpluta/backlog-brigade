@@ -1,9 +1,7 @@
 import { Listing } from "../models/listing/Listing";
 import listing from "../models/listingData";
 
-export const GetAllListings = async (token:string) => {
-    console.log("In GetAllListings");
-   
+export const GetAllListings = async (token:string) => {   
     return await fetch(`/api/listing`, {
         headers : {
             Authorization: `Bearer: ${token}`
@@ -14,7 +12,6 @@ export const GetAllListings = async (token:string) => {
 }
 
 export const DeleteListingAsync = async(token:string, id:number) => {
-    console.log("In Delete Listing");
     return await fetch(`/api/listing/${id}`, {
         method: "DELETE",
         headers : {

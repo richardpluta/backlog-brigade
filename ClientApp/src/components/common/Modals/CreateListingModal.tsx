@@ -43,7 +43,6 @@ const CreateListingModal = ({currentUser, isOpen, toggle}: {currentUser: User, i
 		//moved call to backend to test service, probably should be broken out into a ListingService with the API calls in it
 		await CreateListing(data)
 		.then((res:any) => {
-			console.log("Post success");
 			window.location.reload();
 		});
 	}

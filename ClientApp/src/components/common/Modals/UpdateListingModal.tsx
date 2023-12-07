@@ -51,7 +51,6 @@ const UpdateListingModal = (props: ModalType) => {
 
 		await ListingPutService(newListing).then(
 			(res:any) => {
-				console.log(res);
 				window.location.reload();
 			}	
 		)

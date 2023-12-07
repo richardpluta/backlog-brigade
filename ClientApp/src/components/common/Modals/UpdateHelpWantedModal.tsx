@@ -34,13 +34,6 @@ const UpdateHelpWantedModal = ({data, currentUser, isOpen, toggle}: {data: HelpW
 		newHelpWanted!.skillSet = Number(newSkills);
 		newHelpWanted!.postContent = newDesc;
 		newHelpWanted!.user = currentUser;
-
-		// await UpdateHelpWanted(newHelpWanted).then(
-		// 	(res:any) => {
-		// 		console.log(res);
-		// 		window.location.reload();
-		// 	}	
-		// )
 	}
 
 	return(
@@ -61,7 +54,6 @@ const UpdateHelpWantedModal = ({data, currentUser, isOpen, toggle}: {data: HelpW
 								<select id="skills"
 									value={helpWanted?.skillSet}
 									onChange={(e) => {
-										console.log(e)
 										setHelpWanted({...helpWanted, skillSet: Number(e.target.value)})
 									}}
 									>

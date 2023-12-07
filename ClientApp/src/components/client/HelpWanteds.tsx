@@ -84,11 +84,8 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 		helpwanted.flagged = true;
 		helpwanted.user = currentUser; 
 
-		console.log(helpwanted)
-
 		await UpdateHelpWanted(helpwanted).then(
 			(res:any) => {
-				console.log(res);
 				window.location.reload();
 			}	
 		)

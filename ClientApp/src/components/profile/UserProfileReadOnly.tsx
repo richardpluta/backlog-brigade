@@ -31,11 +31,9 @@ const UserProfileReadOnly = () =>
         if (id != null){
             let userid:number = parseInt(id);
             await GetUserByIdAsync(accessToken, parseInt(id)).then(async (returnedUser: User) => {
-              console.log(returnedUser);
               setUserProfile(returnedUser);
             });
             await GetAllListings(accessToken).then(async (listings: Listing[]) => {
-                console.log(listings);
                 setListingList(listings.filter(x => x.user?.id == userid));
               });
         }
