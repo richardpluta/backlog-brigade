@@ -22,8 +22,7 @@
 	width: 100%
 }
 
-.listingslist
-{
+.listingslist{
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-around;

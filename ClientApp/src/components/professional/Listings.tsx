@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import flag from '../../../public/assets/red-flag-icon.png'
 import {ListingDeleteService} from "../../services/ListingDeleteService";
-import { ListingPutService } from '../../services/ListingPutService';
-
 import "./Listings.css"
 import UpdateListingModal from '../common/Modals/UpdateListingModal';
 import usePutListingModal from '../common/Hooks/usePutListingModal';
-import { Button, Card, CardHeader, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
+import { Button, Card, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 import Review from '../../models/reviewData';
-import Listing from '../../models/listingData';
-import { CreateReview, GetReviewsForUser } from '../../services/ReviewService';
+import { CreateReview } from '../../services/ReviewService';
 import User from '../../models/userData';
 import { GetListings } from '../../services/ListingService';
 import { Skillset } from '../../models/user/LoggedInUser';
 import { format } from 'date-fns';
 import { BsChatDotsFill } from "react-icons/bs";
+import { Listing } from '../../models/listing/Listing';
+import { FaFlag } from 'react-icons/fa';
 
 export default function Listings({currentUser} : {currentUser: User}){
 	const [listings, setListings] = useState<Listing[]>([]);
@@ -77,7 +76,7 @@ export default function Listings({currentUser} : {currentUser: User}){
 				key={listing.id}>
 				<Row>
 					<Col md={9}>
-						<h5>{listing.postDate != undefined ? format(new Date(listing.postDate), "MM-dd-yyyy") : "--"}</h5>
+						<h5>{listing.creationDate != undefined ? format(new Date(listing.creationDate), "MM-dd-yyyy") : "--"}</h5>
 					</Col>
 					<Col>
 						<h5>{listing.skillSet != undefined ? Skillset[listing?.skillSet] : "--"}</h5>
@@ -94,13 +93,28 @@ export default function Listings({currentUser} : {currentUser: User}){
 						{listing.user?.userName}
 					</Col>
 				</Row>						
-				<div className='cardFooter'>
-					<p className='cardFooter-element'>{listing.flagged}</p>
-					<img src={flag} alt="Flagged" className='cardFooter-flagIcon'/>
-					<Button onClick={(e) => {openReviewModal(listing)}}><BsChatDotsFill/> Review</Button>
-					<Button  onClick={(e) => {openEditListingModal(e, listing)}}>Edit</Button>
-					<Button  onClick={deleteListings}>Delete</Button>
-				</div>
+				<Row>
+					{currentUser?.id != listing.userId && (<>
+					<Col md={10}>
+						<Button inverse color="info" onClick={(e) => {openReviewModal(listing)}}><BsChatDotsFill style={{color:"white"}}/> Review</Button>
+					</Col>
+					<Col>
+						<Button inverse color="primary" onClick={(e) => {openReviewModal(listing)}}><FaFlag style={{color:"red"}}/> Flag</Button>
+					</Col>
+					</>)
+					}
+					{currentUser?.id == listing.userId && (
+					<>
+					<Col md={10}>
+						<Button color="primary" onClick={(e) => {openEditListingModal(e, listing)}}>Edit</Button>
+					</Col>
+					<Col>
+						<Button color="danger" onClick={deleteListings}>Delete</Button>
+					</Col>
+					</>
+					)
+					}
+				</Row>
 			</Card>
 		);
 	})

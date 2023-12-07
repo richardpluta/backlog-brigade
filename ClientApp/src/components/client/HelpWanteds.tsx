@@ -9,6 +9,7 @@ import { Button, Card, Col, Input, Label, Modal, ModalBody, ModalFooter, ModalHe
 import { FaFlag, FaTag } from 'react-icons/fa';
 import { Skillset } from '../../models/user/LoggedInUser';
 import { RiMapPin3Fill } from "react-icons/ri";
+import { PiPhoneFill } from "react-icons/pi";
 
 
 export default function HelpWanteds({currentUser} : {currentUser: User}) {
@@ -120,7 +121,7 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 					</Row>		
 					<Row>
 						<Col>
-							{helpWanted.user?.userName}
+							{helpWanted.user != undefined? helpWanted.user?.userName : "unknown"}
 						</Col>	
 					</Row>		
 					{currentUser.id == helpWanted.userId &&(
@@ -136,7 +137,7 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 					{currentUser.id != helpWanted.userId && !helpWanted.flagged &&(
 						<Row>	
 							<Col md={2}>		
-		
+								<Button color="info"><PiPhoneFill style={{color:"white"}} /></Button>
 							</Col>	
 							<Col md={6}>
 							</Col>
@@ -193,11 +194,12 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 								))}
 							</Input>
 			</Col>
+			<Col className="text-center" style={{marginTop:"20px"}}>
+				<Button size="lg" color="warning" onClick={() => GetData()}>Apply</Button>
+			</Col>
 		</Row>
 		<Row style ={{marginTop:"10px"}}>
-			<Col md={12} className="text-center">
-				<Button color="warning" onClick={() => GetData()}>Apply</Button>
-			</Col>
+
 		</Row>
 		</Card>
 		<Card className="helpwanteds">
