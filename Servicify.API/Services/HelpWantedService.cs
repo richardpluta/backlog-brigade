@@ -54,7 +54,7 @@ namespace Servicify.API.Services
 
             if (filterParameters.ContainsKey("zip"))
             {
-                queryable = queryable.Where(x => x.User.Zip != null && x.User.Zip.Contains(filterParameters["expectedRate"]));
+                queryable = queryable.Where(x => x.User.Zip != null && x.User.Zip.Contains(filterParameters["zip"]));
             }
 
             return queryable.ToList();

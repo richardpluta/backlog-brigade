@@ -15,6 +15,8 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 	const [postContentFilter, setPostContentFilter] = useState("");
 	const [priceFilter, setPriceFilter] = useState("");
 	const [userNameFilter, setUserNameFilter] = useState("");
+	const [currentSkillsetFilter, setCurrentSkillset] = React.useState<number>(Skillset.Carpentry);
+	const [locationFilter, setLocationFilter] = useState("");
 
 	const GetData = () => {
 		let filterParameters: {[key: string]: string} = {}
@@ -29,6 +31,15 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 
 		if (userNameFilter) {
 			filterParameters["userName"] = userNameFilter;
+		}
+
+		if(currentSkillsetFilter)
+		{
+			filterParameters["skillSet"] = currentSkillsetFilter.toString();
+		}
+
+		if (locationFilter) {
+			filterParameters["zip"] = locationFilter;
 		}
 
 		GetHelpWanteds(filterParameters).then(result => setHelpWanteds(result))
@@ -81,6 +92,7 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 				<div className='cardHeader'>
 					<p className='cardHeader-element'>{helpWanted.user?.userName}</p>
 					<p className='cardHeader-element'>{helpWanted.postDate}</p>
+					<p className='cardHeader-element'>{helpWanted.user?.zip}</p>
 				</div>
 				<div className='cardContent'>
 					<p>{helpWanted.postContent}</p>
@@ -108,13 +120,22 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 				<label>Content Search:</label>
 				<input className="sortingInput" id="contentSearch" value={postContentFilter} onChange={(e) => setPostContentFilter(e.target.value)}/>
 				<label>Skill/Service Sort:</label>
-				<input className="sortingInput" id="skillSort" value={userNameFilter} onChange={(e) => setUserNameFilter(e.target.value)}/>
+				<select id="skills"
+								value={currentSkillsetFilter.toString()}
+								onChange={(e) => setCurrentSkillset(Number(e.target.value))}
+							>
+								{Object.values(Skillset).filter(x => isNaN(Number(x))).map((key, index) => (
+									<option key={index} value={index}>
+										{key}
+									</option>
+								))}
+							</select>
 				<label>Username Sort:</label>
 				<input className="sortingInput" id="userNameSort" value={userNameFilter} onChange={(e) => setUserNameFilter(e.target.value)}/>
 				<label>Highest Price Sort:</label>
 				<input className="sortingInput" id="priceSort" type="number" value={priceFilter} onChange={(e) => setPriceFilter(e.target.value)}/>
 				<label>Location Sort:</label>
-				<input className="sortingInput" id="locationSort" />		
+				<input className="sortingInput" id="locationSort" value={locationFilter} onChange={(e) => setLocationFilter(e.target.value)}/>		
 			</div>
 			<button className="applyButton" onClick={() => GetData()}>Apply Filters and Searches</button>
 			<div className='updateHelpWantedModal'>
@@ -123,5 +144,7 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 			{loadedHelpWanteds}
 		</>
 	)
+
+	
 
 }
