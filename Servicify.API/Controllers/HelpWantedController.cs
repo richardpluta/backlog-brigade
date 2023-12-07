@@ -30,8 +30,7 @@ namespace Servicify.API.Controllers
         [HttpPut("{id}")]
         public ActionResult<HelpWanted> Update(int id, [FromBody] HelpWanted helpWanted)
         {
-            helpWantedService.Update(id, helpWanted);
-            return Ok();
+            return Ok(helpWantedService.Update(id, helpWanted));
         }
 
         [HttpDelete("{id}")]

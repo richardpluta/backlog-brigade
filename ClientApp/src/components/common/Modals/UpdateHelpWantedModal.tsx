@@ -4,6 +4,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import LoggedInUser from "../../../models/userData";
 import {UpdateHelpWanted} from "../../../services/HelpWantedService";
 import "./UpdateHelpWantedModal.css";
+import User from "../../../models/userData";
+import { Skillset } from "../../../models/skillSet";
 
 interface ModalType {
 	children?: ReactNode;
@@ -12,30 +14,14 @@ interface ModalType {
     data?: HelpWanted;
 }
 
-const DUMMY_USER:LoggedInUser = {
-		id: 123,
-		userType: 0,
-		userName: "DummyUserFromModal",
-		phone: 987654321,
-		email: "nam@email.com",
-		skillSet: 0,
-		zip: '12345',
-		userRate: 0,
-}
-
-const UpdateHelpWantedModal = (props: ModalType) => {
-
-	const {getAccessTokenSilently} = useAuth0();
-	const [accessToken, setAccessToken] = useState("");
+const UpdateHelpWantedModal = ({data, currentUser, isOpen, toggle}: {data: HelpWanted | undefined, currentUser: User, isOpen: boolean, toggle: () => void}) => {
+	const [helpWanted, setHelpWanted] = useState<HelpWanted>();
 
 	useEffect(() => {
-		(async () => {
-		  await getAccessTokenSilently().then(async (token) => {
-			setAccessToken(token);
-		  });
-		})();
-	  }, []);
-
+		if (data) {
+			setHelpWanted(data)
+		}
+	}, []);
 	  
 	const onSubmit = async (event: any) => {
 		event.preventDefault();
@@ -43,43 +29,56 @@ const UpdateHelpWantedModal = (props: ModalType) => {
 		const newSkills = event.currentTarget[1].value;
 		const newDesc = event.currentTarget[2].value;
 
-		const newHelpWanted = props.data;
+		const newHelpWanted = helpWanted;
 		newHelpWanted!.expectedRate = Number(newRate);
 		newHelpWanted!.skillSet = Number(newSkills);
 		newHelpWanted!.postContent = newDesc;
-		newHelpWanted!.user = DUMMY_USER;
+		newHelpWanted!.user = currentUser;
 
-		await UpdateHelpWanted(newHelpWanted).then(
-			(res:any) => {
-				console.log(res);
-				window.location.reload();
-			}	
-		)
+		// await UpdateHelpWanted(newHelpWanted).then(
+		// 	(res:any) => {
+		// 		console.log(res);
+		// 		window.location.reload();
+		// 	}	
+		// )
 	}
 
 	return(
 
 		<>
-			{props.isOpen && (
+			{isOpen && (
 				<div className="overlay">
 					<div className="box">
 						<form className="update-helpwanted-form" onSubmit={onSubmit}>
 							<h1>Please Update Your Help Wanted Information:</h1>
 							<div className="field">
 								<label htmlFor="rate">Rate:</label>
-								<input id="rate" defaultValue={props.data?.expectedRate}/>
+								<input id="rate" defaultValue={helpWanted?.expectedRate}/>
 							</div>
 							<div className="field">
 								<label htmlFor="skills">Relevant Skills:</label>
-								<input id="skills" defaultValue={props.data?.skillSet}/>								
+								{/* <input id="skills" defaultValue={data?.skillSet ? Skillset[data.skillSet] : ""}/>								 */}
+								<select id="skills"
+									value={helpWanted?.skillSet}
+									onChange={(e) => {
+										console.log(e)
+										setHelpWanted({...helpWanted, skillSet: Number(e.target.value)})
+									}}
+									>
+									{Object.values(Skillset).filter(x => isNaN(Number(x))).map((key, index) => (
+										<option key={index} value={index}>
+											{key}
+										</option>
+									))}
+								</select>
 							</div>
 							<div className="field">
 								<label htmlFor="description">Description:</label>
-								<textarea name="description" id="description" defaultValue={props.data?.postContent}/>
+								<textarea name="description" id="description" defaultValue={helpWanted?.postContent}/>
 							</div>
 							<div>
 								<button type="submit">Submit</button>
-								<button onClick={props.toggle}>Cancel</button>
+								<button onClick={toggle}>Cancel</button>
 							</div>
 						</form>
 					</div>
@@ -90,4 +89,5 @@ const UpdateHelpWantedModal = (props: ModalType) => {
 }
 
 export default UpdateHelpWantedModal;
+
 

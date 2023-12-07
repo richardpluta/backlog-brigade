@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import flag from '../../../public/assets/red-flag-icon.png'
 import {DeleteHelpWanted, GetHelpWanteds} from "../../services/HelpWantedService";
 import { UpdateHelpWanted } from '../../services/HelpWantedService';
 import "./HelpWanteds.css"
 import HelpWanted from '../../models/helpWantedData';
-import UpdateHelpWantedModal from '../common/Modals/UpdateHelpWantedModal';
-import usePutHelpWantedModal from '../common/Hooks/usePutHelpWantedModal';
 import User from '../../models/userData';
 import { format } from 'date-fns';
-import { Button, Card, Col, Input, Label, Row } from 'reactstrap';
+import { Button, Card, Col, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 import { FaFlag, FaTag } from 'react-icons/fa';
 import { Skillset } from '../../models/user/LoggedInUser';
 import { RiMapPin3Fill } from "react-icons/ri";
@@ -16,14 +13,36 @@ import { RiMapPin3Fill } from "react-icons/ri";
 
 export default function HelpWanteds({currentUser} : {currentUser: User}) {
 	const [helpWanteds, setHelpWanteds] = useState<HelpWanted[]>([]);
-	const [helpWantedData, setHelpWantedData] = useState<HelpWanted>();
+	const [showModal, setShowModal] = useState(false);
+	const [modalData, setModalData] = useState<HelpWanted>();
 	const [postContentFilter, setPostContentFilter] = useState("");
+	const [priceFilter, setPriceFilter] = useState("");
+	const [userNameFilter, setUserNameFilter] = useState("");
+	const [currentSkillsetFilter, setCurrentSkillset] = React.useState<number | undefined>();
+	const [locationFilter, setLocationFilter] = useState("");
 
 	const GetData = () => {
 		let filterParameters: {[key: string]: string} = {}
 
 		if (postContentFilter) {
 			filterParameters["postContent"] = postContentFilter;
+		}
+
+		if (priceFilter) {
+			filterParameters["expectedRate"] = priceFilter;
+		}
+
+		if (userNameFilter) {
+			filterParameters["userName"] = userNameFilter;
+		}
+
+		if(currentSkillsetFilter !== undefined)
+		{
+			filterParameters["skillSet"] = currentSkillsetFilter.toString();
+		}
+
+		if (locationFilter) {
+			filterParameters["zip"] = locationFilter;
 		}
 
 		GetHelpWanteds(filterParameters).then(result => setHelpWanteds(result))
@@ -33,24 +52,30 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 		GetData();
 	}, []);
 
-	async function deleteHelpWanteds(event: React.MouseEvent<HTMLButtonElement>){
-		event.preventDefault();
-		const deleteId = event.currentTarget.parentElement?.parentElement?.childNodes[0].childNodes[0].childNodes[0].nodeValue;
-		await DeleteHelpWanted(Number(deleteId))
-		.then((res:any) => {
-			window.location.reload()
-		});
-
+	const deleteHelpWanteds = (helpWanted: HelpWanted) => {
+		if (helpWanted.id) {
+			DeleteHelpWanted(helpWanted.id).then(() => {
+				setHelpWanteds(helpWanteds.filter(x => x.id != helpWanted.id));
+			});
+		}
 	}
 
-	async function openEditHelpWantedModal(event: React.MouseEvent<HTMLButtonElement>, helpwanted:HelpWanted){
-		
-		event.preventDefault();
-		setHelpWantedData(helpwanted);
-		toggle();
+	const openModal = (helpWanted: HelpWanted) => {
+		setModalData(helpWanted);
+		setShowModal(true);
 	}
 
-	const {isOpen, toggle} = usePutHelpWantedModal();
+	const closeModal = (update: boolean) => {
+		if (update && modalData) {
+			UpdateHelpWanted(modalData).then(helpWanted => {
+				helpWanteds[helpWanteds.findIndex(x => x.id === helpWanted.id)] = helpWanted
+				setHelpWanteds(helpWanteds);
+				setShowModal(false);
+			});
+		} else {
+			setShowModal(false);
+		}
+	}
 
 	async function onFlagSubmit(event: React.MouseEvent<HTMLButtonElement>, helpwanted:HelpWanted)
 	{
@@ -71,6 +96,7 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 	const loadedHelpWanteds = helpWanteds.map(helpWanted => {
 
 		return(
+			<>
 			<Card
 				style={{width:"30%", margin:"5px", padding:"10px", border:"black 1px solid", backgroundColor:helpWanted?.flagged ? "lightcoral" : "lightgray"}}
 				>
@@ -88,17 +114,22 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 					<Row className="text-center">
 						<Col md={12}><h5>{helpWanted.postContent}</h5></Col></Row>
 					<Row>
-						<Col md={9}>
-							Rate: ${helpWanted.expectedRate}
+						<Col md={12}>
+							<h5>Rate: ${helpWanted.expectedRate}</h5>
 						</Col>
-					</Row>				
+					</Row>		
+					<Row>
+						<Col>
+							{helpWanted.user?.userName}
+						</Col>	
+					</Row>		
 					{currentUser.id == helpWanted.userId &&(
 						<Row>	
 							<Col md={2}>		
-								<Button color="primary" onClick={(e) => {openEditHelpWantedModal(e, helpWanted)}}>Edit</Button>
+								<Button color="primary" onClick={(e) => {openModal(helpWanted)}}>Edit</Button>
 							</Col>	
 							<Col md={5}>
-								<Button color="danger" onClick={deleteHelpWanteds}>Delete</Button>
+								<Button color="danger" onClick={() => deleteHelpWanteds(helpWanted)}>Delete</Button>
 							</Col>
 						</Row>)
 						}
@@ -115,7 +146,7 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 						</Row>)
 						}
 			</Card>
-	
+		</>
 		);
 	})
 
@@ -135,36 +166,70 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 				<Input className="sortingInput" id="contentSearch" value={postContentFilter} onChange={(e) => setPostContentFilter(e.target.value)}/>
 			</Col>
 			<Col>
-				<Label>By Skill/Service:</Label>
-				<Input className="sortingInput" id="skillSort" />
+				<Label>Location Sort:</Label>
+				<Input className="sortingInput" id="locationSort" value={locationFilter} onChange={(e) => setLocationFilter(e.target.value)}/>	
 			</Col>
-		</Row>
-		<Row>
-
 			<Col>
 				<Label>By Highest Price:</Label>
 				<Input className="sortingInput" id="priceSort" />
 			</Col>
+		</Row>
+		<Row>
 			<Col>
 				<Label>By Location:</Label>
 				<Input className="sortingInput" id="locationSort" />	
 			</Col>
-	
+			<Col>
+			<Label>Skill/Service Sort:</Label>
+				<Input id="skills"
+					   type="select"
+								value={currentSkillsetFilter?.toString()}
+								onChange={(e) => setCurrentSkillset(Number(e.target.value))}
+							>
+								{Object.values(Skillset).filter(x => isNaN(Number(x))).map((key, index) => (
+									<option key={index} value={index}>
+										{key}
+									</option>
+								))}
+							</Input>
+			</Col>
 		</Row>
 		<Row style ={{marginTop:"10px"}}>
 			<Col md={12} className="text-center">
 				<Button color="warning" onClick={() => GetData()}>Apply</Button>
 			</Col>
-			<div className='updateHelpWantedModal'>
-				<UpdateHelpWantedModal isOpen={isOpen} toggle={toggle} data={helpWantedData}></UpdateHelpWantedModal>
-			</div>
 		</Row>
 		</Card>
 		<Card className="helpwanteds">
 			{loadedHelpWanteds}
+			<Modal isOpen={showModal}>
+				<ModalHeader>Update Help Wanted</ModalHeader>
+				<ModalBody className="modal-body">
+					<label htmlFor="rate">Rate:</label>
+					<input id="rate" defaultValue={modalData?.expectedRate} onChange={(e) => setModalData({...modalData, expectedRate: Number(e.target.value)})}/>
+					<label htmlFor="skills">Relevant Skills:</label>
+					<select id="skills"
+						value={modalData?.skillSet}
+						onChange={(e) => setModalData({...modalData, skillSet: Number(e.target.value)})}>
+						{Object.values(Skillset).filter(x => isNaN(Number(x))).map((key, index) => (
+							<option key={index} value={index}>
+								{key}
+							</option>
+						))}
+					</select>
+					<label htmlFor="description">Description:</label>
+					<textarea name="description" id="description" defaultValue={modalData?.postContent} onChange={(e) => setModalData({...modalData, postContent: e.target.value})}/>
+				</ModalBody>
+				<ModalFooter>
+					<Button color="primary" onClick={() => closeModal(true)}>
+						Update
+					</Button>
+					<Button color="secondary" onClick={() => closeModal(false)}>
+						Close
+					</Button>
+				</ModalFooter>
+			</Modal>
 		</Card>
-		
 		</>
 	)
-
 }

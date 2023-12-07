@@ -60,3 +60,8 @@
 	border: black solid 1px;
 	background-color: #0084AE;
 }
+
+.modal-body {
+	display: flex;
+	flex-direction: column;
+}

@@ -28,10 +28,9 @@ export const CreateHelpWanted = async (data: HelpWanted) => {
   return response;
 }
 
-export const UpdateHelpWanted = async (data: HelpWanted | undefined) => {
+export const UpdateHelpWanted = async (data: HelpWanted) => {
 
   const body = JSON.stringify(data);
-  console.log(body);
   const response = await fetch('api/helpwanted/' + data?.id?.valueOf().toString(),
     {
       method: 'PUT',
@@ -40,7 +39,8 @@ export const UpdateHelpWanted = async (data: HelpWanted | undefined) => {
       },
       body: body
     });
-  return response;
+
+  return response.json() as HelpWanted;
 }
 
 export const DeleteHelpWanted = async (id: number) => {
