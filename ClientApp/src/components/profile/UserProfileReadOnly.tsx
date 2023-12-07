@@ -165,7 +165,7 @@ return(
         <CardTitle
             tag="h5"
         >User's Reviews</CardTitle>
-        {/* <Reviews currentUser={currUser}/> */}
+        { currUser !== undefined ? <Reviews currentUser={currUser}/> : null}
     </Card>
     <Button
         color="primary"
