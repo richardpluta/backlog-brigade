@@ -16,7 +16,7 @@ const DUMMY_USER:LoggedInUser = {
 		id: 123,
 		userType: 0,
 		userName: "DummyUserFromModal",
-		phone: 987654321,
+		phoneNumber: "987654321",
 		email: "nam@email.com",
 		skillSet: 0,
 		zip: '12345',
@@ -51,7 +51,6 @@ const UpdateListingModal = (props: ModalType) => {
 
 		await ListingPutService(newListing).then(
 			(res:any) => {
-				console.log(res);
 				window.location.reload();
 			}	
 		)

@@ -1,32 +1,53 @@
 import React from "react";
-import { Component } from "react";
-import UpdateListingModal from "../common/Modals/UpdateListingModal";
 import CreateListingModal from "../common/Modals/CreateListingModal";
-import usePutListingModal from "../common/Hooks/usePutListingModal";
 import useCreateListingModal from "../common/Hooks/useCreateListingModal";
-import "./ProfessionalMain.css";
+import "./ProfessionalMain.css" 
 import Listings from "./Listings"
 import Reviews from "./Reviews";
 import User from "../../models/userData";
+import { Button, Card, Col, Modal, Row } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 
 export default function ProfessionalMain({currentUser} : {currentUser: User}) {
+	let navigate = useNavigate();
 	const {isOpen, toggle} = useCreateListingModal();
+
+	const routeChange = (id: number) => {
+		navigate(`/profile/${id}`);
+	  };
+	
 	return (
-		<div className="professional-container">
-			<div className="professional-column">
-				<h1>View Listings</h1>
-				<button onClick={toggle} className="create-listing-button">Create a new Listing</button>
+		<>
+		<Row>
+			<Col className="text-center">
+				<h3>Current Listings</h3>	
+			</Col>
+		</Row>
+		<Row>
+			<Col md={10}>
+				<Button color="primary" onClick={toggle}>Create Listing</Button>
+			</Col>
+			<Col md={2}>
+				<Button onClick={() => routeChange(currentUser.id)} style={{marginLeft:"75px"}} color="info">View Reviews</Button>
+			</Col>
+		</Row>
 				<CreateListingModal currentUser={currentUser} isOpen={isOpen} toggle={toggle}></CreateListingModal>
-				<div className="data-list">
+		<Row>
+			<Col>
+				<Card style={{marginTop: "5px", border: "black solid 1px", backgroundColor: "#0084AE",
+							display: "flex", flexWrap: "wrap", justifyContent: "space-around",
+							flexDirection: "row"}}>
 					<Listings currentUser={currentUser}/>
-				</div> 
-			</div>
-			<div className="professional-column">
-				<h1>Your Reviews</h1>
+				</Card> 
+			</Col>
+		</Row>
+		<Modal>
+			<Col>
 				<div className="data-list">
 					<Reviews currentUser={currentUser}/>
 				</div>
-			</div>
-		</div>
+			</Col>
+		</Modal>
+			</>
     );
   }

@@ -5,7 +5,6 @@ import listingData from "../models/listingData";
 export const ListingPutService = async (data:Listing|undefined) => {
     
     const body = JSON.stringify(data);
-	console.log(body);
     const response = await fetch('api/listing/' + data?.id.valueOf().toString(),
     {
 		method: 'PUT',

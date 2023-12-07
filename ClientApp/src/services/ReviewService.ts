@@ -17,9 +17,34 @@ export const CreateReview = async (review: Review) => {
   return response;
 }
 
+export const GetAllReviewsAsync = async (token:string) => {
+    
+  return await fetch('/api/review/',
+  {
+  method: 'GET',
+  headers: {
+    "Content-Type": "application/json"
+  },
+
+  }).then((response) => response.json());
+}
+
+export const DeleteReviewByIDAsync = async (token:string, id:number) => {
+  const response = await fetch('/api/reveiw/' + id,
+  {
+       method: 'DELETE',
+     headers: {
+        "Content-Type": "application/json"
+      },
+  }
+);
+return response;
+}
+
 export const GetReviewsForUser = async (userId: number) => {
-  const response = await fetch(`api/review/user/${userId}`,
+  const response = await fetch(`/api/review/user/${userId}`,
     {
+      
       method: 'GET',
       headers: {
         "Content-Type": "application/json"
@@ -45,5 +70,5 @@ export const UpdateReview = async (review: Review) => {
     }
     );
 
-    return response.json() as Review;
+    return response.json() as unknown  as Review;
 }

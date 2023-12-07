@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServicifyDB.Models
 {
@@ -27,8 +22,8 @@ namespace ServicifyDB.Models
         [Required]
         public string? PostContent { get; set; }
 
-        [NotMapped]
-        public bool Flagged { get; set; }
+        [Column("flagged")]
+        public bool? Flagged { get; set; }
 
         [Column("skill_set")]
         [Required]

@@ -6,6 +6,7 @@ import ProfessionalMain from '../professional/ProfessionalMain';
 import ClientMain from '../client/ClientMain';
 import AdminMain from '../admin/AdminMain';
 import UserProfileMain from '../profile/UserProfile';
+import UserProfileReadOnly from '../profile/UserProfileReadOnly';
 import User from '../../models/userData';
 import { GetCurrentUser } from '../../services/UserService';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -19,7 +20,7 @@ export default function App() {
       let user = await getAccessTokenSilently().then(async token => {
           return await GetCurrentUser(token, auth0User?.email).then((currentUser: LoggedInUser) => {
               return {
-                  id:currentUser.id,
+                  id: currentUser.id,
                   userType: currentUser.userType,
                   userName: currentUser.userName,
                   phoneNumber: currentUser.phoneNumber,
@@ -43,9 +44,10 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/professional" element = {<ProfessionalMain currentUser={user as User}/>}/>
-          <Route path="/client" element = {<ClientMain/>}/>
+          <Route path="/client" element = {<ClientMain currentUser={user as User}/>}/>
           <Route path="/admin" element = {<AdminMain />}/>
           <Route path="/profile" element = {<UserProfileMain/>}/>
+          <Route path="/profile/:id" element={<UserProfileReadOnly />} />
         </Routes>
       </Layout>
     ) : null;

@@ -42,7 +42,6 @@ class NavMenu extends Component<NavProps> {
   }
 
   render() {
-    console.log("show nav");
     return (
       <header>
         <Navbar

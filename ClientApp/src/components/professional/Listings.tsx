@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import flag from '../../../public/assets/red-flag-icon.png'
 import {ListingDeleteService} from "../../services/ListingDeleteService";
-import { ListingPutService } from '../../services/ListingPutService';
-
 import "./Listings.css"
 import UpdateListingModal from '../common/Modals/UpdateListingModal';
 import usePutListingModal from '../common/Hooks/usePutListingModal';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Button, Card, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 import Review from '../../models/reviewData';
-import Listing from '../../models/listingData';
-import { CreateReview, GetReviewsForUser } from '../../services/ReviewService';
+import { CreateReview } from '../../services/ReviewService';
 import User from '../../models/userData';
 import { GetListings } from '../../services/ListingService';
+import { Skillset } from '../../models/user/LoggedInUser';
+import { format } from 'date-fns';
+import { BsChatDotsFill } from "react-icons/bs";
+import { Listing } from '../../models/listing/Listing';
+import { FaFlag } from 'react-icons/fa';
+import { RiMapPin3Fill } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 
 export default function Listings({currentUser} : {currentUser: User}){
+	let navigate = useNavigate();
 	const [listings, setListings] = useState<Listing[]>([]);
 	const [listingData, setListingData] = useState<Listing>();
 	const [showReviewModal, setShowReviewModal] = useState(false);
@@ -58,6 +63,10 @@ export default function Listings({currentUser} : {currentUser: User}){
 			window.location.reload()
 		});
 	}
+	const routeChange = (id: number | undefined) => {
+		if(id!= undefined)
+		navigate(`/profile/${id}`);
+	  };
 
 	async function openEditListingModal(event: React.MouseEvent<HTMLButtonElement>, listing: Listing){
 		
@@ -69,25 +78,56 @@ export default function Listings({currentUser} : {currentUser: User}){
 	const loadedListings = listings.map(listing => {
 
 		return(
-			<div key={listing.id} className='card'>
-				<div className='cardHeader'>
-					<p className='cardHeader-element'>{listing.id}</p>
-					<p className='cardHeader-element'>{listing.user?.id}</p>
-					<p className='cardHeader-element'>{listing.postDate}</p>
-				</div>
-				<div className='cardContent'>
-					<p>{listing.postContent}</p>
-					<p>{listing.skillSet}</p>
-					<p>{listing.expectedRate}</p>
-				</div>
-				<div className='cardFooter'>
-					<p className='cardFooter-element'>{listing.flagged}</p>
-					<img src={flag} alt="Flagged" className='cardFooter-flagIcon'/>
-					<button className='cardFooter-edit' onClick={(e) => {openReviewModal(listing)}}>Review</button>
-					<button className='cardFooter-edit' onClick={(e) => {openEditListingModal(e, listing)}}>Edit</button>
-					<button className='cardFooter-delete' onClick={deleteListings}>Delete</button>
-				</div>
-			</div>
+			<Card 
+				style={{backgroundColor:listing.flagged ? "lightcoral" : "lightgray", border:"solid black 1px", width:"30%"}}
+				key={listing.id}>
+				<Row className="text-center">
+					<RiMapPin3Fill />
+				</Row>
+				<Row>
+					<Col md={7}>
+						<h5>{listing.creationDate != undefined ? format(new Date(listing.creationDate), "MM-dd-yyyy") : "--"}</h5>
+					</Col>
+					<Col>
+						<h5>{listing.skillSet != undefined ? Skillset[listing?.skillSet] : "--"}</h5>
+					</Col>
+				</Row>
+				<Row className="text-center">
+					<h5>{listing.postContent}</h5>
+				</Row>
+				<Row>
+					<Col md={6}>
+						<h5>Rate: ${listing.expectedRate}</h5>
+					</Col>
+					<Col>
+	  					<Button style={{backgroundColor:"transparent", border:"none", color:"black", padding:"1px"}} onClick={() => routeChange(listing?.user?.id)}>
+							{ listing.user != undefined ? (listing.user?.userName) : "unknown"}
+						</Button>
+					</Col>
+				</Row>						
+				<Row>
+					{currentUser?.id != listing.userId && (<>
+					<Col md={8}>
+						<Button inverse color="info" onClick={(e) => {openReviewModal(listing)}}><BsChatDotsFill style={{color:"white"}}/> Review</Button>
+					</Col>
+					<Col>
+						<Button inverse color="primary" onClick={(e) => {openReviewModal(listing)}}><FaFlag style={{color:"red"}}/> Flag</Button>
+					</Col>
+					</>)
+					}
+					{currentUser?.id == listing.userId && (
+					<>
+					<Col md={8}>
+						<Button color="primary" onClick={(e) => {openEditListingModal(e, listing)}}>Edit</Button>
+					</Col>
+					<Col>
+						<Button color="danger" onClick={deleteListings}>Delete</Button>
+					</Col>
+					</>
+					)
+					}
+				</Row>
+			</Card>
 		);
 	})
 

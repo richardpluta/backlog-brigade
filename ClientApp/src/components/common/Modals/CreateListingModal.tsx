@@ -1,11 +1,26 @@
-import React, { useEffect } from "react";
-import Listing from "../../../models/listingData";
+import React, { useEffect, useState } from "react";
 import "./CreateListingModal.css";
 import {CreateListing} from "../../../services/ListingService";
 import User from "../../../models/userData";
+import { Listing } from "../../../models/listing/Listing";
+import { GetCurrentUser } from "../../../services/UserService";
+import { useAuth0 } from "@auth0/auth0-react";
+import { LoggedInUser } from "../../../models/user/LoggedInUser";
 
 const CreateListingModal = ({currentUser, isOpen, toggle}: {currentUser: User, isOpen: boolean, toggle: () => void}) => {
+	const {getAccessTokenSilently} = useAuth0();
+	const [accessToken, setAccessToken] = useState("");
+	const[ loggedInUser, setLoggedInUser] = useState<LoggedInUser>();
+
 	useEffect(() => {
+		(async () => {
+		  await getAccessTokenSilently().then(async (token) => {
+			setAccessToken(token);
+			await GetCurrentUser(token, currentUser.email).then((response:LoggedInUser) => {
+				setLoggedInUser(response);
+			})
+		  });
+		})();
 	  }, []);
 
 	const onSubmit = async (event: any) => {
@@ -21,13 +36,13 @@ const CreateListingModal = ({currentUser, isOpen, toggle}: {currentUser: User, i
 			flagged: false,
 			skillSet: Number(target.skills.value),
 			expectedRate: Number(target.rate.value),
-			user: currentUser
+			creationDate: new Date(),
+			user: loggedInUser
 		}
 
 		//moved call to backend to test service, probably should be broken out into a ListingService with the API calls in it
 		await CreateListing(data)
 		.then((res:any) => {
-			console.log("Post success");
 			window.location.reload();
 		});
 	}

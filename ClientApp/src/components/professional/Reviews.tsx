@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Button, Card, CardBody, CardFooter, CardSubtitle, CardTitle, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Button, Card, CardBody, CardSubtitle, CardTitle, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import Review from '../../models/reviewData';
 import { GetReviewsForUser, UpdateReview } from '../../services/ReviewService';
 
@@ -10,10 +10,10 @@ import User from '../../models/userData';
 export default function Reviews({currentUser} : {currentUser: User}){
 	const [reviews, setReviews] = useState<Review[]>([]);
 	const [showReplyModal, setShowReplyModal] = useState(false);
-	const [reply, setReply] = useState("");
+	const [replyReview, setReplyReview] = useState<Review>();
 
 	const GetReviews = () => {
-		GetReviewsForUser(currentUser.id).then(reviews => {
+		GetReviewsForUser(currentUser?.id).then(reviews => {
 			setReviews(reviews);
 		});
 	}
@@ -22,15 +22,14 @@ export default function Reviews({currentUser} : {currentUser: User}){
 		GetReviews();
 	}, []);
 
-	const handleReplyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setReply(event.target.value);
+	const openReplyModal = (review: Review) => {
+		setReplyReview(review);
+		setShowReplyModal(true);
 	}
 
-	const closeReplyModal = (createReply: boolean, review: Review) => {
-		if (createReply) {
-			review.replyComment = reply;
-
-			UpdateReview(review).then(() => {
+	const closeReplyModal = (createReply: boolean) => {
+		if (createReply && replyReview) {
+			UpdateReview(replyReview).then(() => {
 				setShowReplyModal(false)
 			});
 		} else {
@@ -39,61 +38,66 @@ export default function Reviews({currentUser} : {currentUser: User}){
 	}
 
 	const reviewTemplate = reviews.map(review => {
-
 		return(
 			<>
 			<Card className='review'>
-				<CardTitle>
-					{review.postUser?.userName}
+				<CardTitle tag="h5">
+					{review.postUser?.userName} said:
 				</CardTitle>
 				<CardBody>
-					{review.postContent}
+					Comment: {review.postContent}
 				</CardBody>
 				{
 					review.replyComment ?
 					<CardSubtitle>
-					Professional Response
+					<b>Response from user:</b>
 					</CardSubtitle>
 					: null
 				}
 				{
 					review.replyComment ?
 					<CardBody>
-					{review.replyComment}
+					Response: {review.replyComment}
 					</CardBody>
 					: null
 				}
 				{
 					!review.replyComment ?
 					<CardBody>
-						<Button onClick={() => setShowReplyModal(true)}>
+						<Button onClick={() => openReplyModal(review)}>
 							Respond
 						</Button>
 					</CardBody>
 					: null
 				}	
 			</Card>
-			<Modal isOpen={showReplyModal}>
-				<ModalHeader>Reply to Review</ModalHeader>
-				<ModalBody>
-					<input value={reply} onChange={(e) => handleReplyChange(e)}></input>
-				</ModalBody>
-				<ModalFooter>
-					<Button color="primary" onClick={() => closeReplyModal(true, review)}>
-						Create
-					</Button>
-					<Button color="secondary" onClick={() => closeReplyModal(false, review)}>
-						Close
-					</Button>
-				</ModalFooter>
-			</Modal>
-		</>
+			</>
 		);
 	})
 
 	return (
 	  	<>
-			{reviewTemplate}
+			{reviews.length > 0 ? reviewTemplate :
+				<Card
+					color="light"
+					className="text-center">
+						<b>No reviews found!</b>
+				</Card>
+			}
+			<Modal isOpen={showReplyModal}>
+				<ModalHeader>Reply to Review</ModalHeader>
+				<ModalBody>
+					<input value={replyReview?.replyComment} onChange={(e) => setReplyReview({...replyReview, replyComment: e.target.value})}></input>
+				</ModalBody>
+				<ModalFooter>
+					<Button color="primary" onClick={() => closeReplyModal(true)}>
+						Create
+					</Button>
+					<Button color="secondary" onClick={() => closeReplyModal(false)}>
+						Close
+					</Button>
+				</ModalFooter>
+			</Modal>
 		</>
 	)
 }

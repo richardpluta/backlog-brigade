@@ -4,31 +4,37 @@ import CreateHelpWantedModal from "../common/Modals/CreateHelpWantedModal";
 import useCreateHelpWantedModal from "../common/Hooks/useCreateHelpWantedModal";
 import "./ClientMain.css";
 import HelpWanteds from "./HelpWanteds"
+import User from "../../models/userData";
+import { Button, Card, Col, Row } from "reactstrap";
 
-export default function ClientMain() {
+export default function ClientMain({currentUser} : {currentUser: User}) {
 
 	const {isOpen, toggle} = useCreateHelpWantedModal();
     return (
-		<div className="client-container">
-			<h1>View Help Wanteds</h1>
-			<button onClick={toggle} className="create-helpwanted-button">Create a new Help Wanted</button>
-			<CreateHelpWantedModal isOpen={isOpen} toggle={toggle}></CreateHelpWantedModal>
-			<div className="sorting">
-				<label>General Search:</label>
-				<input className="sortingInput" id="generalSearch" />
-				<label>Skill/Service Sort:</label>
-				<input className="sortingInput" id="skillSort" />
-				<label>Highest Price Sort:</label>
-				<input className="sortingInput" id="priceSort" />
-				<label>Location Sort:</label>
-				<input className="sortingInput" id="locationSort" />		
-			</div>
-				<button className="applyButton">Apply Filters and Searches</button>		
-			<div className="helpwanteds">
-				<HelpWanteds />
-			</div>
+		<>
+			<Row className="float-right text-right">
+				<Col md={10}></Col>
+				<Col md={2}>
+					<Button color="primary" style={{marginLeft:"80px"}} onClick={toggle}>Create Ad</Button>
+				</Col>
+			</Row>
+			<CreateHelpWantedModal isOpen={isOpen} toggle={toggle} currentUser={currentUser}></CreateHelpWantedModal>
+		<Row
+	        className="text-center"
+			style={{ margin:"3px"}}
+		>	
+		
+			<h3>Help Wanted Ads</h3>
 			
-		</div>
+		</Row>
+		<Row
+		>
+				
+			<div> 
+				<HelpWanteds currentUser={currentUser as User}/>
+			</div>
+		</Row>	
+		</>
     );
     
   }

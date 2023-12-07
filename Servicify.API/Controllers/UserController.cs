@@ -27,6 +27,12 @@ namespace Servicify.API.Controllers
             return Ok(userService.Get(email));
         }
 
+        [HttpGet("byid/{id}")]
+        public ActionResult<User> Get(int id)
+        {
+            return Ok(userService.GetById(id));
+        }
+
 
         [HttpGet]
         public ActionResult<List<User>> GetAll()
