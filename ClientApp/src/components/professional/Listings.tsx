@@ -15,8 +15,10 @@ import { BsChatDotsFill } from "react-icons/bs";
 import { Listing } from '../../models/listing/Listing';
 import { FaFlag } from 'react-icons/fa';
 import { RiMapPin3Fill } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 
 export default function Listings({currentUser} : {currentUser: User}){
+	let navigate = useNavigate();
 	const [listings, setListings] = useState<Listing[]>([]);
 	const [listingData, setListingData] = useState<Listing>();
 	const [showReviewModal, setShowReviewModal] = useState(false);
@@ -61,6 +63,10 @@ export default function Listings({currentUser} : {currentUser: User}){
 			window.location.reload()
 		});
 	}
+	const routeChange = (id: number | undefined) => {
+		if(id!= undefined)
+		navigate(`/profile/${id}`);
+	  };
 
 	async function openEditListingModal(event: React.MouseEvent<HTMLButtonElement>, listing: Listing){
 		
@@ -94,7 +100,9 @@ export default function Listings({currentUser} : {currentUser: User}){
 						<h5>Rate: ${listing.expectedRate}</h5>
 					</Col>
 					<Col>
-						{listing.user?.userName}
+	  					<Button style={{backgroundColor:"transparent", border:"none", color:"black", padding:"1px"}} onClick={() => routeChange(listing?.user?.id)}>
+							{ listing.user != undefined ? (listing.user?.userName) : "unknown"}
+						</Button>
 					</Col>
 				</Row>						
 				<Row>

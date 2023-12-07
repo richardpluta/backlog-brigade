@@ -10,9 +10,11 @@ import { FaFlag } from 'react-icons/fa';
 import { Skillset } from '../../models/user/LoggedInUser';
 import { RiMapPin3Fill } from "react-icons/ri";
 import { PiPhoneFill } from "react-icons/pi";
+import { useNavigate } from 'react-router-dom';
 
 
 export default function HelpWanteds({currentUser} : {currentUser: User}) {
+	let navigate = useNavigate();
 	const [helpWanteds, setHelpWanteds] = useState<HelpWanted[]>([]);
 	const [showModal, setShowModal] = useState(false);
 	const [modalData, setModalData] = useState<HelpWanted>();
@@ -22,6 +24,11 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 	const [currentSkillsetFilter, setCurrentSkillset] = React.useState<number | undefined>();
 	const [locationFilter, setLocationFilter] = useState("");
 
+	const routeChange = (id: number | undefined) => {
+		if(id!= undefined)
+		navigate(`/profile/${id}`);
+	  };
+	
 	const GetData = () => {
 		let filterParameters: {[key: string]: string} = {}
 
@@ -118,7 +125,7 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 					</Row>		
 					<Row>
 						<Col>
-							{helpWanted.user != undefined? helpWanted.user?.userName : "unknown"}
+							<Button style={{backgroundColor:"transparent", border:"none", color:"black", padding:"1px"}} onClick={() => routeChange(helpWanted?.user?.id)}>{ helpWanted.user != undefined ? (helpWanted.user?.userName) : "unknown"}</Button>
 						</Col>	
 					</Row>		
 					{currentUser.id == helpWanted.userId &&(

@@ -41,23 +41,23 @@ export default function Reviews({currentUser} : {currentUser: User}){
 		return(
 			<>
 			<Card className='review'>
-				<CardTitle>
-					{review.postUser?.userName}
+				<CardTitle tag="h5">
+					{review.postUser?.userName} said:
 				</CardTitle>
 				<CardBody>
-					{review.postContent}
+					Comment: {review.postContent}
 				</CardBody>
 				{
 					review.replyComment ?
 					<CardSubtitle>
-					Professional Response
+					<b>Response from user:</b>
 					</CardSubtitle>
 					: null
 				}
 				{
 					review.replyComment ?
 					<CardBody>
-					{review.replyComment}
+					Response: {review.replyComment}
 					</CardBody>
 					: null
 				}
