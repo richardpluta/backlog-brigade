@@ -15,7 +15,7 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 	const [postContentFilter, setPostContentFilter] = useState("");
 	const [priceFilter, setPriceFilter] = useState("");
 	const [userNameFilter, setUserNameFilter] = useState("");
-	const [currentSkillsetFilter, setCurrentSkillset] = React.useState<number>(Skillset.Carpentry);
+	const [currentSkillsetFilter, setCurrentSkillset] = React.useState<number | undefined>();
 	const [locationFilter, setLocationFilter] = useState("");
 
 	const GetData = () => {
@@ -33,7 +33,7 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 			filterParameters["userName"] = userNameFilter;
 		}
 
-		if(currentSkillsetFilter)
+		if(currentSkillsetFilter != undefined)
 		{
 			filterParameters["skillSet"] = currentSkillsetFilter.toString();
 		}
@@ -51,6 +51,7 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 
 	async function deleteHelpWanteds(event: React.MouseEvent<HTMLButtonElement>){
 		event.preventDefault();
+		console.log()
 		const deleteId = event.currentTarget.parentElement?.parentElement?.childNodes[0].childNodes[0].childNodes[0].nodeValue;
 		await DeleteHelpWanted(Number(deleteId))
 		.then((res:any) => {
@@ -96,7 +97,7 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 				</div>
 				<div className='cardContent'>
 					<p>{helpWanted.postContent}</p>
-					<p>{helpWanted.skillSet ? Skillset[helpWanted.skillSet] : null}</p>
+					<p>{helpWanted.skillSet !== undefined ? Skillset[helpWanted.skillSet] : null}</p>
 					<p>{helpWanted.expectedRate}</p>
 				</div>
 				<div className='cardFooter'>
@@ -121,7 +122,7 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 				<input className="sortingInput" id="contentSearch" value={postContentFilter} onChange={(e) => setPostContentFilter(e.target.value)}/>
 				<label>Skill/Service Sort:</label>
 				<select id="skills"
-								value={currentSkillsetFilter.toString()}
+								value={currentSkillsetFilter?.toString()}
 								onChange={(e) => setCurrentSkillset(Number(e.target.value))}
 							>
 								{Object.values(Skillset).filter(x => isNaN(Number(x))).map((key, index) => (
