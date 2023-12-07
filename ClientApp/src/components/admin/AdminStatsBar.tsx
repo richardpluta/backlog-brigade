@@ -4,7 +4,7 @@ import { LoggedInUser, UserType } from "../../models/user/LoggedInUser";
 import { useAuth0 } from "@auth0/auth0-react";
 import { AccordionBody, AccordionHeader, Button, Card, CardBody, CardTitle, Col, Row, Table, UncontrolledAccordion } from "reactstrap";
 import { GetAllListings } from "../../services/ListingService";
-import { Listing, UserListing } from "../../models/listing/Listing";
+import { Listing,  } from "../../models/listing/Listing";
 import { GetAllHelpWantedsAsync } from "../../services/HelpWantedService";
 import helpWanted from "../../models/helpWantedData";
 

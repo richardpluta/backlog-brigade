@@ -4,22 +4,25 @@ import { LoggedInUser, Skillset, UserType } from "../../models/user/LoggedInUser
 import { useNavigate, useParams } from "react-router-dom";
 import { GetUserByIdAsync } from "../../services/UserService";
 import { GetAllListings } from "../../services/ListingService";
-import { UserListing } from "../../models/listing/Listing";
 import { Button, Card, CardBody, CardTitle, Col, Row, Table } from "reactstrap";
 import { format } from "date-fns";
 import { FaFlag } from "react-icons/fa";
 import { AiFillSafetyCertificate } from "react-icons/ai";
+import User from "../../models/userData";
+import { Listing } from "../../models/listing/Listing";
+import Reviews from "../professional/Reviews";
 
 
 const UserProfileReadOnly = () =>
 {
     let { id } = useParams();
     let navigate = useNavigate();
-    const  { getAccessTokenSilently, user } = useAuth0();
-    const [currUser, setUserProfile] = useState<LoggedInUser>();
+    const  { getAccessTokenSilently } = useAuth0();
+    const [currUser, setUserProfile] = useState<User>();
     const [accessToken, setAccessToken] = useState("");
-    const [listingList, setListingList] = useState<UserListing[]>();
+    const [listingList, setListingList] = useState<Listing[]>();
     const [isLoading, setIsLoading] = useState(true);
+
 
     useEffect(() => {
         (async () => {
@@ -27,13 +30,13 @@ const UserProfileReadOnly = () =>
             setAccessToken(token);
         if (id != null){
             let userid:number = parseInt(id);
-            await GetUserByIdAsync(accessToken, parseInt(id)).then(async (returnedUser: LoggedInUser) => {
+            await GetUserByIdAsync(accessToken, parseInt(id)).then(async (returnedUser: User) => {
               console.log(returnedUser);
               setUserProfile(returnedUser);
             });
-            await GetAllListings(accessToken).then(async (listings: UserListing[]) => {
+            await GetAllListings(accessToken).then(async (listings: Listing[]) => {
                 console.log(listings);
-                setListingList(listings.filter(x => x.listing.userId == userid));
+                setListingList(listings.filter(x => x.user?.id == userid));
               });
         }
           }).then(() => setIsLoading(false));
@@ -114,14 +117,14 @@ return(
                 >
                 <CardBody>
                         <CardTitle tag="h6">
-                            {x.listing.postContent}
+                            {x?.postContent}
                         </CardTitle>
                             <Row>
                                 <Col md={4}>
                                     <b>Date</b> 
                                 </Col>
                                 <Col>
-                                    {format(new Date(x.listing.creationDate), 'MM-dd-yy')} 
+                                    {format(new Date(x?.creationDate), 'MM-dd-yy')} 
                                 </Col>
                             </Row>
                             <Row>
@@ -129,7 +132,7 @@ return(
                                     <b>Rate</b> 
                                 </Col>
                                 <Col>
-                                    ${x.listing.expectedRate.toString()}
+                                    ${x?.expectedRate.toString()}
                                 </Col>
                             </Row> 
                             <Row>
@@ -137,7 +140,7 @@ return(
                                     <b>Skillset</b> 
                                 </Col>
                                 <Col>
-                                    {Skillset[x.listing.skillSet]}
+                                    {Skillset[x.skillSet]}
                                 </Col>
                             </Row> 
                             <Row>
@@ -145,17 +148,24 @@ return(
                                     <b>Flagged?</b> 
                                 </Col>
                                 <Col>
-                                    {x.listing.flagged ? <>Yes <FaFlag style={{color:"red"}}/></> : <>No <AiFillSafetyCertificate style={{color:"green"}} /></>}
+                                    {x.flagged ? <>Yes <FaFlag style={{color:"red"}}/></> : <>No <AiFillSafetyCertificate style={{color:"green"}} /></>}
                                 </Col>
                             </Row> 
                 </CardBody>
                 </Card>
-             
             );
             }
             )
           }
         </div>
+    </Card>
+    <Card
+        inverse
+        style={{backgroundColor:"#014D4E", margin:"5px"}}>
+        <CardTitle
+            tag="h5"
+        >User's Reviews</CardTitle>
+        {/* <Reviews currentUser={currUser}/> */}
     </Card>
     <Button
         color="primary"

@@ -31,7 +31,7 @@ export const CreateUserAsync = async (token:string, createUserRequest:LoggedInUs
     console.log("In CreateUserAsync");
     const body = JSON.stringify(createUserRequest);
 
-    return await fetch("api/user", {
+    return await fetch("/api/user", {
         method: "POST",
         headers: {
             Authorization: `Bearer ${token}`,
@@ -45,7 +45,7 @@ export const UpdateUserAsync = async (token:string, updateUserRequest:LoggedInUs
     console.log("In UpdateUserAsync");
     const body = JSON.stringify(updateUserRequest);
 
-    return await fetch("api/user", {
+    return await fetch("/api/user", {
         method: "PUT",
         headers: {
             Authorization: `Bearer ${token}`,
@@ -59,7 +59,7 @@ export const DeleteUserAsync = async(token:string, user:LoggedInUser) => {
     console.log("In Delete User");
     const body = JSON.stringify(user);
     console.log(body)
-    return await fetch(`api/user`, {
+    return await fetch(`/api/user`, {
         method: "DELETE",
         headers : {
             Authorization: `Bearer: ${token}`,
@@ -74,7 +74,7 @@ export const DeleteUserAsync = async(token:string, user:LoggedInUser) => {
 export const GetUserByIdAsync = async (token:string, id:number) => {
     console.log("In GetCurrentUserById");
 
-    return await fetch(`http://localhost:6035/api/user/byid/${id}`, {
+    return await fetch(`/api/user/byid/${id}`, {
         headers : {
             Authorization: `Bearer: ${token}`
         },

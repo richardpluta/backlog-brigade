@@ -42,8 +42,10 @@ return response;
 }
 
 export const GetReviewsForUser = async (userId: number) => {
-  const response = await fetch(`api/review/user/${userId}`,
+  console.log(`getreviews, ${userId}`)
+  const response = await fetch(`/api/review/user/${userId}`,
     {
+      
       method: 'GET',
       headers: {
         "Content-Type": "application/json"

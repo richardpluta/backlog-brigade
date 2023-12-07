@@ -14,6 +14,7 @@ import { format } from 'date-fns';
 import { BsChatDotsFill } from "react-icons/bs";
 import { Listing } from '../../models/listing/Listing';
 import { FaFlag } from 'react-icons/fa';
+import { RiMapPin3Fill } from 'react-icons/ri';
 
 export default function Listings({currentUser} : {currentUser: User}){
 	const [listings, setListings] = useState<Listing[]>([]);
@@ -72,10 +73,13 @@ export default function Listings({currentUser} : {currentUser: User}){
 
 		return(
 			<Card 
-				style={{backgroundColor:listing.flagged ? "lightcoral" : "lightgray", border:"solid black 1px"}}
+				style={{backgroundColor:listing.flagged ? "lightcoral" : "lightgray", border:"solid black 1px", width:"30%"}}
 				key={listing.id}>
+				<Row className="text-center">
+					<RiMapPin3Fill />
+				</Row>
 				<Row>
-					<Col md={9}>
+					<Col md={7}>
 						<h5>{listing.creationDate != undefined ? format(new Date(listing.creationDate), "MM-dd-yyyy") : "--"}</h5>
 					</Col>
 					<Col>
@@ -83,11 +87,11 @@ export default function Listings({currentUser} : {currentUser: User}){
 					</Col>
 				</Row>
 				<Row className="text-center">
-					<h4>{listing.postContent}</h4>
+					<h5>{listing.postContent}</h5>
 				</Row>
 				<Row>
-					<Col md={9}>
-						<h4>Rate: ${listing.expectedRate}</h4>
+					<Col md={6}>
+						<h5>Rate: ${listing.expectedRate}</h5>
 					</Col>
 					<Col>
 						{listing.user?.userName}
@@ -95,7 +99,7 @@ export default function Listings({currentUser} : {currentUser: User}){
 				</Row>						
 				<Row>
 					{currentUser?.id != listing.userId && (<>
-					<Col md={10}>
+					<Col md={8}>
 						<Button inverse color="info" onClick={(e) => {openReviewModal(listing)}}><BsChatDotsFill style={{color:"white"}}/> Review</Button>
 					</Col>
 					<Col>
@@ -105,7 +109,7 @@ export default function Listings({currentUser} : {currentUser: User}){
 					}
 					{currentUser?.id == listing.userId && (
 					<>
-					<Col md={10}>
+					<Col md={8}>
 						<Button color="primary" onClick={(e) => {openEditListingModal(e, listing)}}>Edit</Button>
 					</Col>
 					<Col>

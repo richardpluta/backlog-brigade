@@ -10,8 +10,3 @@ export interface Listing {
     expectedRate: number;
     user?: LoggedInUser;
 }
-
-export interface UserListing {
-    listing : Listing;
-    user?: LoggedInUser;
-}

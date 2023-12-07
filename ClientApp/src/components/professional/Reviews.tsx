@@ -6,14 +6,16 @@ import { GetReviewsForUser, UpdateReview } from '../../services/ReviewService';
 
 import "./Reviews.css"
 import User from '../../models/userData';
+import { LoggedInUser } from '../../models/user/LoggedInUser';
 
-export default function Reviews({currentUser} : {currentUser: User}){
+export default function Reviews({currentUser} : {currentUser: User | undefined}){
 	const [reviews, setReviews] = useState<Review[]>([]);
 	const [showReplyModal, setShowReplyModal] = useState(false);
 	const [reply, setReply] = useState("");
 
 	const GetReviews = () => {
-		GetReviewsForUser(currentUser.id).then(reviews => {
+		if(currentUser != undefined)
+		GetReviewsForUser(currentUser?.id).then(reviews => {
 			setReviews(reviews);
 		});
 	}
@@ -39,7 +41,6 @@ export default function Reviews({currentUser} : {currentUser: User}){
 	}
 
 	const reviewTemplate = reviews.map(review => {
-
 		return(
 			<>
 			<Card className='review'>
@@ -93,7 +94,16 @@ export default function Reviews({currentUser} : {currentUser: User}){
 
 	return (
 	  	<>
+		{reviews.length > 0 &&
 			{reviewTemplate}
+		}
+		{reviews.length == 0 &&
+			<Card
+				color="light"
+				className="text-center">
+					<b>No reviews found!</b>
+			</Card>
+		}
 		</>
 	)
 }

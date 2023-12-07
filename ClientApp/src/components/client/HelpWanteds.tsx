@@ -6,7 +6,7 @@ import HelpWanted from '../../models/helpWantedData';
 import User from '../../models/userData';
 import { format } from 'date-fns';
 import { Button, Card, Col, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
-import { FaFlag, FaTag } from 'react-icons/fa';
+import { FaFlag } from 'react-icons/fa';
 import { Skillset } from '../../models/user/LoggedInUser';
 import { RiMapPin3Fill } from "react-icons/ri";
 import { PiPhoneFill } from "react-icons/pi";

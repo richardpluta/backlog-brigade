@@ -1,5 +1,4 @@
-﻿using Servicify.Data.Models;
-﻿using Microsoft.EntityFrameworkCore;
+﻿﻿using Microsoft.EntityFrameworkCore;
 using ServicifyDB.Models;
 using ServicifyDB.Repository;
 

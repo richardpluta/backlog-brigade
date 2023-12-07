@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServicifyDB.Models;
 using Servicify.API.Services;
-using Servicify.Data.Models;
 
 namespace Servicify.API.Controllers
 {
@@ -24,7 +23,7 @@ namespace Servicify.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<UserListing>> GetAll()
+        public ActionResult<List<Listing>> GetAll()
         {
             return Ok(listingService.GetAll());
         }
