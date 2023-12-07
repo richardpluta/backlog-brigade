@@ -9,8 +9,9 @@ import usePutHelpWantedModal from '../common/Hooks/usePutHelpWantedModal';
 import User from '../../models/userData';
 import { format } from 'date-fns';
 import { Button, Card, Col, Input, Label, Row } from 'reactstrap';
-import { FaFlag } from 'react-icons/fa';
+import { FaFlag, FaTag } from 'react-icons/fa';
 import { Skillset } from '../../models/user/LoggedInUser';
+import { RiMapPin3Fill } from "react-icons/ri";
 
 
 export default function HelpWanteds({currentUser} : {currentUser: User}) {
@@ -73,6 +74,9 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 			<Card
 				style={{width:"30%", margin:"5px", padding:"10px", border:"black 1px solid", backgroundColor:helpWanted?.flagged ? "lightcoral" : "lightgray"}}
 				>
+				<Row className="text-center">
+				<RiMapPin3Fill />
+				</Row>
 				<Row>
 					<Col md={8}>
 						<b>{helpWanted.postDate != undefined ? format(new Date(helpWanted?.postDate), 'MM-dd-yyyy') : "--"}</b>
@@ -104,17 +108,12 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 		
 							</Col>	
 							<Col md={6}>
-						
 							</Col>
 							<Col>
 								<Button color="primary" onClick={(e) => onFlagSubmit(e, helpWanted)}><FaFlag style={{color:"red"}}/> Flag</Button>
 							</Col>
 						</Row>)
 						}
-				<div className='cardFooter'>
-					
-					
-				</div>
 			</Card>
 	
 		);

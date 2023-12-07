@@ -6,12 +6,15 @@ import { ListingPutService } from '../../services/ListingPutService';
 import "./Listings.css"
 import UpdateListingModal from '../common/Modals/UpdateListingModal';
 import usePutListingModal from '../common/Hooks/usePutListingModal';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Button, Card, CardHeader, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 import Review from '../../models/reviewData';
 import Listing from '../../models/listingData';
 import { CreateReview, GetReviewsForUser } from '../../services/ReviewService';
 import User from '../../models/userData';
 import { GetListings } from '../../services/ListingService';
+import { Skillset } from '../../models/user/LoggedInUser';
+import { format } from 'date-fns';
+import { BsChatDotsFill } from "react-icons/bs";
 
 export default function Listings({currentUser} : {currentUser: User}){
 	const [listings, setListings] = useState<Listing[]>([]);
@@ -69,25 +72,36 @@ export default function Listings({currentUser} : {currentUser: User}){
 	const loadedListings = listings.map(listing => {
 
 		return(
-			<div key={listing.id} className='card'>
-				<div className='cardHeader'>
-					<p className='cardHeader-element'>{listing.id}</p>
-					<p className='cardHeader-element'>{listing.user?.id}</p>
-					<p className='cardHeader-element'>{listing.postDate}</p>
-				</div>
-				<div className='cardContent'>
-					<p>{listing.postContent}</p>
-					<p>{listing.skillSet}</p>
-					<p>{listing.expectedRate}</p>
-				</div>
+			<Card 
+				style={{backgroundColor:listing.flagged ? "lightcoral" : "lightgray", border:"solid black 1px"}}
+				key={listing.id}>
+				<Row>
+					<Col md={9}>
+						<h5>{listing.postDate != undefined ? format(new Date(listing.postDate), "MM-dd-yyyy") : "--"}</h5>
+					</Col>
+					<Col>
+						<h5>{listing.skillSet != undefined ? Skillset[listing?.skillSet] : "--"}</h5>
+					</Col>
+				</Row>
+				<Row className="text-center">
+					<h4>{listing.postContent}</h4>
+				</Row>
+				<Row>
+					<Col md={9}>
+						<h4>Rate: ${listing.expectedRate}</h4>
+					</Col>
+					<Col>
+						{listing.user?.userName}
+					</Col>
+				</Row>						
 				<div className='cardFooter'>
 					<p className='cardFooter-element'>{listing.flagged}</p>
 					<img src={flag} alt="Flagged" className='cardFooter-flagIcon'/>
-					<button className='cardFooter-edit' onClick={(e) => {openReviewModal(listing)}}>Review</button>
-					<button className='cardFooter-edit' onClick={(e) => {openEditListingModal(e, listing)}}>Edit</button>
-					<button className='cardFooter-delete' onClick={deleteListings}>Delete</button>
+					<Button onClick={(e) => {openReviewModal(listing)}}><BsChatDotsFill/> Review</Button>
+					<Button  onClick={(e) => {openEditListingModal(e, listing)}}>Edit</Button>
+					<Button  onClick={deleteListings}>Delete</Button>
 				</div>
-			</div>
+			</Card>
 		);
 	})
 
