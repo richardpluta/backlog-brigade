@@ -6,9 +6,16 @@ import Listings from "./Listings"
 import Reviews from "./Reviews";
 import User from "../../models/userData";
 import { Button, Card, Col, Modal, Row } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 
 export default function ProfessionalMain({currentUser} : {currentUser: User}) {
+	let navigate = useNavigate();
 	const {isOpen, toggle} = useCreateListingModal();
+
+	const routeChange = (id: number) => {
+		navigate(`/profile/${id}`);
+	  };
+	
 	return (
 		<>
 		<Row>
@@ -21,7 +28,7 @@ export default function ProfessionalMain({currentUser} : {currentUser: User}) {
 				<Button color="primary" onClick={toggle}>Create Listing</Button>
 			</Col>
 			<Col md={2}>
-				<Button style={{marginLeft:"75px"}} color="info">View Reviews</Button>
+				<Button onClick={() => routeChange(currentUser.id)} style={{marginLeft:"75px"}} color="info">View Reviews</Button>
 			</Col>
 		</Row>
 				<CreateListingModal currentUser={currentUser} isOpen={isOpen} toggle={toggle}></CreateListingModal>
