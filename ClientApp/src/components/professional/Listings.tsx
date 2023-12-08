@@ -19,7 +19,6 @@ import { useNavigate } from 'react-router-dom';
 export default function Listings({currentUser} : {currentUser: User}){
 	let navigate = useNavigate();
 	const [listings, setListings] = useState<Listing[]>([]);
-	const [listingData, setListingData] = useState<Listing>();
 	const [showListingModal, setShowListingModal] = useState(false);
 	const [showReviewModal, setShowReviewModal] = useState(false);
 	const [listingModalData, setListingModalData] = useState<Listing>();
@@ -30,8 +29,6 @@ export default function Listings({currentUser} : {currentUser: User}){
 		flagged: false,
 		replyComment: ""
 	});
-
-	const {isOpen, toggle} = usePutListingModal();
 
 	useEffect(() => {
 		GetListings().then(listings => setListings(listings));
@@ -81,30 +78,19 @@ export default function Listings({currentUser} : {currentUser: User}){
 		}	
 	}
 
-	async function onFlagSubmit(event: React.MouseEvent<HTMLButtonElement>, listing:Listing)
+	async function onFlagSubmit(listing: Listing)
 	{
-		event.preventDefault();
 		listing.flagged = true;
-		listing.user = currentUser; 
 
-		await UpdateListing(listing).then(
-			(res:any) => {
-				window.location.reload();
-			}	
-		)
+		await UpdateListing(listing).then(() => {
+			window.location.reload()
+		})
 	}
 
 	const routeChange = (id: number | undefined) => {
 		if(id!= undefined)
 		navigate(`/profile/${id}`);
 	  };
-
-	async function openEditListingModal(event: React.MouseEvent<HTMLButtonElement>, listing: Listing){
-		
-		event.preventDefault();
-		setListingData(listing);
-		toggle();
-	}
 
 	const loadedListings = listings.map(listing => {
 
@@ -139,10 +125,10 @@ export default function Listings({currentUser} : {currentUser: User}){
 				<Row>
 					{currentUser?.id != listing.userId && (<>
 					<Col md={8}>
-						<Button inverse color="info" onClick={(e) => {openReviewModal(listing)}}><BsChatDotsFill style={{color:"white"}}/> Review</Button>
+						<Button inverse color="info" onClick={() => {openReviewModal(listing)}}><BsChatDotsFill style={{color:"white"}}/> Review</Button>
 					</Col>
 					<Col>
-						<Button inverse color="primary" onClick={(e) => {onFlagSubmit(e, listing)}}><FaFlag style={{color:"red"}}/> Flag</Button>
+						<Button inverse color="primary" onClick={() => {onFlagSubmit(listing)}}><FaFlag style={{color:"red"}}/> Flag</Button>
 					</Col>
 					</>)
 					}

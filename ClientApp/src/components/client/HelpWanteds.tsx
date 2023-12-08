@@ -85,17 +85,13 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 		}
 	}
 
-	async function onFlagSubmit(event: React.MouseEvent<HTMLButtonElement>, helpwanted:HelpWanted)
+	async function onFlagSubmit(helpwanted: HelpWanted)
 	{
-		event.preventDefault();
 		helpwanted.flagged = true;
-		helpwanted.user = currentUser; 
 
-		await UpdateHelpWanted(helpwanted).then(
-			(res:any) => {
-				window.location.reload();
-			}	
-		)
+		await UpdateHelpWanted(helpwanted).then(() => {
+			window.location.reload()
+		})
 	}
 
 	const loadedHelpWanteds = helpWanteds.map(helpWanted => {
@@ -146,7 +142,7 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 							<Col md={6}>
 							</Col>
 							<Col>
-								<Button color="primary" onClick={(e) => onFlagSubmit(e, helpWanted)}><FaFlag style={{color:"red"}}/> Flag</Button>
+								<Button color="primary" onClick={() => onFlagSubmit(helpWanted)}><FaFlag style={{color:"red"}}/> Flag</Button>
 							</Col>
 						</Row>)
 						}
