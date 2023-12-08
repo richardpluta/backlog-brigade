@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import flag from '../../../public/assets/red-flag-icon.png'
 import "./Listings.css"
-import UpdateListingModal from '../common/Modals/UpdateListingModal';
-import usePutListingModal from '../common/Hooks/usePutListingModal';
 import { Button, Card, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 import Review from '../../models/reviewData';
 import { CreateReview } from '../../services/ReviewService';

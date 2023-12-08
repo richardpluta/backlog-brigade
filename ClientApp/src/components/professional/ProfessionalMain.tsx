@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import useCreateListingModal from "../common/Hooks/useCreateListingModal";
 import "./ProfessionalMain.css" 
 import Listings from "./Listings"
 import User from "../../models/userData";
@@ -11,7 +10,6 @@ import { CreateListing } from "../../services/ListingService";
 
 export default function ProfessionalMain({currentUser} : {currentUser: User}) {
 	let navigate = useNavigate();
-	const {isOpen, toggle} = useCreateListingModal();
 	const [showListingModal, setShowListingModal] = useState(false);
 	const [listingModalData, setListingModalData] = useState<Listing>();
 
