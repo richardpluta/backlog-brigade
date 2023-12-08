@@ -17,3 +17,15 @@ export const ListingService = async (data:listing) => {
   );
   return response;
 }
+
+export const GetListings = async (filterParameters: {}) => {
+  const response = await fetch('api/listing?' + new URLSearchParams(filterParameters),
+	{
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json"
+    },
+  }).then(response => response.json());
+
+  return response as Listing[];
+}

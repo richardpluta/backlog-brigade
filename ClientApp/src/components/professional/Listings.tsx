@@ -8,55 +8,81 @@ import "./Listings.css"
 import listing from '../../models/listingData';
 import UpdateListingModal from '../common/Modals/UpdateListingModal';
 import usePutListingModal from '../common/Hooks/usePutListingModal';
+import { Button, Card, Col, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
+import Review from '../../models/reviewData';
+import { CreateReview } from '../../services/ReviewService';
+import User from '../../models/userData';
+import { GetListings } from '../../services/ListingService';
+import { Skillset } from '../../models/user/LoggedInUser';
+import { format } from 'date-fns';
+import { BsChatDotsFill } from "react-icons/bs";
+import { Listing } from '../../models/listing/Listing';
+import { FaFlag } from 'react-icons/fa';
+import { RiMapPin3Fill } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 
-export default function Listing(props:any){
+export default function Listings({currentUser} : {currentUser: User}){
+	let navigate = useNavigate();
+	const [listings, setListings] = useState<Listing[]>([]);
+	const [listingData, setListingData] = useState<Listing>();
+	const [showReviewModal, setShowReviewModal] = useState(false);
+	const [postContentFilter, setPostContentFilter] = useState("");
+	const [priceFilter, setPriceFilter] = useState("");
+	const [userNameFilter, setUserNameFilter] = useState("");
+	const [currentSkillsetFilter, setCurrentSkillset] = React.useState<number | undefined>();
+	const [reviewModal, setReviewModal] = useState<Review>({
+		postUserId: currentUser.id,
+		reviewedUserId: 0,
+		postContent: "",
+		flagged: false,
+		replyComment: ""
+	});
 
-	/*
-	const DUMMY_LISTINGS = [
+	const GetData = () => {
+		let filterParameters: {[key: string]: string} = {}
+
+		if (postContentFilter) {
+			filterParameters["postContent"] = postContentFilter;
+		}
+
+		if (priceFilter) {
+			filterParameters["expectedRate"] = priceFilter;
+		}
+
+		if (userNameFilter) {
+			filterParameters["userName"] = userNameFilter;
+		}
+
+		if(currentSkillsetFilter !== undefined)
 		{
-			id: "user1",
-			postDate: "11052023",
-			postContent: "This is the content of post # 1",
-			flagged: false,
-			skillSet: "Skill1",
-			expectedRate: "$50.00/hr",
-			user: {
-				userID: "123",
-				userType: "type",
-				userName: "mrProgramGuy",
-				phone: "123-456-7890",
-				skillset: "none",
-				zip: "12345",
-				userRate: "0",
-			}
-		},
-		{
-			id: "user2",
-			postDate: "11072023",
-			postContent: "This is the content of post # 2",
-			flagged: false,
-			skillSet: "Skill1, skill2",
-			expectedRate: "$75.00/hr",
-			user: {
-				userID: "321",
-				userType: "type3",
-				userName: "XxMyUsernamexX",
-				phone: "098-765-4321",
-				skillset: "none",
-				zip: "12345",
-				userRate: "0",
-			}
-		},
-	];
-	*/
-	const [result, setResult] = useState<Listing[]>([]);
-	const [listingData, setListingData] = useState<listing>();
+			filterParameters["skillSet"] = currentSkillsetFilter.toString();
+		}
+
+		GetListings(filterParameters).then(result => setListings(result))
+	}
 
 	useEffect(() => {
-		const api = async () => {
-			const data = await fetch("api/listing", {method:"GET"});
-			const json = await data.json();
-			setResult(json);
+		GetData();
+	}, []);
+
+	const {isOpen, toggle} = usePutListingModal();
+
+	// useEffect(() => {
+	// 	GetListings().then(listings => setListings(listings));
+	// }, []);
+
+	const openReviewModal = (listing: Listing) => {
+		setReviewModal({...reviewModal, reviewedUserId: listing.userId})
+		setShowReviewModal(true)
+	}
+
+	const closeReviewModal = (createListing: boolean) => {
+		if (createListing && reviewModal) {
+			CreateReview(reviewModal).then(() => {
+				setShowReviewModal(false)
+			});
+		} else {
+			setShowReviewModal(false)
 		}
 		api();
 	}, []);
@@ -85,24 +111,59 @@ export default function Listing(props:any){
 	const loadedListings = result.map(listing => {
 
 		return(
-			<div className='card'>
-				<div className='cardHeader'>
-					<p className='cardHeader-element'>{listing.id}</p>
-					<p className='cardHeader-element'>{listing.user?.userName}</p>
-					<p className='cardHeader-element'>{listing.postDate}</p>
-				</div>
-				<div className='cardContent'>
-					<p>{listing.postContent}</p>
-					<p>{listing.skillSet}</p>
-					<p>{listing.expectedRate}</p>
-				</div>
-				<div className='cardFooter'>
-					<p className='cardFooter-element'>{listing.flagged}</p>
-					<img src={flag} alt="Flagged" className='cardFooter-flagIcon'/>
-					<button className='cardFooter-edit' onClick={(e) => {openEditListingModal(e, listing)}}>Edit</button>
-					<button className='cardFooter-delete' onClick={deleteListings}>Delete</button>
-				</div>
-			</div>
+			<>
+				<Card 
+					style={{backgroundColor:listing.flagged ? "lightcoral" : "lightgray", border:"solid black 1px", width:"30%"}}
+					key={listing.id}>
+						
+					<Row className="text-center">
+						<RiMapPin3Fill />
+					</Row>
+					<Row>
+						<Col md={7}>
+							<h5>{listing.creationDate != undefined ? format(new Date(listing.creationDate), "MM-dd-yyyy") : "--"}</h5>
+						</Col>
+						<Col>
+							<h5>{listing.skillSet != undefined ? Skillset[listing?.skillSet] : "--"}</h5>
+						</Col>
+					</Row>
+					<Row className="text-center">
+						<h5>{listing.postContent}</h5>
+					</Row>
+					<Row>
+						<Col md={6}>
+							<h5>Rate: ${listing.expectedRate}</h5>
+						</Col>
+						<Col>
+							<Button style={{backgroundColor:"transparent", border:"none", color:"black", padding:"1px"}} onClick={() => routeChange(listing?.user?.id)}>
+								{ listing.user != undefined ? (listing.user?.userName) : "unknown"}
+							</Button>
+						</Col>
+					</Row>						
+					<Row>
+						{currentUser?.id != listing.userId && (<>
+						<Col md={8}>
+							<Button inverse color="info" onClick={(e) => {openReviewModal(listing)}}><BsChatDotsFill style={{color:"white"}}/> Review</Button>
+						</Col>
+						<Col>
+							<Button inverse color="primary" onClick={(e) => {openReviewModal(listing)}}><FaFlag style={{color:"red"}}/> Flag</Button>
+						</Col>
+						</>)
+						}
+						{currentUser?.id == listing.userId && (
+						<>
+						<Col md={8}>
+							<Button color="primary" onClick={(e) => {openEditListingModal(e, listing)}}>Edit</Button>
+						</Col>
+						<Col>
+							<Button color="danger" onClick={deleteListings}>Delete</Button>
+						</Col>
+						</>
+						)
+						}
+					</Row>
+				</Card>
+			</>
 		);
 	})
 
@@ -111,6 +172,48 @@ export default function Listing(props:any){
 			<div className='updateListingModal'>
 				<UpdateListingModal isOpen={isOpen} toggle={toggle} data={listingData}></UpdateListingModal>
 			</div>
+			<Card
+				style={{backgroundColor:"light", border:"1px black solid", margin:"3px"}}
+			>
+				<Row className="text-center">
+				<Col>
+					<h5>Filter Content</h5>
+				</Col>
+			</Row>
+			<Row>
+				<Col>
+					<Label>Content Search:</Label>
+					<Input className="sortingInput" id="contentSearch" value={postContentFilter} onChange={(e) => setPostContentFilter(e.target.value)}/>
+				</Col>
+				<Col>
+					<Label>By Highest Price:</Label>
+					<Input className="sortingInput" id="priceSort" />
+				</Col>
+			</Row>
+			<Row>
+				<Col>
+					<Label>By Location:</Label>
+					<Input className="sortingInput" id="locationSort" />	
+				</Col>
+				<Col>
+				<Label>Skill/Service Sort:</Label>
+					<Input id="skills"
+						type="select"
+									value={currentSkillsetFilter?.toString()}
+									onChange={(e) => setCurrentSkillset(Number(e.target.value))}
+								>
+									{Object.values(Skillset).filter(x => isNaN(Number(x))).map((key, index) => (
+										<option key={index} value={index}>
+											{key}
+										</option>
+									))}
+								</Input>
+				</Col>
+				<Col className="text-center" style={{marginTop:"20px"}}>
+					<Button size="lg" color="warning" onClick={() => GetData()}>Apply</Button>
+				</Col>
+			</Row>
+			</Card>
 			{loadedListings}
 		</>
 	)
