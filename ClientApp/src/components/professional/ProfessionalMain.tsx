@@ -8,14 +8,10 @@ import Listing from "../../models/listingData";
 import { Skillset } from "../../models/skillSet";
 import { CreateListing } from "../../services/ListingService";
 
-<<<<<<< HEAD
-export default function ProfessionalMain(props:any) {
-=======
 export default function ProfessionalMain({currentUser} : {currentUser: User}) {
 	let navigate = useNavigate();
 	const [showListingModal, setShowListingModal] = useState(false);
 	const [listingModalData, setListingModalData] = useState<Listing>();
->>>>>>> main
 
 	const openListingModal = () => {
 		let listing: Listing = {
@@ -41,17 +37,6 @@ export default function ProfessionalMain({currentUser} : {currentUser: User}) {
 	  };
 	
 	return (
-<<<<<<< HEAD
-		<div className="professional-container">
-			<h1>View Listings</h1>
-			<button onClick={toggle} className="create-listing-button">Create a new Listing</button>
-			<CreateListingModal isOpen={isOpen} toggle={toggle} currentUser={props.currentUser}></CreateListingModal>
-			<div className="listings">
-				<Listings currentUser={props.currentUser}/>
-			</div>
-			
-		</div>
-=======
 		<>
 			<Row>
 				<Col className="text-center">
@@ -103,6 +88,5 @@ export default function ProfessionalMain({currentUser} : {currentUser: User}) {
 				</ModalFooter>
 			</Modal>
 		</>
->>>>>>> main
     );
   }
