@@ -177,8 +177,8 @@ export default function HelpWanteds({currentUser} : {currentUser: User}) {
 		</Row>
 		<Row>
 			<Col>
-				<Label>By Location:</Label>
-				<Input className="sortingInput" id="locationSort" />	
+				<Label>By UserName:</Label>
+				<Input className="sortingInput" id="userNameSort" />	
 			</Col>
 			<Col>
 			<Label>Skill/Service Sort:</Label>
