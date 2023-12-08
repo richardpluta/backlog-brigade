@@ -5,12 +5,14 @@ import User from "../../../models/userData";
 import { Listing } from "../../../models/listing/Listing";
 import { GetCurrentUser } from "../../../services/UserService";
 import { useAuth0 } from "@auth0/auth0-react";
-import { LoggedInUser } from "../../../models/user/LoggedInUser";
+import { LoggedInUser, Skillset } from "../../../models/user/LoggedInUser";
+import { Button, Card, Col, Input, Label, Row } from "reactstrap";
 
 const CreateListingModal = ({currentUser, isOpen, toggle}: {currentUser: User, isOpen: boolean, toggle: () => void}) => {
 	const {getAccessTokenSilently} = useAuth0();
 	const [accessToken, setAccessToken] = useState("");
 	const[ loggedInUser, setLoggedInUser] = useState<LoggedInUser>();
+	const [currentSkillset, setCurrentSkillset] = React.useState<number>(Skillset.Carpentry);
 
 	useEffect(() => {
 		(async () => {
@@ -34,7 +36,7 @@ const CreateListingModal = ({currentUser, isOpen, toggle}: {currentUser: User, i
 			userId: currentUser.id,
 			postContent: target.description.value,
 			flagged: false,
-			skillSet: Number(target.skills.value),
+			skillSet: currentSkillset,
 			expectedRate: Number(target.rate.value),
 			creationDate: new Date(),
 			user: loggedInUser
@@ -52,29 +54,42 @@ const CreateListingModal = ({currentUser, isOpen, toggle}: {currentUser: User, i
 
 		<>
 			{isOpen && (
-				<div className="overlay">
-					<div className="box">
-						<form className="create-listing-form" onSubmit={onSubmit}>
-							<h1>Please Enter Listing Information:</h1>
-							
-							<div className="field">
-								<label htmlFor="rate">Rate:</label>
-								<input id="rate" />
-							</div>
-							<div className="field">
-								<label htmlFor="skills">Relevant Skills:</label>
-								<input id="skills" />
-							</div>
-							<div className="field">
-								<label htmlFor="description">Description:</label>
-								<textarea name="description" id="description"/>
-							</div>
-							<div>
-								<button>Create</button>
-								<button onClick={toggle}>Cancel</button>
-							</div>
+				<div className="overlay modal">
+					<Card style = {{width:"25%"}}>
+						<form onSubmit={onSubmit}>
+							<h3>Create Listing</h3>
+							<Row style={{marginBottom:"10px"}}>
+								<Label htmlFor="rate">Rate:</Label>
+								<Input id="rate" />
+							</Row>
+							<Row style={{marginBottom:"10px"}}>
+								<Label htmlFor="skills">Relevant Skills:</Label>
+								<Input id="skills"
+								type="select"
+								value={currentSkillset.toString()}
+								onChange={(e) => setCurrentSkillset(Number(e.target.value))}
+							>
+								{Object.values(Skillset).filter(x => isNaN(Number(x))).map((key, index) => (
+									<option key={index} value={index}>
+										{key}
+									</option>
+								))}
+							</Input>
+							</Row>
+							<Row style={{marginBottom:"10px"}}>
+								<Label htmlFor="description">Description:</Label>
+								<Input type="textarea" name="description" id="description"/>
+							</Row>
+							<Row style={{marginBottom:"10px"}}>
+								<Col md={3}>
+									<Button color="primary">Create</Button>
+								</Col>
+								<Col>
+								<Button color="danger" onClick={toggle}>Cancel</Button>
+								</Col>
+							</Row>
 						</form>
-					</div>
+					</Card>
 				</div>
 			)}
 		</>

@@ -4,7 +4,7 @@ import "./CreateHelpWantedModal.css";
 import { CreateHelpWanted } from "../../../services/HelpWantedService";
 import User from "../../../models/userData";
 import { Skillset } from "../../../models/skillSet";
-import { Label, Input, Button } from "reactstrap";
+import { Label, Input, Button, Card, Row, Col } from "reactstrap";
 
 interface ModalType {
 	children?: ReactNode;
@@ -43,24 +43,20 @@ const CreateHelpWantedModal = ({ currentUser, isOpen, toggle }: { currentUser: U
 
 
 	return (
-
 		<>
 			{isOpen && (
-				<div className="overlay">
-					<div className="box">
-						<form className="create-helpwanted-form" onSubmit={onSubmit}>
-							<h1>Please Enter Help Wanted Information:</h1>
-							<div className="field">
-								<Label htmlFor="location">Location:</Label>
-								<Input id="location" />
-							</div>
-							<div className="field">
+				<div className="overlay modal">
+					<Card style={{width:"25%", border:"black solid 1px"}}>
+						<form onSubmit={onSubmit}>
+							<h3>Create Ad</h3>
+							<Row style={{marginBottom:"10px"}}>
 								<Label htmlFor="rate">Rate:</Label>
 								<Input id="rate" />
-							</div>
-							<div className="field">
-							<label htmlFor="skills">Relevant Skills:</label>
-							<select id="skills"
+							</Row>
+							<Row style={{marginBottom:"10px"}}>
+							<Label htmlFor="skills">Relevant Skills:</Label>
+							<Input id="skills"
+								type="select"
 								value={currentSkillset.toString()}
 								onChange={(e) => setCurrentSkillset(Number(e.target.value))}
 							>
@@ -69,18 +65,22 @@ const CreateHelpWantedModal = ({ currentUser, isOpen, toggle }: { currentUser: U
 										{key}
 									</option>
 								))}
-							</select>
-							</div>
-							<div className="field">
-								<label htmlFor="description">Description:</label>
-								<textarea name="description" id="description" />
-							</div>
-							<div>
-								<Button>Create</Button>
-								<Button onClick={toggle}>Cancel</Button>
-							</div>
+							</Input>
+							</Row>
+							<Row style={{marginBottom:"10px"}}>
+								<Label htmlFor="description">Description:</Label>
+								<Input type="textarea" name="description" id="description" />
+							</Row>
+							<Row>
+								<Col md={3}>
+								<Button color="primary">Create</Button>
+								</Col>
+								<Col>
+								<Button color="danger" onClick={toggle}>Cancel</Button>
+								</Col>
+							</Row>
 						</form>
-					</div>
+					</Card>
 				</div>
 			)}
 		</>

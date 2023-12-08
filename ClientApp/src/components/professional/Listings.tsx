@@ -133,9 +133,7 @@ export default function Listings({currentUser} : {currentUser: User}){
 
 	return (
 	  	<>
-			<div className='updateListingModal'>
-				<UpdateListingModal isOpen={isOpen} toggle={toggle} data={listingData}></UpdateListingModal>
-			</div>
+		<UpdateListingModal isOpen={isOpen} currentUser={currentUser} toggle={toggle} data={listingData}/>
 			{loadedListings}
 			<Modal isOpen={showReviewModal}>
 				<ModalHeader>Write Review</ModalHeader>

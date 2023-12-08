@@ -4,6 +4,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import LoggedInUser from "../../../models/userData";
 import {ListingPutService} from "../../../services/ListingPutService";
 import "./UpdateListingModal.css";
+import { Button, Card, Col, Input, Label, Row } from "reactstrap";
+import { Skillset } from "../../../models/skillSet";
+import User from "../../../models/userData";
 
 interface ModalType {
 	children?: ReactNode;
@@ -12,42 +15,28 @@ interface ModalType {
     data?: Listing;
 }
 
-const DUMMY_USER:LoggedInUser = {
-		id: 123,
-		userType: 0,
-		userName: "DummyUserFromModal",
-		phoneNumber: "987654321",
-		email: "nam@email.com",
-		skillSet: 0,
-		zip: '12345',
-		userRate: 0,
-}
-
-const UpdateListingModal = (props: ModalType) => {
-
+const UpdateListingModal = ({data, currentUser, isOpen, toggle}: {data: Listing | undefined, currentUser: User, isOpen: boolean, toggle: () => void}) => {
+	const [currentSkillset, setCurrentSkillset] = React.useState<number>(Skillset.Carpentry);
 	const {getAccessTokenSilently} = useAuth0();
 	const [accessToken, setAccessToken] = useState("");
+	const [listing, setListing] = useState<Listing>();
 
 	useEffect(() => {
-		(async () => {
-		  await getAccessTokenSilently().then(async (token) => {
-			setAccessToken(token);
-		  });
-		})();
-	  }, []);
-
+		if (data) {
+			setListing(data)
+		}
+	}, []);
 	  
 	const onSubmit = async (event: any) => {
 		event.preventDefault();
         const newRate = event.currentTarget[0].value;
-		const newSkills = event.currentTarget[1].value;
 		const newDesc = event.currentTarget[2].value;
 
-		const newListing = props.data;
+		const newListing = listing;
 		newListing!.expectedRate = Number(newRate);
-		newListing!.skillSet = Number(newSkills);
+		newListing!.skillSet = currentSkillset;
 		newListing!.postContent = newDesc;
-		newListing!.user = DUMMY_USER;
+		newListing!.user = currentUser;
 
 		await ListingPutService(newListing).then(
 			(res:any) => {
@@ -59,29 +48,43 @@ const UpdateListingModal = (props: ModalType) => {
 	return(
 
 		<>
-			{props.isOpen && (
-				<div className="overlay">
-					<div className="box">
-						<form className="update-listing-form" onSubmit={onSubmit}>
-							<h1>Please Update Your Listing Information:</h1>
-							<div className="field">
-								<label htmlFor="rate">Rate:</label>
-								<input id="rate" defaultValue={props.data?.expectedRate}/>
-							</div>
-							<div className="field">
-								<label htmlFor="skills">Relevant Skills:</label>
-								<input id="skills" defaultValue={props.data?.skillSet}/>
-							</div>
-							<div className="field">
-								<label htmlFor="description">Description:</label>
-								<textarea name="description" id="description" defaultValue={props.data?.postContent}/>
-							</div>
-							<div>
-								<button>Update</button>
-								<button onClick={props.toggle}>Cancel</button>
-							</div>
+				{isOpen && (
+				<div className="overlay modal">
+					<Card style = {{width:"25%"}}>
+						<form onSubmit={onSubmit}>
+							<h3>Update Listing</h3>
+							<Row style={{marginBottom:"10px"}}>
+								<Label htmlFor="rate">Rate:</Label>
+								<Input id="rate" value={data?.expectedRate}/>
+							</Row>
+							<Row style={{marginBottom:"10px"}}>
+								<Label htmlFor="skills">Relevant Skills:</Label>
+								<Input id="skills"
+								type="select"
+								value={data?.skillSet?.toString()}
+								onChange={(e) => setCurrentSkillset(Number(e.target.value))}
+							>
+								{Object.values(Skillset).filter(x => isNaN(Number(x))).map((key, index) => (
+									<option key={index} value={index}>
+										{key}
+									</option>
+								))}
+							</Input>
+							</Row>
+							<Row style={{marginBottom:"10px"}}>
+								<Label htmlFor="description">Description:</Label>
+								<Input type="textarea" name="description" id="description"/>
+							</Row>
+							<Row style={{marginBottom:"10px"}}>
+								<Col md={3}>
+									<Button color="primary">Create</Button>
+								</Col>
+								<Col>
+								<Button color="danger" onClick={toggle}>Cancel</Button>
+								</Col>
+							</Row>
 						</form>
-					</div>
+					</Card>
 				</div>
 			)}
 		</>

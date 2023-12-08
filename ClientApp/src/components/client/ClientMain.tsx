@@ -18,7 +18,7 @@ export default function ClientMain({currentUser} : {currentUser: User}) {
 					<Button color="primary" style={{marginLeft:"80px"}} onClick={toggle}>Create Ad</Button>
 				</Col>
 			</Row>
-			<CreateHelpWantedModal isOpen={isOpen} toggle={toggle} currentUser={currentUser}></CreateHelpWantedModal>
+			<CreateHelpWantedModal isOpen={isOpen} currentUser={currentUser} toggle={toggle}></CreateHelpWantedModal>
 		<Row
 	        className="text-center"
 			style={{ margin:"3px"}}

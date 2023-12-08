@@ -43,7 +43,7 @@ const UpdateHelpWantedModal = ({data, currentUser, isOpen, toggle}: {data: HelpW
 				<div className="overlay">
 					<div className="box">
 						<form className="update-helpwanted-form" onSubmit={onSubmit}>
-							<h1>Please Update Your Help Wanted Information:</h1>
+							<h1>Update Ad</h1>
 							<div className="field">
 								<label htmlFor="rate">Rate:</label>
 								<input id="rate" defaultValue={helpWanted?.expectedRate}/>
