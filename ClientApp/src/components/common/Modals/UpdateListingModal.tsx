@@ -77,7 +77,7 @@ const UpdateListingModal = ({data, currentUser, isOpen, toggle}: {data: Listing 
 							</Row>
 							<Row style={{marginBottom:"10px"}}>
 								<Col md={3}>
-									<Button color="primary">Create</Button>
+									<Button color="primary">Update</Button>
 								</Col>
 								<Col>
 								<Button color="danger" onClick={toggle}>Cancel</Button>
