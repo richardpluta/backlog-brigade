@@ -27,6 +27,12 @@ namespace Servicify.API.Controllers
             return Ok(userService.Get(email));
         }
 
+        [HttpGet("byid/{id}")]
+        public ActionResult<User> Get(int id)
+        {
+            return Ok(userService.GetById(id));
+        }
+
 
         [HttpGet]
         public ActionResult<List<User>> GetAll()
@@ -40,10 +46,10 @@ namespace Servicify.API.Controllers
             return Ok(this.userService.Update(user));
         }
 
-        [HttpDelete]
-        public ActionResult Delete(User user)
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
         {
-            this.userService.Delete(user);
+            this.userService.Delete(id);
             return  Ok();
         }
     }

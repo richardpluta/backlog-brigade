@@ -26,7 +26,6 @@ const UpdateUserForm = () =>  {
       await getAccessTokenSilently().then(async (token) => {
         setAccessToken(token);
         await GetCurrentUser(token, user?.email).then(async (currentUser: LoggedInUser) => {
-          console.log(currentUser);
           setCurrentUser(currentUser);
           setEditableParamProps({id:currentUser.id,
             userType: currentUser.userType,
@@ -45,9 +44,7 @@ const UpdateUserForm = () =>  {
   const SaveUser = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     let updateUserRequest: LoggedInUser  = editableParamProps;
-    console.log(updateUserRequest);
     await UpdateUserAsync(accessToken, updateUserRequest).then((response:LoggedInUser) => {
-      console.log(response);
     });
   }
 

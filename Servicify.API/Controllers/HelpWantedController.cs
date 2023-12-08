@@ -22,16 +22,15 @@ namespace Servicify.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<HelpWanted>> GetAll()
+        public ActionResult<List<HelpWanted>> GetAll([FromQuery] Dictionary<string, string> filterParameters)
         {
-            return Ok(helpWantedService.GetAll());
+            return Ok(helpWantedService.GetAll(filterParameters));
         }
 
         [HttpPut("{id}")]
         public ActionResult<HelpWanted> Update(int id, [FromBody] HelpWanted helpWanted)
         {
-            helpWantedService.Update(id, helpWanted);
-            return Ok();
+            return Ok(helpWantedService.Update(id, helpWanted));
         }
 
         [HttpDelete("{id}")]

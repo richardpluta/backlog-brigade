@@ -20,8 +20,12 @@ const Home = (props:any) =>  {
       await getAccessTokenSilently().then(async (token) => {
         setAccessToken(token);
         await GetCurrentUser(token, user?.email).then(async (currentUser: LoggedInUser) => {
+<<<<<<< HEAD
           console.log(currentUser);
           props.setCurrentUser(currentUser);
+=======
+          setCurrentUser(currentUser);
+>>>>>>> main
         }).finally(() => setIsLoading(false));
       });
     })();

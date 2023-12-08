@@ -9,6 +9,6 @@ export default interface review{
     postContent: string,
     flagged: boolean,
     replyComment: string,
-    PostUser: User
-    ReviewedUser: User
+    PostUser?: User
+    ReviewedUser?: User
 }

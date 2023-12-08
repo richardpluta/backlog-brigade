@@ -30,10 +30,7 @@ const CreateUserForm:React.FC = () => {
     
     const CreateUser = async (ev: React.FormEvent<HTMLFormElement>) => {
       let createUserRequest: LoggedInUser  = editableParamProps;
-      console.log(createUserRequest);
-      await CreateUserAsync(accessToken, createUserRequest).then((response:LoggedInUser) => {
-        console.log(response);
-      });
+      await CreateUserAsync(accessToken, createUserRequest).then((response:LoggedInUser) => {});
     }
       return(
         <>

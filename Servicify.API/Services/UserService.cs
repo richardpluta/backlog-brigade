@@ -22,6 +22,11 @@ namespace Servicify.API.Services
             return userRepository.Get().Where(x => x.Email == email).FirstOrDefault();
         }
 
+        public User? GetById(int id)
+        {
+            return userRepository.Get().Where(x => x.Id == id).FirstOrDefault();
+        }
+
         public IEnumerable<User> GetAll()
         {
             return userRepository.Get().ToList();
@@ -32,8 +37,11 @@ namespace Servicify.API.Services
             return userRepository.Update(user);
         }
 
-        public void Delete(User user)
+        public void Delete(int id)
         {
+            User user = userRepository.Get().Where(x => x.Id == id).FirstOrDefault()
+                ?? throw new BadHttpRequestException("User not found", 404);
+
             userRepository.Delete(user);
         }
     }

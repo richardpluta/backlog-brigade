@@ -1,12 +1,45 @@
-import listing from "../models/listingData";
-import listingData from "../models/listingData";
- 
-  //may need to clean this up a bit and move to its own service, lots of logging. 
-export const ListingService = async (data:listing) => {
+import Listing from "../models/listingData";
+
+export const GetAllListings = async (token:string) => {   
+    return await fetch(`/api/listing`, {
+        headers : {
+            Authorization: `Bearer: ${token}`
+        }
+    })
+    .then((response) => response.json())
+    .catch((err) => console.log(err));
+}
+
+export const UpdateListing = async (data: Listing) => {
+  const body = JSON.stringify(data);
+  const response = await fetch(`/api/listing/${data?.id}`,
+  {
+    method: 'PUT',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: body 
+  });
+
+  return response.json() as Listing;
+}
+
+export const DeleteListing = async(id:number) => {
+    return await fetch(`/api/listing/${id}`, {
+        method: "DELETE",
+        headers : {
+            "Content-Type": "application/json"
+        },
+    })
+    .then()
+    .catch((err) => console.log(err));
+  }
+
+export const CreateListing = async (data: Listing) => {
     
     const body = JSON.stringify(data);
 
-    const response = await fetch('api/listing',
+    const response = await fetch('/api/listing',
     {
       method: 'POST',
       headers: {
@@ -15,6 +48,7 @@ export const ListingService = async (data:listing) => {
       body 
     }
   );
+
   return response;
 }
 

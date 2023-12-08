@@ -1,9 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Listing from '../../models/listingData'
-import flag from '../../../public/assets/red-flag-icon.png'
-import {ListingDeleteService} from "../../services/ListingDeleteService";
-import { ListingPutService } from '../../services/ListingPutService';
-
 import "./Listings.css"
 import listing from '../../models/listingData';
 import UpdateListingModal from '../common/Modals/UpdateListingModal';
@@ -87,28 +82,65 @@ export default function Listings({currentUser} : {currentUser: User}){
 		api();
 	}, []);
 
-	async function deleteListings(event: React.MouseEvent<HTMLButtonElement>){
-		event.preventDefault();
-		const deleteId = event.currentTarget.parentElement?.parentElement?.childNodes[0].childNodes[0].childNodes[0].nodeValue;
-		await ListingDeleteService(Number(deleteId))
-		.then((res:any) => {
+	const openListingModal = (listing: Listing) => {
+		setListingModalData(listing)
+		setShowListingModal(true)
+	}
+
+	const openReviewModal = (listing: Listing) => {
+		setReviewModalData({...reviewModalData, reviewedUserId: listing.userId})
+		setShowReviewModal(true)
+	}
+
+	const closeListingModal = (updateListing: boolean) => {
+		if (updateListing && listingModalData) {
+			UpdateListing(listingModalData).then(listing => {
+				listings[listings.findIndex(x => x.id === listing.id)] = listing;
+				setListings(listings);
+				setShowListingModal(false);
+			})
+		} else {
+			setShowListingModal(false);
+		}
+	}
+
+	const closeReviewModal = (createListing: boolean) => {
+		if (createListing && reviewModalData) {
+			CreateReview(reviewModalData).then(() => {
+				setShowReviewModal(false)
+			});
+		} else {
+			setShowReviewModal(false)
+		}
+	}
+
+	const handleReviewChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setReviewModalData({...reviewModalData, postContent: event.target.value})
+	}
+
+	const deleteListings = (listing: Listing) => {
+		if (listing.id) {
+			DeleteListing(listing.id).then(() => {
+				setListings(listings.filter(x => x.id != listing.id));
+			});
+		}	
+	}
+
+	async function onFlagSubmit(listing: Listing)
+	{
+		listing.flagged = true;
+
+		await UpdateListing(listing).then(() => {
 			window.location.reload()
-		});
-
+		})
 	}
 
-	async function openEditListingModal(event: React.MouseEvent<HTMLButtonElement>, listing:listing){
-		
-		event.preventDefault();
-		setListingData(listing);
-		toggle();
-	}
+	const routeChange = (id: number | undefined) => {
+		if(id!= undefined)
+		navigate(`/profile/${id}`);
+	  };
 
-	//const listings = [<div> Listing 1</div>, <div> Listing 2</div>, <div> Listing 3</div>];
-
-	const {isOpen, toggle} = usePutListingModal();
-
-	const loadedListings = result.map(listing => {
+	const loadedListings = listings.map(listing => {
 
 		return(
 			<>
@@ -215,6 +247,47 @@ export default function Listings({currentUser} : {currentUser: User}){
 			</Row>
 			</Card>
 			{loadedListings}
+			<Modal isOpen={showListingModal}>
+				<ModalHeader>Update Listing</ModalHeader>
+				<ModalBody className="modal-body">
+					<label htmlFor="rate">Rate:</label>
+					<input id="rate" defaultValue={listingModalData?.expectedRate} onChange={(e) => setListingModalData({...listingModalData, expectedRate: Number(e.target.value)})}/>
+					<label htmlFor="skills">Relevant Skills:</label>
+					<select id="skills"
+						value={listingModalData?.skillSet}
+						onChange={(e) => setListingModalData({...listingModalData, skillSet: Number(e.target.value)})}>
+						{Object.values(Skillset).filter(x => isNaN(Number(x))).map((key, index) => (
+							<option key={index} value={index}>
+								{key}
+							</option>
+						))}
+					</select>
+					<label htmlFor="description">Description:</label>
+					<textarea name="description" id="description" defaultValue={listingModalData?.postContent} onChange={(e) => setListingModalData({...listingModalData, postContent: e.target.value})}/>
+				</ModalBody>
+				<ModalFooter>
+					<Button color="primary" onClick={() => closeListingModal(true)}>
+						Update
+					</Button>
+					<Button color="secondary" onClick={() => closeListingModal(false)}>
+						Close
+					</Button>
+				</ModalFooter>
+			</Modal>
+			<Modal isOpen={showReviewModal}>
+				<ModalHeader>Write Review</ModalHeader>
+				<ModalBody>
+					<input value={reviewModalData?.postContent} onChange={handleReviewChange}></input>
+				</ModalBody>
+				<ModalFooter>
+					<Button color="primary" onClick={() => closeReviewModal(true)}>
+						Create
+					</Button>
+					<Button color="secondary" onClick={() => closeReviewModal(false)}>
+						Close
+					</Button>
+				</ModalFooter>
+			</Modal>
 		</>
 	)
 }
