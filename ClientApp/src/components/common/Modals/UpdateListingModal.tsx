@@ -2,11 +2,11 @@ import React, { ReactNode, useState, MouseEvent, FormEvent, useEffect } from "re
 import Listing from "../../../models/listingData";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoggedInUser from "../../../models/userData";
-import {ListingPutService} from "../../../services/ListingPutService";
 import "./UpdateListingModal.css";
 import { Button, Card, Col, Input, Label, Row } from "reactstrap";
 import { Skillset } from "../../../models/skillSet";
 import User from "../../../models/userData";
+import { UpdateListing } from "../../../services/ListingService";
 
 interface ModalType {
 	children?: ReactNode;
@@ -15,7 +15,7 @@ interface ModalType {
     data?: Listing;
 }
 
-const UpdateListingModal = ({data, currentUser, isOpen, toggle}: {data: Listing | undefined, currentUser: User, isOpen: boolean, toggle: () => void}) => {
+const UpdateListingModal = ({data, currentUser, isOpen, toggle}: {data: Listing, currentUser: User, isOpen: boolean, toggle: () => void}) => {
 	const [currentSkillset, setCurrentSkillset] = React.useState<number>(Skillset.Carpentry);
 	const {getAccessTokenSilently} = useAuth0();
 	const [accessToken, setAccessToken] = useState("");
@@ -38,7 +38,7 @@ const UpdateListingModal = ({data, currentUser, isOpen, toggle}: {data: Listing 
 		newListing!.postContent = newDesc;
 		newListing!.user = currentUser;
 
-		await ListingPutService(newListing).then(
+		await UpdateListing(newListing as Listing).then(
 			(res:any) => {
 				window.location.reload();
 			}	

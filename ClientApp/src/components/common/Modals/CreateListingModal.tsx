@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./CreateListingModal.css";
 import {CreateListing} from "../../../services/ListingService";
 import User from "../../../models/userData";
-import { Listing } from "../../../models/listing/Listing";
+import Listing from "../../../models/listingData";
 import { GetCurrentUser } from "../../../services/UserService";
 import { useAuth0 } from "@auth0/auth0-react";
 import { LoggedInUser, Skillset } from "../../../models/user/LoggedInUser";
@@ -38,7 +38,6 @@ const CreateListingModal = ({currentUser, isOpen, toggle}: {currentUser: User, i
 			flagged: false,
 			skillSet: currentSkillset,
 			expectedRate: Number(target.rate.value),
-			creationDate: new Date(),
 			user: loggedInUser
 		}
 
