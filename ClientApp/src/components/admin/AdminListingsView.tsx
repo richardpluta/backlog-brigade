@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { GetCurrentUser } from "../../services/UserService";
 import { LoggedInUser } from "../../models/user/LoggedInUser";
 import { useAuth0 } from "@auth0/auth0-react";
-import { DeleteListingAsync, GetAllListings } from "../../services/ListingService";
+import { DeleteListing, GetAllListings } from "../../services/ListingService";
 import { Accordion, AccordionBody, AccordionHeader, Button, Card, CardBody, CardColumns, CardSubtitle, CardText, CardTitle, Col, Row, Table, UncontrolledAccordion } from "reactstrap";
 import {format} from 'date-fns';
-import { Listing } from "../../models/listing/Listing";
+import Listing from "../../models/listingData";
 
 
 export const AdminListingsView = () => {
@@ -34,7 +34,7 @@ export const AdminListingsView = () => {
   const DeleteByListingId = async (id:number|undefined) =>
   {
     if(id != undefined)
-    await DeleteListingAsync(accessToken, id).then(async () => {
+    await DeleteListing(id).then(async () => {
        window.location.reload();
         
       });

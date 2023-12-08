@@ -1,5 +1,4 @@
-import { Listing } from "../models/listing/Listing";
-import listing from "../models/listingData";
+import Listing from "../models/listingData";
 
 export const GetAllListings = async (token:string) => {   
     return await fetch(`/api/listing`, {
@@ -11,11 +10,24 @@ export const GetAllListings = async (token:string) => {
     .catch((err) => console.log(err));
 }
 
-export const DeleteListingAsync = async(token:string, id:number) => {
+export const UpdateListing = async (data: Listing) => {
+  const body = JSON.stringify(data);
+  const response = await fetch(`/api/listing/${data?.id}`,
+  {
+    method: 'PUT',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: body 
+  });
+
+  return response.json() as Listing;
+}
+
+export const DeleteListing = async(id:number) => {
     return await fetch(`/api/listing/${id}`, {
         method: "DELETE",
         headers : {
-            Authorization: `Bearer: ${token}`,
             "Content-Type": "application/json"
         },
     })
@@ -36,6 +48,7 @@ export const CreateListing = async (data: Listing) => {
       body 
     }
   );
+
   return response;
 }
 

@@ -42,6 +42,7 @@ namespace Servicify.API.Services
             dbListing.PostContent = listing.PostContent;
             dbListing.SkillSet = listing.SkillSet;
             dbListing.ExpectedRate = listing.ExpectedRate;
+            dbListing.Flagged = listing.Flagged;
 
             return listingRepository.Update(dbListing);
         }

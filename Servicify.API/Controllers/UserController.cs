@@ -46,10 +46,10 @@ namespace Servicify.API.Controllers
             return Ok(this.userService.Update(user));
         }
 
-        [HttpDelete]
-        public ActionResult Delete(User user)
+        [HttpDelete("{id}")]
+        public ActionResult Delete(int id)
         {
-            this.userService.Delete(user);
+            this.userService.Delete(id);
             return  Ok();
         }
     }

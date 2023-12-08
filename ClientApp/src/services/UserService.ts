@@ -51,14 +51,12 @@ export const UpdateUserAsync = async (token:string, updateUserRequest:LoggedInUs
 }
 
 export const DeleteUserAsync = async(token:string, user:LoggedInUser) => {
-    const body = JSON.stringify(user);
-    return await fetch(`/api/user`, {
+    return await fetch(`/api/user/${user.id}`, {
         method: "DELETE",
         headers : {
             Authorization: `Bearer: ${token}`,
             "Content-Type": "application/json"
-        },
-        body
+        }
     })
     .then()
     .catch((err) => console.log(err));

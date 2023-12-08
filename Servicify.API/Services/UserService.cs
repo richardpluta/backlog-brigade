@@ -37,8 +37,11 @@ namespace Servicify.API.Services
             return userRepository.Update(user);
         }
 
-        public void Delete(User user)
+        public void Delete(int id)
         {
+            User user = userRepository.Get().Where(x => x.Id == id).FirstOrDefault()
+                ?? throw new BadHttpRequestException("User not found", 404);
+
             userRepository.Delete(user);
         }
     }

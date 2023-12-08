@@ -9,7 +9,7 @@ import { format } from "date-fns";
 import { FaFlag } from "react-icons/fa";
 import { AiFillSafetyCertificate } from "react-icons/ai";
 import User from "../../models/userData";
-import { Listing } from "../../models/listing/Listing";
+import Listing from "../../models/listingData";
 import Reviews from "../professional/Reviews";
 
 
@@ -122,7 +122,7 @@ return(
                                     <b>Date</b> 
                                 </Col>
                                 <Col>
-                                    {format(new Date(x?.creationDate), 'MM-dd-yy')} 
+                                    {x.creationDate ? format(new Date(x?.creationDate), 'MM-dd-yy') : "--"} 
                                 </Col>
                             </Row>
                             <Row>
@@ -130,7 +130,7 @@ return(
                                     <b>Rate</b> 
                                 </Col>
                                 <Col>
-                                    ${x?.expectedRate.toString()}
+                                    ${x?.expectedRate?.toString()}
                                 </Col>
                             </Row> 
                             <Row>
@@ -138,7 +138,7 @@ return(
                                     <b>Skillset</b> 
                                 </Col>
                                 <Col>
-                                    {Skillset[x.skillSet]}
+                                    {x.skillSet ? Skillset[x.skillSet] : "--"}
                                 </Col>
                             </Row> 
                             <Row>
