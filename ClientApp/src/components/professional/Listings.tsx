@@ -16,6 +16,7 @@ import { Listing } from '../../models/listing/Listing';
 import { FaFlag } from 'react-icons/fa';
 import { RiMapPin3Fill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
+import { ListingPutService } from '../../services/ListingPutService';
 
 export default function Listings({currentUser} : {currentUser: User}){
 	let navigate = useNavigate();
@@ -63,6 +64,20 @@ export default function Listings({currentUser} : {currentUser: User}){
 			window.location.reload()
 		});
 	}
+
+	async function onFlagSubmit(event: React.MouseEvent<HTMLButtonElement>, listing:Listing)
+	{
+		event.preventDefault();
+		listing.flagged = true;
+		listing.user = currentUser; 
+
+		await ListingPutService(listing).then(
+			(res:any) => {
+				window.location.reload();
+			}	
+		)
+	}
+
 	const routeChange = (id: number | undefined) => {
 		if(id!= undefined)
 		navigate(`/profile/${id}`);
@@ -111,7 +126,7 @@ export default function Listings({currentUser} : {currentUser: User}){
 						<Button inverse color="info" onClick={(e) => {openReviewModal(listing)}}><BsChatDotsFill style={{color:"white"}}/> Review</Button>
 					</Col>
 					<Col>
-						<Button inverse color="primary" onClick={(e) => {openReviewModal(listing)}}><FaFlag style={{color:"red"}}/> Flag</Button>
+						<Button inverse color="primary" onClick={(e) => {onFlagSubmit(e, listing)}}><FaFlag style={{color:"red"}}/> Flag</Button>
 					</Col>
 					</>)
 					}

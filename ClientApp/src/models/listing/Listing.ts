@@ -1,4 +1,5 @@
 import { LoggedInUser } from "../user/LoggedInUser";
+import User from "../userData";
 
 export interface Listing {
     id:           number;
@@ -8,5 +9,5 @@ export interface Listing {
     flagged:      boolean;
     skillSet:     number;
     expectedRate: number;
-    user?: LoggedInUser;
+    user?: User;
 }
