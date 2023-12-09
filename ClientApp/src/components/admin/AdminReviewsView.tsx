@@ -102,7 +102,7 @@ export const AdminReviewsView = () => {
                                     <b>Reviewed User</b> 
                                 </Col>
                                 <Col>
-                                    {x.reviewedUser?.toString()}
+                                    {x?.reviewedUser?.userName?.toString()}
                                 </Col>
                             </Row> 
                         <Button
@@ -157,7 +157,7 @@ export const AdminReviewsView = () => {
                                     <b>Reviewed User</b> 
                                 </Col>
                                 <Col>
-                                    {x.reviewedUser?.toString()}
+                                    {x?.reviewedUser?.userName?.toString()}
                                 </Col>
                             </Row> 
                         <Button
